@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "306910425503",
+    "firebase_url": "https://perspective-3adcf.firebaseio.com",
+    "project_id": "perspective-3adcf",
+    "storage_bucket": "perspective-3adcf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:306910425503:android:3218a42bcf18fe27a50daa",
+        "android_client_info": {
+          "package_name": "com.example.point_of_view"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "306910425503-k508k45k01jjvuo4eujvhprlgh9u7ij0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRiO0xfA0KuwHy83y_GD8Od4syJWJfCm4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "306910425503-k508k45k01jjvuo4eujvhprlgh9u7ij0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
