@@ -18,6 +18,6 @@ void setupLocator() {
   locator.registerFactory(() => ImagePickerModel());
   locator.registerFactory(() => LoginModel());
   locator.registerFactory(() => RegisterModel());
-  locator.registerFactory(() => CreateEventModel());
+  locator.registerLazySingleton(() => CreateEventModel());
   locator.registerFactory(() => ProfileModel());
 }

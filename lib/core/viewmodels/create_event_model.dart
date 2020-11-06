@@ -95,7 +95,7 @@ class CreateEventModel extends BaseModel {
 
       Navigator.pushReplacementNamed(context, '/');
     } else {
-      print(_selectedStartDate);
+      print('START DATE' + _selectedStartDate.toString());
       print(_selectedEndDate);
       print(_selectedStartTime);
       print(_selectedEndTime);

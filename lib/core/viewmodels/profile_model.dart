@@ -31,8 +31,7 @@ class ProfileModel extends BaseModel {
 
   void signOut() async {
     setState(ViewState.Busy);
-    //_authService.signOut();
-    _cloudfirestoreService.getEventsList();
+    _authService.signOut();
     setState(ViewState.Idle);
   }
 

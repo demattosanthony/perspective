@@ -1,10 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart' hide Router;
-
-
 import 'package:firebase_core/firebase_core.dart';
-import 'package:point_of_view/core/viewmodels/profile_model.dart';
 import 'package:provider/provider.dart';
+import 'core/models/Event.dart';
 
 import 'ui/router.dart';
 import 'locator.dart';
@@ -22,7 +20,6 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         StreamProvider<User>.value(value: FirebaseAuth.instance.authStateChanges()),
-        
         ],
           child: MaterialApp(
         title: 'Point of View',

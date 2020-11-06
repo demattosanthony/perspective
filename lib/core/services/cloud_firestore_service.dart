@@ -16,8 +16,6 @@ class CloudFirestoreService {
         .collection('createdEvents')
         .get();
 
-    
-
     print(snapshot.docs[0]['event_id']);
   }
 
