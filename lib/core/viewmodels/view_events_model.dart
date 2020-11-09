@@ -13,12 +13,16 @@ class ViewEventsModel extends BaseModel {
 
   void getEvents() async {
     setState(ViewState.Busy);
-    List<Event> snapshot = await _cloudFirestoreService.getEventsList();
-    _myEvents = snapshot;
-    for (var event in snapshot) {
-      print(event.address);
-    }
+    List<String> eventIds = await _cloudFirestoreService.getEventIdsList();
 
+    for (var id in eventIds) {
+      //print(id);
+    }
+    var eventList = await _cloudFirestoreService.getEvents(eventIds);
+    _myEvents = eventList;
+    for (var event in eventList) {
+      print(event.id);
+    }
     setState(ViewState.Idle);
   }
 }

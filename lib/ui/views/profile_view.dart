@@ -13,6 +13,7 @@ class ProfileView extends StatelessWidget {
               appBar: PreferredSize(
                 preferredSize: const Size.fromHeight(50),
                 child: PlatformAppBar(
+                  automaticallyImplyLeading: false,
                   backgroundColor: Colors.white,
                   title: Text('Profile'),
                   trailingActions: [

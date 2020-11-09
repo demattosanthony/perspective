@@ -13,6 +13,7 @@ class EventsScreen extends StatelessWidget {
           child: PlatformAppBar(
             backgroundColor: Colors.white,
             title: Text('Events'),
+            automaticallyImplyLeading: false,
           ),
         ),
         body: GestureDetector(
