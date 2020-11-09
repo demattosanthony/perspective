@@ -37,6 +37,7 @@ class CreateEventModel extends BaseModel {
   DateTime _selectedEndTime;
   String latitude;
   String longitude;
+  
 
   TextEditingController get eventTextFieldController =>
       _eventTextFieldController;

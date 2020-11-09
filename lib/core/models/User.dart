@@ -44,6 +44,5 @@ class User {
         'planning_on_attending_events': planningOnAttendingEvents,
         'followersCount' : followersCount,
         'followingCount' : followingCount
-
       };
 }

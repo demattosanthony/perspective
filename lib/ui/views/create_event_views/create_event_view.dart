@@ -149,6 +149,7 @@ class CreateEventView extends StatelessWidget {
                               onTap: () async {
                                 final result =
                                     await model.addLocationButton(context);
+
                                 mapController.animateCamera(
                                     CameraUpdate.newCameraPosition(
                                         CameraPosition(

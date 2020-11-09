@@ -31,7 +31,7 @@ class Event {
         'image': image,
         'title': title,
         'startDate': startDate,
-        'end_date': endDate,
+        'endDate': endDate,
         'startTime': startTime,
         'endTime': endTime,
         'latitude': latitude,
