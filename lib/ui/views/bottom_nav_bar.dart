@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
@@ -24,22 +23,22 @@ class _BottomNavBarState extends State<BottomNavBar> {
   GlobalKey _bottomNavigationKey = GlobalKey();
   final _pageController = PageController();
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    FirebaseAuth.instance.authStateChanges().listen((useraccount) {
-      if (useraccount != null) {
-        setState(() {
-          isSignedIn = true;
-        });
-      } else {
-        setState(() {
-          isSignedIn = false;
-        });
-      }
-    });
-  }
+  // @override
+  // void initState() {
+  //   // TODO: implement initState
+  //   super.initState();
+  //   //FirebaseAuth.instance.authStateChanges().listen((useraccount) {
+  //     if (useraccount != null) {
+  //       setState(() {
+  //         isSignedIn = true;
+  //       });
+  //     } else {
+  //       setState(() {
+  //         isSignedIn = false;
+  //       });
+  //     }
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {

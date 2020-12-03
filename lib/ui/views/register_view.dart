@@ -112,9 +112,9 @@ class RegisterView extends StatelessWidget {
                                 model.usernameController.text,
                                 model.nameController.text);
 
-                        if (success) {
-                          Navigator.pushNamed(context, '/');
-                        }
+                        // if (success) {
+                        //   Navigator.pushNamed(context, '/');
+                        // }
                       },
                       child: Text('Register',
                           style: TextStyle(color: Colors.white)),

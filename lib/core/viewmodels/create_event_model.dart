@@ -20,10 +20,10 @@ const kGoogleApiKey = 'AIzaSyBPNfS9u4Tz6F8CTR2WXNj1TJfdamSqHLY';
 GoogleMapsPlaces _places = GoogleMapsPlaces(apiKey: kGoogleApiKey);
 
 class CreateEventModel extends BaseModel {
-  FirebaseStorageService _firebaseStorageService =
-      locator<FirebaseStorageService>();
-  CloudFirestoreService _cloudFirestoreService =
-      locator<CloudFirestoreService>();
+  //FirebaseStorageService _firebaseStorageService =
+    //  locator<FirebaseStorageService>();
+  //CloudFirestoreService _cloudFirestoreService =
+      //locator<CloudFirestoreService>();
 
   Event event;
   TextEditingController _eventTextFieldController = new TextEditingController();
@@ -37,7 +37,6 @@ class CreateEventModel extends BaseModel {
   DateTime _selectedEndTime;
   String latitude;
   String longitude;
-  
 
   TextEditingController get eventTextFieldController =>
       _eventTextFieldController;
@@ -68,8 +67,8 @@ class CreateEventModel extends BaseModel {
 
   void uploadImage(String eventId) async {
     setState(ViewState.Busy);
-    _firebaseStorageService.uploadImage(
-        _image, 'event_images/${_eventTextFieldController.text}', eventId);
+    //_firebaseStorageService.uploadImage(
+      //  _image, 'event_images/${_eventTextFieldController.text}', eventId);
     setState(ViewState.Idle);
   }
 
@@ -90,9 +89,9 @@ class CreateEventModel extends BaseModel {
           address: _locationAddress,
           details: _eventDetailsController.text);
 
-      final event_ref_id = await _cloudFirestoreService.createEvent(event);
+      //final event_ref_id = await _cloudFirestoreService.createEvent(event);
 
-      uploadImage(event_ref_id);
+      //uploadImage(event_ref_id);
 
       Navigator.pushReplacementNamed(context, '/');
     } else {

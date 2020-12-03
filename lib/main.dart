@@ -1,6 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart' hide Router;
-import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'core/models/Event.dart';
 
@@ -10,18 +8,13 @@ import 'locator.dart';
 void main() async {
   setupLocator(); 
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        StreamProvider<User>.value(value: FirebaseAuth.instance.authStateChanges()),
-        ],
-          child: MaterialApp(
+    return MaterialApp(
         title: 'Point of View',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
@@ -29,7 +22,7 @@ class MyApp extends StatelessWidget {
         ),
         initialRoute: '/',
         onGenerateRoute: Router.generateRoute,
-      ),
+      
     );
   }
 }

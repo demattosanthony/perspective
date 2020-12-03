@@ -13,8 +13,6 @@ GetIt locator = GetIt.instance;
 
 void setupLocator() {
   locator.registerLazySingleton(() => AuthService());
-  locator.registerLazySingleton(() => CloudFirestoreService());
-  locator.registerLazySingleton(() => FirebaseStorageService());
 
   locator.registerFactory(() => ImagePickerModel());
   locator.registerFactory(() => LoginModel());

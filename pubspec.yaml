@@ -32,10 +32,6 @@ dependencies:
   page_transition: ^1.1.7+2
   intl: ^0.16.1
   platform_maps_flutter: ^0.1.9+4
-  firebase_auth: ^0.18.1+2
-  cloud_firestore: ^0.14.1+3
-  firebase_core : ^0.5.0
-  firebase_storage: ^4.0.1
   provider: ^4.1.3
   get_it: ^4.0.2
   path_provider: ^1.6.21
@@ -43,11 +39,8 @@ dependencies:
   better_uuid: ^0.1.2
   flutter_platform_widgets: ^0.70.2
   flutter_datetime_picker: ^1.4.0
-
-
-  
-  
-  
+  cached_network_image: ^2.3.3
+  http: 
 
 
   # The following adds the Cupertino Icons font to your application.

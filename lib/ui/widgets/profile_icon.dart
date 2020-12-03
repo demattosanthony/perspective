@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:point_of_view/core/viewmodels/profile_model.dart';
 import 'package:point_of_view/ui/views/base_view.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProfileIcon extends StatelessWidget {
   @override

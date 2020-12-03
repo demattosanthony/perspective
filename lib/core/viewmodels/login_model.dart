@@ -17,10 +17,9 @@ class LoginModel extends BaseModel {
   Future<bool> login(String email, String password) async {
     setState(ViewState.Busy);
 
-    var success =
-        await _authService.signInWithEmailAndPassword(email, password);
+    //var success = await _authService.signInWithEmailAndPassword(email, password);
 
     setState(ViewState.Idle);
-    return success;
+    //return success;
   }
 }
