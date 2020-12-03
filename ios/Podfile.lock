@@ -21,6 +21,8 @@ PODS:
     - Flutter
   - "permission_handler (5.0.1+1)":
     - Flutter
+  - shared_preferences (0.0.1):
+    - Flutter
   - sqflite (0.0.2):
     - Flutter
     - FMDB (>= 2.7.5)
@@ -35,6 +37,7 @@ DEPENDENCIES:
   - local_image_provider (from `.symlinks/plugins/local_image_provider/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
+  - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
   - storage_path (from `.symlinks/plugins/storage_path/ios`)
 
@@ -58,13 +61,15 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/path_provider/ios"
   permission_handler:
     :path: ".symlinks/plugins/permission_handler/ios"
+  shared_preferences:
+    :path: ".symlinks/plugins/shared_preferences/ios"
   sqflite:
     :path: ".symlinks/plugins/sqflite/ios"
   storage_path:
     :path: ".symlinks/plugins/storage_path/ios"
 
 SPEC CHECKSUMS:
-  apple_maps_flutter: 45925bdf704b86f713fcf6979ee1999d17b2a6e0
+  apple_maps_flutter: c59725efea39e13e703cde52a1d2b14866ad68a8
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   google_maps_flutter: c7f9c73576de1fbe152a227bfd6e6c4ae8088619
@@ -73,9 +78,10 @@ SPEC CHECKSUMS:
   local_image_provider: 05b1af32561482c0ca5a440fbc7f489ad818c962
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   permission_handler: eac8e15b4a1a3fba55b761d19f3f4e6b005d15b6
+  shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
   storage_path: 01f784dd58721c942550f38ead993d6d6a87189a
 
-PODFILE CHECKSUM: eb77cd5a845e928c3a70e9656aa1e50b7131e89b
+PODFILE CHECKSUM: b5ca7ae24452841ed596a7c8b35c94312a00413a
 
 COCOAPODS: 1.10.0.rc.1

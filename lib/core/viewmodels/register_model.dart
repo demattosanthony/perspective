@@ -24,13 +24,13 @@ class RegisterModel extends BaseModel {
 
   final picker = ImagePicker();
 
-  Future<void> createUserWithEmailAndPassword(
+  Future<int> createUserWithEmailAndPassword(
       String email, String password, String username, String name) async {
     setState(ViewState.Busy);
 
     var success = _authService.createUser(username, password, email);
     setState(ViewState.Idle);
-    //return success;
+    return success;
   }
 
   Future getImage() async {

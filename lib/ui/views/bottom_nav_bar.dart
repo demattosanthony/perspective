@@ -6,7 +6,9 @@ import 'login_view.dart';
 import 'create_event_views/create_event_view.dart';
 import 'events_screen.dart';
 import 'package:page_transition/page_transition.dart';
-
+import 'package:point_of_view/core/services/auth_service.dart';
+import 'package:point_of_view/locator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class BottomNavBar extends StatefulWidget {
   int page;
@@ -22,23 +24,28 @@ class _BottomNavBarState extends State<BottomNavBar> {
   bool isSignedIn = false;
   GlobalKey _bottomNavigationKey = GlobalKey();
   final _pageController = PageController();
+  final AuthService _authService = locator<AuthService>();
 
-  // @override
-  // void initState() {
-  //   // TODO: implement initState
-  //   super.initState();
-  //   //FirebaseAuth.instance.authStateChanges().listen((useraccount) {
-  //     if (useraccount != null) {
-  //       setState(() {
-  //         isSignedIn = true;
-  //       });
-  //     } else {
-  //       setState(() {
-  //         isSignedIn = false;
-  //       });
-  //     }
-  //   });
-  // }
+  void getLoginState() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    print(prefs.getBool('isLoggedIn'));
+    if (prefs.getBool('isLoggedIn') ?? false) {
+      setState(() {
+        isSignedIn = true;
+      });
+    } else {
+      setState(() {
+        isSignedIn = false;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getLoginState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +59,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             onWillPop: () async => false,
             child: Scaffold(
                 body: PageView(
-                  physics:new NeverScrollableScrollPhysics(),
+                  physics: new NeverScrollableScrollPhysics(),
                   controller: _pageController,
                   children: [
                     EventsScreen(),

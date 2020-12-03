@@ -14,12 +14,12 @@ class LoginModel extends BaseModel {
   TextEditingController get emailController => _emailcontorller;
   TextEditingController get passwordController => _passwordcontroller;
 
-  Future<bool> login(String email, String password) async {
+  Future<bool> login(String username, String password) async {
     setState(ViewState.Busy);
 
-    //var success = await _authService.signInWithEmailAndPassword(email, password);
+    var success = await _authService.login(username, password);
 
     setState(ViewState.Idle);
-    //return success;
+    return success==200;
   }
 }
