@@ -18,7 +18,14 @@ class ProfileView extends StatelessWidget {
                   title: Text('Profile'),
                   trailingActions: [
                     GestureDetector(
-                        onTap: model.signOut, child: Icon(Icons.settings))
+                        onTap: () {
+                          model.signOut();
+                          Navigator.pushReplacementNamed(context, '/');
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: PlatformText("Sign Out"),
+                        ))
                   ],
                 ),
               ),

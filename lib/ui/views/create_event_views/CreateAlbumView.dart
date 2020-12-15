@@ -1,10 +1,11 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import 'package:point_of_view/core/viewmodels/create_event_model.dart';
+import 'package:point_of_view/core/viewmodels/CreateAlbumModel.dart';
 import 'package:point_of_view/ui/views/bottom_nav_bar.dart';
 import 'package:point_of_view/ui/widgets/map_widget.dart';
 import '../base_view.dart';
@@ -14,51 +15,37 @@ import '../../widgets/date_picker.dart';
 
 final homeScaffoldKey = GlobalKey<ScaffoldState>();
 
-class CreateEventView extends StatelessWidget {
+class CreateAlbumView extends StatelessWidget {
   PlatformMapController mapController;
 
   @override
   Widget build(BuildContext context) {
-    return BaseView<CreateEventModel>(
+    return BaseView<CreateAlbumModel>(
         builder: (context, model, child) => WillPopScope(
               onWillPop: () async {
-                (await showDialog(
-                      context: context,
-                      builder: (context) => new AlertDialog(
-                        title: new Text('Are you sure?'),
-                        content: new Text('Do you want to close event'),
-                        actions: <Widget>[
-                          new FlatButton(
-                            onPressed: () => Navigator.of(context).pop(false),
-                            child: new Text('No'),
-                          ),
-                          new FlatButton(
-                            onPressed: () =>
-                                Navigator.of(context).pushAndRemoveUntil(
-                              MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      BottomNavBar(0)),
-                              ModalRoute.withName('/'),
-                            ),
-                            child: new Text('Yes'),
-                          ),
-                        ],
-                      ),
+                (Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => BottomNavBar(0)),
+                      ModalRoute.withName('/'),
                     )) ??
                     false;
               },
               child: Scaffold(
+                backgroundColor: Colors.white,
                 appBar: PreferredSize(
                   preferredSize: const Size.fromHeight(50),
                   child: PlatformAppBar(
-                    title: Text("New Event"),
+                    title: Text("Create Album"),
                     trailingActions: [
                       GestureDetector(
-                        onTap: () => model.createEventInDb(context),
+                        onTap: () async {
+                          var success = await model.createAlbum();
+                          if(success) Navigator.pushReplacementNamed(context, '/');
+                        },
                         child: Container(
                           alignment: Alignment.center,
                           padding: EdgeInsets.all(10),
-                          child: Text('Create Event'),
+                          child: Text('Create Album'),
                         ),
                       )
                     ],
@@ -67,25 +54,33 @@ class CreateEventView extends StatelessWidget {
                 body: SingleChildScrollView(
                   child: Column(
                     children: [
-                      Container(
-                          width: double.infinity,
-                          height: MediaQuery.of(context).size.height * .20,
-                          child: model.image != null
-                              ? GestureDetector(
-                                  onTap: model.getImage,
-                                  child: Image(
-                                      fit: BoxFit.fill,
-                                      image: FileImage(File(model.image))),
-                                )
-                              : RaisedButton(
-                                  onPressed: model.getImage,
-                                  child: Text(
-                                    'Select Event Image',
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 20),
-                                  ),
-                                  color: Colors.white,
-                                )),
+                      // Container(
+                      //     width: double.infinity,
+                      //     height: MediaQuery.of(context).size.height * .20,
+                      //     child: model.image != null
+                      //         ? GestureDetector(
+                      //             onTap: model.getImage,
+                      //             child: Image(
+                      //                 fit: BoxFit.fill,
+                      //                 image: FileImage(File(model.image))),
+                      //           )
+                      //         : RaisedButton(
+                      //             onPressed: model.getImage,
+                      //             child: Text(
+                      //               'Select Event Image',
+                      //               style: TextStyle(
+                      //                   color: Colors.black, fontSize: 20),
+                      //             ),
+                      //             color: Colors.white,
+                      //           )),
+                      CupertinoTextField(
+                        controller: model.eventTextFieldController,
+                        placeholder: "Album Title",
+                        style: TextStyle(
+                            fontSize: MediaQuery.of(context).size.height * .035,
+                            fontWeight: FontWeight.bold),
+
+                      ),
                       TextField(
                         controller: model.eventTextFieldController,
                         style: TextStyle(
@@ -93,20 +88,9 @@ class CreateEventView extends StatelessWidget {
                             fontWeight: FontWeight.bold),
                         decoration: InputDecoration(
                             border: InputBorder.none,
-                            hintText: 'Event Title',
+                            hintText: 'Album Title',
                             hintStyle: TextStyle(fontSize: 20),
                             contentPadding: EdgeInsets.all(20)),
-                      ),
-                      Divider(
-                        thickness: 1,
-                      ),
-                      DatePicker(
-                        selectDate: model.selectDate,
-                        selectTime: model.selectTime,
-                        startDate: model.selectedStartDate,
-                        endDate: model.selectedEndDate,
-                        endTime: model.selectedEndTime,
-                        startTime: model.selectedStartTime,
                       ),
                       Divider(
                         thickness: 1,

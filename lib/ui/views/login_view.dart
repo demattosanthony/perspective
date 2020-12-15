@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:point_of_view/core/viewmodels/login_model.dart';
 
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:point_of_view/ui/widgets/ShowAlert.dart';
 
 import 'base_view.dart';
 import 'dart:io' show Platform;
@@ -78,6 +79,10 @@ class LoginView extends StatelessWidget {
                               model.passwordController.text);
                           if (loginSuccess) {
                             Navigator.pushReplacementNamed(context, '/');
+                          } else {
+                            showPlatformDialog(
+                                context: context,
+                                builder: (_) => ShowAlert('Invalid Username or Password!', 'Try again.'));
                           }
                         },
                         child: PlatformText('Login',

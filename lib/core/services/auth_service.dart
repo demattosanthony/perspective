@@ -11,10 +11,10 @@ class AuthService {
   var userId;
   bool isSignedIn = false;
 
-  Future<int> createUser(String username, String password, String email) async {
+  Future<int> createUser(String username, String password, String email, String name) async {
     var url = host + 'addUser';
     var response = await http.post(url,
-        body: {'username': username, 'password': password, 'email': email});
+        body: {'username': username, 'password': password, 'email': email, 'name': name});
     print('Response status: ${response.statusCode}');
     print('Response body: ${response.body}');
     if (response.statusCode == 200) isSignedIn = true;
@@ -25,8 +25,6 @@ class AuthService {
     return response.statusCode;
   }
 
-  //Logs user in by query database for user_id where is equal to username and password
-  //sets is_logged_in value in db to true for user_id
   Future<int> login(String username, String password) async {
     var client = http.Client();
     try {
@@ -51,6 +49,8 @@ class AuthService {
     }
   }
 }
+
+
 
 Future<File> getImageFileFromAssets(String path) async {
   final byteData = await rootBundle.load('$path');

@@ -4,7 +4,7 @@ import 'dart:io';
 
 import 'package:point_of_view/core/viewmodels/image_picker_model.dart';
 import 'package:point_of_view/ui/views/base_view.dart';
-import 'create_event_view.dart';
+import 'CreateAlbumView.dart';
 import 'package:page_transition/page_transition.dart';
 import '../../../core/models/file.dart';
 import 'package:local_image_provider/local_album.dart';
@@ -51,7 +51,7 @@ class ImagePickerView extends StatelessWidget {
                         onTap: () => Navigator.push(
                             context,
                             PageTransition(
-                                child: CreateEventView(),
+                                child: CreateAlbumView(),
                                 type: PageTransitionType.rightToLeftWithFade)),
                       ),
                     )

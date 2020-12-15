@@ -43,5 +43,9 @@
 	<false/>
 	<key>NSCameraUsageDescription</key>
 	<string>Need to use camera to take pictures for albums</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Need to access photos to choose profile image and album image</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>To record sound in videos</string>
 </dict>
 </plist>

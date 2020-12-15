@@ -2,11 +2,12 @@ import 'package:point_of_view/core/enums/viewstate.dart';
 import 'package:point_of_view/core/services/auth_service.dart';
 import 'package:point_of_view/core/viewmodels/base_model.dart';
 import '../../locator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileModel extends BaseModel {
   final AuthService _authService = locator<AuthService>();
   //final CloudFirestoreService _cloudfirestoreService =
-    //  locator<CloudFirestoreService>();
+  //  locator<CloudFirestoreService>();
   String _profileImage;
   //DocumentSnapshot _user;
 
@@ -29,6 +30,8 @@ class ProfileModel extends BaseModel {
 
   void signOut() async {
     setState(ViewState.Busy);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('isLoggedIn', false);
     setState(ViewState.Idle);
   }
 

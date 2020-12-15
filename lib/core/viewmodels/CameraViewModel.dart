@@ -16,7 +16,7 @@ class CameraViewModel extends BaseModel {
     final cameras = await availableCameras();
 
     // Get a specific camera from the list of available cameras.
-    _camera = cameras[1];
+    _camera = cameras.first;
 
     _controller = CameraController(_camera, ResolutionPreset.ultraHigh);
     _initializeControllerFuture = _controller.initialize();

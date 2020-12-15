@@ -24,11 +24,11 @@ class RegisterModel extends BaseModel {
 
   final picker = ImagePicker();
 
-  Future<int> createUserWithEmailAndPassword(
-      String email, String password, String username, String name) async {
+  Future<int> createUserWithEmailAndPassword() async {
     setState(ViewState.Busy);
 
-    var success = _authService.createUser(username, password, email);
+    var success = _authService.createUser(_usernamecontroller.text,
+        _passwordcontroller.text, _emailcontorller.text, _nameController.text);
     setState(ViewState.Idle);
     return success;
   }

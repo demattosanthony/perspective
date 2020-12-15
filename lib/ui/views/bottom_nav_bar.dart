@@ -5,7 +5,7 @@ import 'package:point_of_view/main.dart';
 import 'package:point_of_view/ui/views/camera_view.dart';
 import 'profile_view.dart';
 import 'login_view.dart';
-import 'create_event_views/create_event_view.dart';
+import 'create_event_views/CreateAlbumView.dart';
 import 'events_screen.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:point_of_view/core/services/auth_service.dart';
@@ -66,7 +66,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                   children: [
                     EventsScreen(),
                     CameraView(),
-                    CreateEventView(),
+                    CreateAlbumView(),
                     ProfileView()
                   ],
                   onPageChanged: (int index) {
@@ -91,8 +91,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
                         Navigator.push(
                             context,
                             PageTransition(
-                                child: CreateEventView(),
-                                type: PageTransitionType.rightToLeftWithFade));
+                                child: CreateAlbumView(),
+                                type: PageTransitionType.bottomToTop));
                       else
                         _pageController.jumpToPage(index);
                     });

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:point_of_view/core/enums/viewstate.dart';
+import 'package:point_of_view/core/services/ApiService.dart';
 import 'package:point_of_view/core/services/auth_service.dart';
-import 'package:point_of_view/core/services/firebase_storage_service.dart';
 
 import 'package:point_of_view/core/viewmodels/base_model.dart';
 import 'package:point_of_view/locator.dart';
@@ -18,11 +18,8 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 const kGoogleApiKey = 'AIzaSyBPNfS9u4Tz6F8CTR2WXNj1TJfdamSqHLY';
 GoogleMapsPlaces _places = GoogleMapsPlaces(apiKey: kGoogleApiKey);
 
-class CreateEventModel extends BaseModel {
-  //FirebaseStorageService _firebaseStorageService =
-    //  locator<FirebaseStorageService>();
-  //CloudFirestoreService _cloudFirestoreService =
-      //locator<CloudFirestoreService>();
+class CreateAlbumModel extends BaseModel {
+  final ApiService _apiService = locator<ApiService>();
 
   Event event;
   TextEditingController _eventTextFieldController = new TextEditingController();
@@ -67,41 +64,17 @@ class CreateEventModel extends BaseModel {
   void uploadImage(String eventId) async {
     setState(ViewState.Busy);
     //_firebaseStorageService.uploadImage(
-      //  _image, 'event_images/${_eventTextFieldController.text}', eventId);
+    //  _image, 'event_images/${_eventTextFieldController.text}', eventId);
     setState(ViewState.Idle);
   }
 
-  void createEventInDb(BuildContext context) async {
+  Future<bool> createAlbum() async {
     setState(ViewState.Busy);
 
-    if (_selectedStartDate != null) {
-      event = Event(
-          id: '1',
-          title: _eventTextFieldController.text,
-          startDate: DateFormat('MM/dd/yyyy').format(_selectedStartDate),
-          endDate: DateFormat('MM/dd/yyyy').format(_selectedEndDate),
-          startTime: DateFormat('jm').format(_selectedStartTime),
-          endTime: DateFormat('jm').format(_selectedEndTime),
-          latitude: latitude,
-          longitude: longitude,
-          locationTitle: _selectedLocation,
-          address: _locationAddress,
-          details: _eventDetailsController.text);
-
-      //final event_ref_id = await _cloudFirestoreService.createEvent(event);
-
-      //uploadImage(event_ref_id);
-
-      Navigator.pushReplacementNamed(context, '/');
-    } else {
-      print('START DATE' + _selectedStartDate.toString());
-      print(_selectedEndDate);
-      print(_selectedStartTime);
-      print(_selectedEndTime);
-      print('NULLLLL');
-    }
+    var code = await _apiService.createAlbum(_eventTextFieldController.text);
 
     setState(ViewState.Idle);
+    return code == 200;
   }
 
   final border = OutlineInputBorder(
