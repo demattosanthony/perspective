@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:point_of_view/main.dart';
+import 'package:point_of_view/ui/views/camera_view.dart';
 import 'profile_view.dart';
 import 'login_view.dart';
 import 'create_event_views/create_event_view.dart';
@@ -63,7 +65,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                   controller: _pageController,
                   children: [
                     EventsScreen(),
-                    ProfileView(),
+                    CameraView(),
                     CreateEventView(),
                     ProfileView()
                   ],

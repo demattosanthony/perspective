@@ -1,7 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:point_of_view/core/services/auth_service.dart';
-import 'package:point_of_view/core/services/cloud_firestore_service.dart';
-import 'package:point_of_view/core/services/firebase_storage_service.dart';
+import 'package:point_of_view/core/viewmodels/CameraViewModel.dart';
 import 'package:point_of_view/core/viewmodels/create_event_model.dart';
 import 'package:point_of_view/core/viewmodels/image_picker_model.dart';
 import 'package:point_of_view/core/viewmodels/login_model.dart';
@@ -20,4 +19,5 @@ void setupLocator() {
   locator.registerFactory(() => CreateEventModel());
   locator.registerFactory(() => ProfileModel());
   locator.registerFactory(() => ViewEventsModel());
+  locator.registerFactory(() => CameraViewModel());
 }

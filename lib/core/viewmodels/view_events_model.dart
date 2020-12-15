@@ -1,5 +1,4 @@
 import 'package:point_of_view/core/enums/viewstate.dart';
-import 'package:point_of_view/core/services/cloud_firestore_service.dart';
 import 'package:point_of_view/core/viewmodels/base_model.dart';
 import 'package:point_of_view/locator.dart';
 import '../models/Event.dart';

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:point_of_view/core/enums/viewstate.dart';
 import 'package:point_of_view/core/services/auth_service.dart';
-import 'package:point_of_view/core/services/cloud_firestore_service.dart';
 import 'package:point_of_view/core/services/firebase_storage_service.dart';
 
 import 'package:point_of_view/core/viewmodels/base_model.dart';

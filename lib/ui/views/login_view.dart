@@ -1,8 +1,11 @@
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:point_of_view/core/viewmodels/login_model.dart';
 
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+
 import 'base_view.dart';
+import 'dart:io' show Platform;
 
 class LoginView extends StatelessWidget {
   final _formkey = GlobalKey<FormState>();
@@ -17,9 +20,14 @@ class LoginView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
-                  'Perspective',
-                  style: TextStyle(fontSize: 50, fontFamily: 'Billabong'),
+                GestureDetector(
+                  onTap: () {
+                    FocusScope.of(context).unfocus();
+                  },
+                  child: Text(
+                    'Perspective',
+                    style: TextStyle(fontSize: 80, fontFamily: 'Billabong'),
+                  ),
                 ),
                 Form(
                   key: _formkey,
@@ -29,25 +37,36 @@ class LoginView extends StatelessWidget {
                       Padding(
                         padding:
                             EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-                        child: TextFormField(
-                          controller: model.emailController,
-                          decoration: InputDecoration(labelText: 'Email'),
-                          validator: (input) => !input.contains('@')
-                              ? 'Please enter valid email'
-                              : null,
-                        ),
+                        child: Platform.isIOS
+                            ? CupertinoTextField(
+                                controller: model.emailController,
+                                placeholder: "Email",
+                              )
+                            : TextFormField(
+                                controller: model.emailController,
+                                decoration: InputDecoration(labelText: 'Email'),
+                                validator: (input) => !input.contains('@')
+                                    ? 'Please enter valid email'
+                                    : null,
+                              ),
                       ),
                       Padding(
                         padding:
                             EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-                        child: TextFormField(
-                          controller: model.passwordController,
-                          decoration: InputDecoration(labelText: 'Password'),
-                          validator: (input) => input.length < 6
-                              ? 'Must be at least 6 characters'
-                              : null,
-                          obscureText: true,
-                        ),
+                        child: Platform.isIOS
+                            ? CupertinoTextField(
+                                controller: model.passwordController,
+                                placeholder: "Password",
+                              )
+                            : TextFormField(
+                                controller: model.passwordController,
+                                decoration:
+                                    InputDecoration(labelText: 'Password'),
+                                validator: (input) => input.length < 6
+                                    ? 'Must be at least 6 characters'
+                                    : null,
+                                obscureText: true,
+                              ),
                       ),
                       SizedBox(
                         height: 20,
@@ -61,7 +80,7 @@ class LoginView extends StatelessWidget {
                             Navigator.pushReplacementNamed(context, '/');
                           }
                         },
-                        child: Text('Login',
+                        child: PlatformText('Login',
                             style: TextStyle(color: Colors.white)),
                         color: Colors.blue,
                       ),
@@ -75,7 +94,7 @@ class LoginView extends StatelessWidget {
                                 height: 36,
                               )),
                         ),
-                        Text("OR"),
+                        PlatformText("OR"),
                         Expanded(
                           child: new Container(
                               margin: const EdgeInsets.only(
@@ -89,7 +108,7 @@ class LoginView extends StatelessWidget {
                       FlatButton(
                         onPressed: () =>
                             Navigator.pushNamed(context, 'register'),
-                        child: Text(
+                        child: PlatformText(
                           'Register',
                           style: TextStyle(color: Colors.white),
                         ),

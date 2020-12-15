@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
-  var host = "http://localhost:3000/";
+  var host = "https://hidden-woodland-36838.herokuapp.com/";
 
   var userId;
   bool isSignedIn = false;
@@ -31,7 +31,7 @@ class AuthService {
     var client = http.Client();
     try {
       var url = host + 'login/$username/$password';
-      var url2 = host + 'setLoginState';
+      //var url2 = host + 'setLoginState';
       var response = await client.get(url);
       SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -40,16 +40,8 @@ class AuthService {
         print(jsonResponse[0]['user_id']);
         userId = jsonResponse[0]['user_id'];
         prefs.setInt('userId', userId);
-        var response2 = await client.put(url2,
-            body: {'isLoggedIn': 'true', 'userId': userId.toString()});
-        if (response2.statusCode == 200) {
-          isSignedIn = true;
           prefs.setBool('isLoggedIn', true);
-          return 200;
-        } else {
-          print('Request failed with status: ${response.statusCode}.');
-          return 400;
-        }
+        return 200;
       } else {
         print('Request failed with status: ${response.statusCode}.');
         return 400;

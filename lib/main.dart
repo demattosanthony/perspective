@@ -3,28 +3,17 @@ import 'package:provider/provider.dart';
 import 'core/models/Event.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 import 'ui/router.dart';
 import 'locator.dart';
 
-void main() async {
-  setupLocator(); 
+void main() {
+  setupLocator();
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(MyApp());
-}
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'Point of View',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        initialRoute: '/',
-        onGenerateRoute: Router.generateRoute,
-      
-    );
-  }
+  runApp(MaterialApp(
+    theme: ThemeData(primarySwatch: Colors.blue),
+    debugShowCheckedModeBanner: false,
+    initialRoute: '/',
+    onGenerateRoute: Router.generateRoute,
+  ));
 }
