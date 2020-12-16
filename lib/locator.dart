@@ -11,8 +11,8 @@ import 'package:point_of_view/core/viewmodels/MyAlbumsModel.dart';
 GetIt locator = GetIt.instance;
 
 void setupLocator() {
-  locator.registerLazySingleton(() => AuthService());
   locator.registerLazySingleton(() => ApiService());
+  locator.registerLazySingleton(() => AuthService());
 
   locator.registerFactory(() => LoginModel());
   locator.registerFactory(() => RegisterModel());

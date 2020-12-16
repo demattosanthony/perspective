@@ -39,7 +39,7 @@ class RegisterView extends StatelessWidget {
                               child: CircleAvatar(
                                 radius: 50,
                                 backgroundColor: Colors.white,
-                                backgroundImage: model.image == null
+                                backgroundImage: model.image == ""
                                     ? AssetImage('assets/profile_icon.png')
                                     : FileImage(File(model.image)),
                               ),
@@ -47,13 +47,18 @@ class RegisterView extends StatelessWidget {
                             FractionalTranslation(
                               translation: Offset(0, 0.5),
                               child: Align(
-                                child: RawMaterialButton(
-                                  onPressed: model.getImage,
-                                  elevation: 2.0,
-                                  fillColor: Colors.blue,
-                                  child: Icon(Icons.edit,
-                                      size: 15.0, color: Colors.white),
-                                  shape: CircleBorder(),
+                                child: GestureDetector(
+                                  onTap: model.getImage,
+                                  child: Container(
+                                    height: 35,
+                                    width: 35,
+                                    decoration: BoxDecoration(
+                                        color: Colors.blue,
+                                        borderRadius:
+                                            BorderRadius.circular(25)),
+                                    child: Icon(Icons.edit,
+                                        size: 15.0, color: Colors.white),
+                                  ),
                                 ),
                               ),
                             )
@@ -61,9 +66,10 @@ class RegisterView extends StatelessWidget {
                         ),
                       )),
                   CustomTextField('Name', model.nameController, false),
+                  model.isLoading ? CircularProgressIndicator() : Container(),
                   CustomTextField('Username', model.usernameController, false),
                   CustomTextField('Email', model.emailController, false),
-                  CustomTextField('Password', model.passwordController, false),
+                  CustomTextField('Password', model.passwordController, true),
                   SizedBox(
                     height: 20,
                   ),
@@ -71,7 +77,7 @@ class RegisterView extends StatelessWidget {
                     onPressed: () async {
                       var responseCode =
                           await model.createUserWithEmailAndPassword();
-
+                      
                       if (responseCode == 200) {
                         Navigator.pushNamed(context, '/');
                       } else if (responseCode == 400) {

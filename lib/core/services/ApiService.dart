@@ -8,7 +8,6 @@ import 'package:path/path.dart' as path;
 import 'dart:io';
 
 class ApiService {
-  final AuthService _authService = locator<AuthService>();
   var host = "https://hidden-woodland-36838.herokuapp.com/";
 
   Future<int> createAlbum(albumTitle) async {
@@ -19,9 +18,8 @@ class ApiService {
 
     Map<String, String> headers = {"Content-type": "application/json"};
 
-    var response = await http.post(url,
-        headers: headers,
-        body: '{"title": "$albumTitle", "userId": "$userId"}');
+    var response = await http
+        .post(url, body: {"title": albumTitle, "userId": userId.toString()});
     print('Response status: ${response.statusCode}');
 
     return response.statusCode;
@@ -45,7 +43,7 @@ class ApiService {
     }
   }
 
-  Future<int> uploadImage(File image, String albumTitle) async {
+  Future<String> uploadImage(File image, String title) async {
     try {
       var client = http.Client();
       try {
@@ -55,8 +53,8 @@ class ApiService {
         var userId = prefs.getInt('userId');
         Map body = {
           "filetype": fileExtension,
-          "userId": "$userId",
-          "albumTitle": "$albumTitle"
+          "userId": userId.toString(),
+          "albumTitle": title
         };
 
         var response = await http.post(url, body: body);
@@ -68,17 +66,16 @@ class ApiService {
         print(response2.body);
         if (response2.statusCode == 200) {
           print("Uploaded");
-          return 200;
+          return result['downloadUrl'];
         } else {
           print('error uploading');
-          return 400;
+          return null;
         }
       } finally {
         client.close();
       }
     } catch (e) {
-      throw ("Error getting url");
-      return 400;
+      return null;      
     }
   }
 }

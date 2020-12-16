@@ -13,22 +13,30 @@ class RegisterModel extends BaseModel {
   var _passwordcontroller = TextEditingController();
   var _usernamecontroller = TextEditingController();
   var _nameController = TextEditingController();
+  bool _isLoading = false;
 
   TextEditingController get emailController => _emailcontorller;
   TextEditingController get passwordController => _passwordcontroller;
   TextEditingController get usernameController => _usernamecontroller;
   TextEditingController get nameController => _nameController;
+  bool get isLoading => _isLoading;
 
-  String _image;
+  String _image = "";
   String get image => _image;
 
   final picker = ImagePicker();
 
   Future<int> createUserWithEmailAndPassword() async {
     setState(ViewState.Busy);
-
-    var success = _authService.createUser(_usernamecontroller.text,
-        _passwordcontroller.text, _emailcontorller.text, _nameController.text);
+    _isLoading = true;
+    var success = await _authService.createUser(
+        _usernamecontroller.text,
+        _passwordcontroller.text,
+        _emailcontorller.text,
+        _nameController.text,
+        image,
+        "profileImage");
+    _isLoading = false;
     setState(ViewState.Idle);
     return success;
   }
