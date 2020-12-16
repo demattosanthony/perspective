@@ -7,8 +7,6 @@ import 'package:point_of_view/ui/widgets/CustomTextField.dart';
 import 'package:point_of_view/ui/widgets/ShowAlert.dart';
 
 class RegisterView extends StatelessWidget {
-  final _formkey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
     return BaseView<RegisterModel>(

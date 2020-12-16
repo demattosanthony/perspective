@@ -7,17 +7,17 @@ import '../models/Album.dart';
 class MyAlbumsModel extends BaseModel {
   ApiService _apiService = locator<ApiService>();
 
-  List<Album> _myAlbums = [];
-  List<Album> get myAlbums => _myAlbums;
+  List<Album> get myAlbums => _apiService.myAlbums;
 
-  void getEvents() async {
+  Future<List<Album>> getAlbums() async {
     setState(ViewState.Busy);
-    _myAlbums = await _apiService.getAlbums();
+    await _apiService.getAlbums();
     setState(ViewState.Idle);
   }
 
   MyAlbumsModel() {
     print('ININTING');
-    getEvents();
+    if (myAlbums == null) getAlbums();
+    //getAlbums();
   }
 }

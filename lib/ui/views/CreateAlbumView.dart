@@ -13,9 +13,6 @@ import 'package:point_of_view/ui/widgets/map_widget.dart';
 import 'base_view.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:platform_maps_flutter/platform_maps_flutter.dart';
-import '../widgets/date_picker.dart';
-
-final homeScaffoldKey = GlobalKey<ScaffoldState>();
 
 class CreateAlbumView extends StatelessWidget {
   PlatformMapController mapController;

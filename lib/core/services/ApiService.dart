@@ -10,6 +10,9 @@ import 'dart:io';
 class ApiService {
   var host = "https://hidden-woodland-36838.herokuapp.com/";
 
+  List<Album> _myAlbums;
+  List<Album> get myAlbums => _myAlbums;
+
   Future<int> createAlbum(albumTitle) async {
     var url = host + 'createAlbum';
 
@@ -26,6 +29,7 @@ class ApiService {
   }
 
   Future<List<Album>> getAlbums() async {
+    print("getting albums");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var userId = prefs.getInt('userId');
     var url = host + 'getUserAlbums/$userId';
@@ -35,6 +39,8 @@ class ApiService {
       var jsonResponse = convert.jsonDecode(response.body);
       List<Album> myAlbums =
           (jsonResponse as List).map((data) => Album.fromJson(data)).toList();
+      _myAlbums = myAlbums;
+      print(_myAlbums);
       return myAlbums;
       print(myAlbums[0].title);
     } else {
@@ -75,7 +81,7 @@ class ApiService {
         client.close();
       }
     } catch (e) {
-      return null;      
+      return null;
     }
   }
 }
