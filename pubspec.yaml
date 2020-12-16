@@ -44,7 +44,8 @@ dependencies:
   http: 
   shared_preferences: ^0.5.12+4
   camera:
-  modal_bottom_sheet: ^1.0.0+1
+  aws_s3: ^0.1.1+hotfix.5
+  path: ^1.7.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

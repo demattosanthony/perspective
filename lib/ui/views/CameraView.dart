@@ -92,7 +92,6 @@ class CameraView extends StatelessWidget {
                 child: FloatingActionButton(
                   heroTag: "TakePictureBtn",
                   backgroundColor: Colors.transparent,
-                  
                   child: Container(
                     decoration: BoxDecoration(
                         border: Border.all(color: Colors.white, width: 5),
@@ -111,12 +110,16 @@ class CameraView extends StatelessWidget {
 
                       await model.controller.takePicture(path);
 
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => DisplayPictureScreen(
-                                    imagePath: path,
-                                  )));
+                      
+
+                      model.uploadImage(File(path));
+
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) => DisplayPictureScreen(
+                      //               imagePath: path,
+                      //             )));
                     } catch (e) {
                       print(e);
                     }

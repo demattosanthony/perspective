@@ -1,12 +1,16 @@
 import 'package:point_of_view/core/models/Album.dart';
+import 'package:point_of_view/core/services/AWSS3Service.dart';
 import 'package:point_of_view/core/services/ApiService.dart';
 import 'package:point_of_view/core/viewmodels/base_model.dart';
 import 'package:point_of_view/core/enums/viewstate.dart';
 import 'package:camera/camera.dart';
 import 'package:point_of_view/locator.dart';
+import 'dart:io';
+
 
 class CameraViewModel extends BaseModel {
   ApiService _apiService = locator<ApiService>();
+  AWSS3Service _awss3service = locator<AWSS3Service>();
   CameraController _controller;
   Future<void> _initializeControllerFuture;
   CameraDescription _camera;
@@ -46,7 +50,13 @@ class CameraViewModel extends BaseModel {
       _camera = _availableCameras[0];
     }
     _controller = CameraController(_camera, ResolutionPreset.ultraHigh);
-    _initializeControllerFuture = _controller.initialize(); 
+    _initializeControllerFuture = _controller.initialize();
+    setState(ViewState.Idle);
+  }
+
+  void uploadImage(File image) async {
+    setState(ViewState.Busy);
+    await _apiService.uploadImage(image);
     setState(ViewState.Idle);
   }
 
