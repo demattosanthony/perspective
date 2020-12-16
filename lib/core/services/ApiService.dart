@@ -45,39 +45,40 @@ class ApiService {
     }
   }
 
-  void uploadImage(File image) async {
+  Future<int> uploadImage(File image, String albumTitle) async {
     try {
       var client = http.Client();
       try {
         var url = host + 'generatePresignedUrl';
         String fileExtension = path.extension(image.path);
-        Map body = {"filetype": fileExtension, "userId": "14", "albumTitle": "Test"};
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        var userId = prefs.getInt('userId');
+        Map body = {
+          "filetype": fileExtension,
+          "userId": "$userId",
+          "albumTitle": "$albumTitle"
+        };
 
         var response = await http.post(url, body: body);
         var result = convert.jsonDecode(response.body);
         print(result);
         var uploadUrl = result['uploadUrl'];
-        sendImage(image, uploadUrl);
+        var response2 =
+            await http.put(uploadUrl, body: image.readAsBytesSync());
+        print(response2.body);
+        if (response2.statusCode == 200) {
+          print("Uploaded");
+          return 200;
+        } else {
+          print('error uploading');
+          return 400;
+        }
       } finally {
         client.close();
       }
     } catch (e) {
       throw ("Error getting url");
-    }
-  }
-
-  void sendImage(image, uploadUrl) async {
-    print('sending iamge');
-    try {
-    var response2 = await http.put(uploadUrl, body: image.readAsBytesSync());
-    print(response2.body);
-    if (response2.statusCode == 200) {
-      print("Uploaded");
-    } else {
-      print('error uploading');
-    }
-    } catch (e) {
-     throw("error upladoing image");
+      return 400;
     }
   }
 }

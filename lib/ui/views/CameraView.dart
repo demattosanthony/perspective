@@ -35,38 +35,61 @@ class CameraView extends StatelessWidget {
                               child: Container(
                                   alignment: Alignment.topLeft,
                                   padding: EdgeInsets.only(top: 75, left: 50),
-                                  child: DropdownButton<Album>(
-                                    value: model.selctedAlbumTitle,
-                                    dropdownColor: Colors.transparent,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
-                                      color: Colors.white,
-                                    ),
-                                    hint: Text(
-                                      "Select Album",
+                                  child: RaisedButton(
+                                    color: Colors.grey.withOpacity(.30),
+                                    onPressed: () {
+                                      showModalBottomSheet(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10)),
+                                          context: context,
+                                          builder: (builder) {
+                                            return ListView.builder(
+                                                itemCount:
+                                                    model.myAlbums.length,
+                                                itemBuilder: (context, index) {
+                                                  return GestureDetector(
+                                                    onTap: () {
+                                                      model.setSelectedAlbum(
+                                                          model
+                                                              .myAlbums[index]);
+                                                      Navigator.of(context).pop();
+                                                    },
+                                                    child: Column(
+                                                      children: [
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: Text(
+                                                              model
+                                                                  .myAlbums[
+                                                                      index]
+                                                                  .title,
+                                                              style: TextStyle(
+                                                                  fontSize:
+                                                                      18)),
+                                                        ),
+                                                        Divider()
+                                                      ],
+                                                    ),
+                                                  );
+                                                });
+                                          });
+                                    },
+                                    child: Text(
+                                      model.selctedAlbum.title == null
+                                          ? "Select Album"
+                                          : model.selctedAlbum.title,
                                       style: TextStyle(color: Colors.white),
                                     ),
-                                    items: model.myAlbums.map((value) {
-                                      return new DropdownMenuItem<Album>(
-                                        value: value,
-                                        child: Container(
-                                            padding: EdgeInsets.all(10),
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                .45,
-                                            child: new Text(value.title)),
-                                      );
-                                    }).toList(),
-                                    onChanged: (Album newValue) {
-                                      model.setSelectedAlbum(newValue);
-                                      print(newValue.albumId);
-                                    },
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
                                   )),
                             ),
                             Container(
-                              padding: EdgeInsets.only(top: 120, right: 50),
+                              padding: EdgeInsets.only(top: 115, right: 50),
                               alignment: Alignment.topRight,
                               child: FloatingActionButton(
                                 onPressed: () {
@@ -75,7 +98,8 @@ class CameraView extends StatelessWidget {
                                 child: Icon(Icons.flip_camera_ios_outlined),
                                 backgroundColor: Colors.grey.withOpacity(0.30),
                               ),
-                            )
+                            ),
+                            model.isUploading ? Center(child: CircularProgressIndicator(),) : Container()  
                           ],
                         ));
                   } else {
@@ -109,8 +133,6 @@ class CameraView extends StatelessWidget {
                           '${DateTime.now()}.png');
 
                       await model.controller.takePicture(path);
-
-                      
 
                       model.uploadImage(File(path));
 

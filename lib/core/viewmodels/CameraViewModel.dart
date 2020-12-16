@@ -1,5 +1,4 @@
 import 'package:point_of_view/core/models/Album.dart';
-import 'package:point_of_view/core/services/AWSS3Service.dart';
 import 'package:point_of_view/core/services/ApiService.dart';
 import 'package:point_of_view/core/viewmodels/base_model.dart';
 import 'package:point_of_view/core/enums/viewstate.dart';
@@ -7,16 +6,15 @@ import 'package:camera/camera.dart';
 import 'package:point_of_view/locator.dart';
 import 'dart:io';
 
-
 class CameraViewModel extends BaseModel {
   ApiService _apiService = locator<ApiService>();
-  AWSS3Service _awss3service = locator<AWSS3Service>();
   CameraController _controller;
   Future<void> _initializeControllerFuture;
   CameraDescription _camera;
   List<CameraDescription> _availableCameras;
   List<Album> _myAlbums = [];
-  Album selctedAlbumTitle;
+  Album selctedAlbum = Album();
+  bool isUploading = false;
 
   CameraDescription get camera => _camera;
   Future<void> get initalizeControllerFuture => _initializeControllerFuture;
@@ -56,13 +54,15 @@ class CameraViewModel extends BaseModel {
 
   void uploadImage(File image) async {
     setState(ViewState.Busy);
-    await _apiService.uploadImage(image);
+    isUploading = true;
+    var reponseCode = await _apiService.uploadImage(image, selctedAlbum.title);
+    if (reponseCode == 200) isUploading = false;
     setState(ViewState.Idle);
   }
 
   void setSelectedAlbum(album) {
     setState(ViewState.Busy);
-    selctedAlbumTitle = album;
+    selctedAlbum = album;
     setState(ViewState.Idle);
   }
 
