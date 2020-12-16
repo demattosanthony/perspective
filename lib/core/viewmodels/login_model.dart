@@ -8,16 +8,16 @@ import 'package:flutter/material.dart';
 class LoginModel extends BaseModel {
   final AuthService _authService = locator<AuthService>();
 
-  var _emailcontorller = TextEditingController();
+  var _usernameController = TextEditingController();
   var _passwordcontroller = TextEditingController();
 
-  TextEditingController get emailController => _emailcontorller;
+  TextEditingController get usernameController => _usernameController;
   TextEditingController get passwordController => _passwordcontroller;
 
-  Future<bool> login(String username, String password) async {
+  Future<bool> login() async {
     setState(ViewState.Busy);
 
-    var success = await _authService.login(username, password);
+    var success = await _authService.login(_usernameController.text, _passwordcontroller.text);
 
     setState(ViewState.Idle);
     return success==200;

@@ -60,11 +60,10 @@ class RegisterView extends StatelessWidget {
                           ],
                         ),
                       )),
-                  CustomTextField('Name', model.nameController),
-        
-                  CustomTextField('Username', model.usernameController),
-                  CustomTextField('Email', model.emailController),
-                  CustomTextField('Password', model.passwordController),
+                  CustomTextField('Name', model.nameController, false),
+                  CustomTextField('Username', model.usernameController, false),
+                  CustomTextField('Email', model.emailController, false),
+                  CustomTextField('Password', model.passwordController, false),
                   SizedBox(
                     height: 20,
                   ),

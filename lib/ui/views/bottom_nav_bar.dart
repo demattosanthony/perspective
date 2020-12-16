@@ -1,32 +1,28 @@
 import 'package:flutter/material.dart';
 
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:point_of_view/main.dart';
 import 'package:point_of_view/ui/views/camera_view.dart';
 import 'profile_view.dart';
 import 'login_view.dart';
-import 'create_event_views/CreateAlbumView.dart';
-import 'events_screen.dart';
-import 'package:page_transition/page_transition.dart';
+import 'MyAlbumsScreen.dart';
 import 'package:point_of_view/core/services/auth_service.dart';
 import 'package:point_of_view/locator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class BottomNavBar extends StatefulWidget {
-  int page;
-
-  BottomNavBar(this.page);
-
   @override
   _BottomNavBarState createState() => _BottomNavBarState();
 }
 
 class _BottomNavBarState extends State<BottomNavBar> {
-  int _page = 0;
   bool isSignedIn = false;
   GlobalKey _bottomNavigationKey = GlobalKey();
   final _pageController = PageController();
   final AuthService _authService = locator<AuthService>();
+
+  List<Widget> _pages;
+  int _currentIndex = 0;
+  Widget _currentPage;
 
   void getLoginState() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -47,12 +43,21 @@ class _BottomNavBarState extends State<BottomNavBar> {
     // TODO: implement initState
     super.initState();
     getLoginState();
+
+    _pages = [MyAlbumsScreen(), CameraView(), ProfileView()];
+    _currentIndex = 0;
+    _currentPage = _pages[_currentIndex];
+  }
+
+  void changeTab(int index) {
+    setState(() {
+      _currentIndex = index;
+      _currentPage = _pages[_currentIndex];
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    _page = widget.page;
-
     return !isSignedIn
         ? Scaffold(
             body: LoginView(),
@@ -60,43 +65,16 @@ class _BottomNavBarState extends State<BottomNavBar> {
         : WillPopScope(
             onWillPop: () async => false,
             child: Scaffold(
-                body: PageView(
-                  physics: new NeverScrollableScrollPhysics(),
-                  controller: _pageController,
-                  children: [
-                    EventsScreen(),
-                    CameraView(),
-                    CreateAlbumView(),
-                    ProfileView()
-                  ],
-                  onPageChanged: (int index) {
-                    setState(() {
-                      _pageController.jumpToPage(index);
-                    });
-                  },
-                ),
+                body: _currentPage,
                 bottomNavigationBar: CurvedNavigationBar(
-                  key: _bottomNavigationKey,
                   animationDuration: Duration(milliseconds: 250),
-                  index: _page,
+                  index: _currentIndex,
                   items: [
                     Icon(Icons.home_rounded),
                     Icon(Icons.camera_alt_rounded),
-                    Icon(Icons.add),
                     Icon(Icons.person),
                   ],
-                  onTap: (index) {
-                    setState(() {
-                      if (index == 2)
-                        Navigator.push(
-                            context,
-                            PageTransition(
-                                child: CreateAlbumView(),
-                                type: PageTransitionType.bottomToTop));
-                      else
-                        _pageController.jumpToPage(index);
-                    });
-                  },
+                  onTap: (index) => changeTab(index),
                 )),
           );
   }

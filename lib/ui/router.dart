@@ -10,7 +10,7 @@ class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case '/':
-        return MaterialPageRoute(builder: (_) => BottomNavBar(0));
+        return MaterialPageRoute(builder: (_) => BottomNavBar());
       case 'register':
         return MaterialPageRoute(builder: (_) => RegisterView());
       case 'image-picker':
