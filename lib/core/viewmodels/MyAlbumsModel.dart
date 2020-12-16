@@ -18,6 +18,5 @@ class MyAlbumsModel extends BaseModel {
   MyAlbumsModel() {
     print('ININTING');
     if (myAlbums == null) getAlbums();
-    //getAlbums();
   }
 }

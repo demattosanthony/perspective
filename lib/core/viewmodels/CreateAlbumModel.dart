@@ -25,8 +25,7 @@ class CreateAlbumModel extends BaseModel {
   String latitude;
   String longitude;
 
-  TextEditingController get albumTitleController =>
-      _albumTitleController;
+  TextEditingController get albumTitleController => _albumTitleController;
 
   String get selectedLocation => _selectedLocation;
   String get locationAddress => _locationAddress;
@@ -59,6 +58,7 @@ class CreateAlbumModel extends BaseModel {
     setState(ViewState.Busy);
 
     var code = await _apiService.createAlbum(_albumTitleController.text);
+    await _apiService.getAlbums();
 
     setState(ViewState.Idle);
     return code == 200;
@@ -69,7 +69,6 @@ class CreateAlbumModel extends BaseModel {
       borderSide: BorderSide(
         color: Colors.transparent,
       ));
-
 
   Future<List> addLocationButton(BuildContext context) async {
     setState(ViewState.Busy);

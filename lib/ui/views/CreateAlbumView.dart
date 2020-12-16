@@ -175,7 +175,6 @@ class CreateAlbumView extends StatelessWidget {
                         ),
                         color: Colors.blue),
                   ),
-
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: FlatButton(
