@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:page_transition/page_transition.dart';
 import 'dart:io';
 import 'package:point_of_view/core/viewmodels/register_model.dart';
 import 'package:point_of_view/ui/views/base_view.dart';
+import 'package:point_of_view/ui/views/bottom_nav_bar.dart';
 import 'package:point_of_view/ui/widgets/CustomTextField.dart';
 import 'package:point_of_view/ui/widgets/ShowAlert.dart';
 
@@ -75,9 +77,13 @@ class RegisterView extends StatelessWidget {
                     onPressed: () async {
                       var responseCode =
                           await model.createUserWithEmailAndPassword();
-                      
+
                       if (responseCode == 200) {
-                        Navigator.pushNamed(context, '/');
+                        Navigator.pushReplacement(
+                            context,
+                            PageTransition(
+                                child: BottomNavBar(),
+                                type: PageTransitionType.fade));
                       } else if (responseCode == 400) {
                         showPlatformDialog(
                             context: context,

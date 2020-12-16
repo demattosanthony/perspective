@@ -9,6 +9,7 @@ import 'dart:io';
 import 'package:path/path.dart' show join;
 
 class CameraView extends StatelessWidget {
+  const CameraView({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;

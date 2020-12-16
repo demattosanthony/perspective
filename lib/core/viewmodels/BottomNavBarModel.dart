@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:point_of_view/core/models/Album.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:point_of_view/ui/views/CameraView.dart';
-import 'package:point_of_view/ui/views/MyAlbumsScreen.dart';
+import 'package:point_of_view/ui/views/MyAlbumsView.dart';
 import 'package:point_of_view/ui/views/profile_view.dart';
 
 class BottomNavBarModel extends BaseModel {
@@ -46,11 +46,11 @@ class BottomNavBarModel extends BaseModel {
   void initPages() async {
     setState(ViewState.Busy);
     _pages = [
-      MyAlbumsScreen(
-        key: PageStorageKey('AlbumScreen'),
+      MyAlbumsView(
+        key: PageStorageKey('AlbumView'),
       ),
-      CameraView(),
-      ProfileView()
+      CameraView(key: PageStorageKey('CameraView'),),
+      ProfileView(key: PageStorageKey('ProfileView'))
     ];
     _currentIndex = 0;
     _currentPage = _pages[_currentIndex];

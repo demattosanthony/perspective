@@ -5,6 +5,9 @@ import 'package:point_of_view/core/viewmodels/login_model.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:point_of_view/ui/widgets/CustomTextField.dart';
 import 'package:point_of_view/ui/widgets/ShowAlert.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:point_of_view/ui/views/bottom_nav_bar.dart';
+
 
 import 'base_view.dart';
 
@@ -40,7 +43,11 @@ class LoginView extends StatelessWidget {
                         onPressed: () async {
                           var loginSuccess = await model.login();
                           if (loginSuccess) {
-                            Navigator.pushReplacementNamed(context, '/');
+                            Navigator.pushReplacement(
+                            context,
+                            PageTransition(
+                                child: BottomNavBar(),
+                                type: PageTransitionType.fade));
                           } else {
                             showPlatformDialog(
                                 context: context,

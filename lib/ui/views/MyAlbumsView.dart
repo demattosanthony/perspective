@@ -6,8 +6,8 @@ import 'base_view.dart';
 import 'package:point_of_view/ui/views/CreateAlbumView.dart';
 import 'package:point_of_view/core/models/Album.dart';
 
-class MyAlbumsScreen extends StatelessWidget {
-  const MyAlbumsScreen({Key key}) : super(key: key);
+class MyAlbumsView extends StatelessWidget {
+  const MyAlbumsView({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
