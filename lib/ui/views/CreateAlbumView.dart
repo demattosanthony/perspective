@@ -10,10 +10,10 @@ import 'package:point_of_view/core/viewmodels/CreateAlbumModel.dart';
 import 'package:point_of_view/ui/views/bottom_nav_bar.dart';
 import 'package:point_of_view/ui/widgets/CustomTextField.dart';
 import 'package:point_of_view/ui/widgets/map_widget.dart';
-import '../base_view.dart';
+import 'base_view.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:platform_maps_flutter/platform_maps_flutter.dart';
-import '../../widgets/date_picker.dart';
+import '../widgets/date_picker.dart';
 
 final homeScaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -27,25 +27,6 @@ class CreateAlbumView extends StatelessWidget {
               height: MediaQuery.of(context).size.height * .90,
               child: Column(
                 children: [
-                  // Container(
-                  //     width: double.infinity,
-                  //     height: MediaQuery.of(context).size.height * .20,
-                  //     child: model.image != null
-                  //         ? GestureDetector(
-                  //             onTap: model.getImage,
-                  //             child: Image(
-                  //                 fit: BoxFit.fill,
-                  //                 image: FileImage(File(model.image))),
-                  //           )
-                  //         : RaisedButton(
-                  //             onPressed: model.getImage,
-                  //             child: Text(
-                  //               'Select Event Image',
-                  //               style: TextStyle(
-                  //                   color: Colors.black, fontSize: 20),
-                  //             ),
-                  //             color: Colors.white,
-                  //           )),
                   Container(
                       height: MediaQuery.of(context).size.height * .10,
                       child: CustomTextField(
@@ -186,6 +167,16 @@ class CreateAlbumView extends StatelessWidget {
                         ),
                   Divider(
                     thickness: 1,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: FlatButton(
+                        onPressed: () {},
+                        child: Text(
+                          'Join Album',
+                          style: TextStyle(fontSize: 20, color: Colors.white),
+                        ),
+                        color: Colors.blue),
                   ),
 
                   Padding(

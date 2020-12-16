@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:point_of_view/core/viewmodels/MyAlbumsModel.dart';
-import 'package:point_of_view/ui/widgets/event_home_screen_preview.dart';
+import 'package:point_of_view/ui/widgets/AlbumRow.dart';
 import 'base_view.dart';
-import 'package:point_of_view/ui/views/create_event_views/CreateAlbumView.dart';
+import 'package:point_of_view/ui/views/CreateAlbumView.dart';
 
 class MyAlbumsScreen extends StatelessWidget {
   @override
@@ -31,7 +31,8 @@ class MyAlbumsScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              body: model.myAlbums == null ? Container : AlbumRow(model.myAlbums),
+              body:
+                  model.myAlbums == null ? Container : AlbumRow(model.myAlbums),
             ));
   }
 }
