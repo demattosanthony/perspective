@@ -15,7 +15,7 @@ class ApiService {
   List<Album> _myAlbums;
   List<Album> get myAlbums => _myAlbums;
 
-  Future<int> createAlbum(albumTitle) async {
+  Future<String> createAlbum(albumTitle) async {
     var url = host + 'createAlbum';
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -26,8 +26,9 @@ class ApiService {
     var response = await http
         .post(url, body: {"title": albumTitle, "userId": userId.toString()});
     print('Response status: ${response.statusCode}');
+    print(response.body);
 
-    return response.statusCode;
+    return response.body;
   }
 
   Future<List<Album>> getAlbums() async {

@@ -1,12 +1,15 @@
 class Album {
   final int albumId;
   final String title;
+  final String shareString;
 
-  Album({this.albumId, this.title});
+  Album({this.albumId, this.title, this.shareString});
 
-  Map<String, dynamic> toJson() => {'albumId': albumId, 'title': title};
+  Map<String, dynamic> toJson() =>
+      {'albumId': albumId, 'title': title, 'shareString': shareString};
 
   Album.fromJson(Map<String, dynamic> parsedJSON)
       : albumId = parsedJSON['album_id'],
-        title = parsedJSON['title'];
+        title = parsedJSON['title'],
+        shareString = parsedJSON['share_string'];
 }

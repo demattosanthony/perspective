@@ -179,12 +179,25 @@ class CreateAlbumView extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: FlatButton(
                         onPressed: () async {
-                          await model.createAlbum();
-                          Navigator.pushReplacement(
-                              context,
-                              PageTransition(
-                                  child: BottomNavBar(),
-                                  type: PageTransitionType.fade));
+                          var shareString = await model.createAlbum();
+                          showPlatformDialog(
+                              context: context,
+                              builder: (_) => PlatformAlertDialog(
+                                    title: Text(
+                                        'Share album:\n $shareString'),
+                                    actions: [
+                                      PlatformDialogAction(
+                                          child: Text("OK"),
+                                          onPressed: () {
+                                            Navigator.pushReplacement(
+                                                context,
+                                                PageTransition(
+                                                    child: BottomNavBar(),
+                                                    type: PageTransitionType
+                                                        .fade));
+                                          })
+                                    ],
+                                  ));
                         },
                         child: Text(
                           'Create Album',

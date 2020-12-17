@@ -54,14 +54,14 @@ class CreateAlbumModel extends BaseModel {
     setState(ViewState.Idle);
   }
 
-  Future<bool> createAlbum() async {
+  Future<String> createAlbum() async {
     setState(ViewState.Busy);
 
-    var code = await _apiService.createAlbum(_albumTitleController.text);
+    var shareString = await _apiService.createAlbum(_albumTitleController.text);
     await _apiService.getAlbums();
 
     setState(ViewState.Idle);
-    return code == 200;
+    return shareString;
   }
 
   final border = OutlineInputBorder(

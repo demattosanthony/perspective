@@ -1,4 +1,5 @@
 import 'package:point_of_view/core/enums/viewstate.dart';
+import 'package:point_of_view/core/services/AlbumService.dart';
 import 'package:point_of_view/core/services/ApiService.dart';
 import 'package:point_of_view/core/services/UserInfoService.dart';
 import 'package:point_of_view/core/viewmodels/base_model.dart';
@@ -8,6 +9,7 @@ import '../models/Album.dart';
 class MyAlbumsModel extends BaseModel {
   ApiService _apiService = locator<ApiService>();
   UserInfoService _userInfoService = locator<UserInfoService>();
+  AlbumService _albumService = locator<AlbumService>();
 
   List<Album> get myAlbums => _apiService.myAlbums;
   String get profileImgUrl => _userInfoService.profileImgUrl;
