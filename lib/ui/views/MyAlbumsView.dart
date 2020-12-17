@@ -40,7 +40,7 @@ class MyAlbumsView extends StatelessWidget {
                     onRefresh: () async {
                       await model.getAlbums();
                     },
-                    child: AlbumRow(model.myAlbums),
+                    child: AlbumRow(model.myAlbums, model.profileImgUrl),
                   )));
   }
 }

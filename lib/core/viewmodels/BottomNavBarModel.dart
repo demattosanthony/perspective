@@ -1,4 +1,5 @@
 import 'package:point_of_view/core/enums/viewstate.dart';
+import 'package:point_of_view/core/services/UserInfoService.dart';
 import 'package:point_of_view/core/viewmodels/base_model.dart';
 import 'package:point_of_view/locator.dart';
 import 'package:point_of_view/core/services/ApiService.dart';
@@ -11,6 +12,7 @@ import 'package:point_of_view/ui/views/profile_view.dart';
 
 class BottomNavBarModel extends BaseModel {
   final ApiService _apiService = locator<ApiService>();
+  final UserInfoService _userInfoService = locator<UserInfoService>();
 
   bool _isSignedIn = false;
   List<Widget> _pages;
@@ -49,7 +51,9 @@ class BottomNavBarModel extends BaseModel {
       MyAlbumsView(
         key: PageStorageKey('AlbumView'),
       ),
-      CameraView(key: PageStorageKey('CameraView'),),
+      CameraView(
+        key: PageStorageKey('CameraView'),
+      ),
       ProfileView(key: PageStorageKey('ProfileView'))
     ];
     _currentIndex = 0;
@@ -68,5 +72,6 @@ class BottomNavBarModel extends BaseModel {
     getLoginState();
     getAlbums();
     initPages();
+    _userInfoService.getUserInfo();
   }
 }

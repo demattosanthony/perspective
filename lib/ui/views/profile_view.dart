@@ -46,26 +46,12 @@ class ProfileView extends StatelessWidget {
                         alignment: Alignment.center,
                         height: MediaQuery.of(context).size.height * .30,
                         child: ProfileIcon()),
-                    // Padding(
-                    //   padding: const EdgeInsets.only(top: 5),
-                    //   child: model.user == null
-                    //       ? Container()
-                    //       : Text(
-                    //           '${model.user['name']}'.capitalize(),
-                    //           style: TextStyle(
-                    //               fontSize: 22, fontWeight: FontWeight.bold),
-                    //         ),
-                    // ),
-                    // Padding(
-                    //   padding: const EdgeInsets.all(5.0),
-                    //   child: model.user == null
-                    //       ? Container()
-                    //       : Text(
-                    //           '@${model.user['username']}',
-                    //           style: TextStyle(
-                    //               fontSize: 18, fontStyle: FontStyle.italic),
-                    //         ),
-                    // ),
+                    Container(
+                        child: Text(
+                      '@${model.username}',
+                      style:
+                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                    )),
                     Container(
                       padding: EdgeInsets.all(15),
                       child: Card(
@@ -76,32 +62,7 @@ class ProfileView extends StatelessWidget {
                         child: ListTile(
                           title: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              // Column(
-                              //   children: [
-                              //     model.user == null
-                              //         ? Container()
-                              //         : Text('${model.user['followingCount']}'),
-                              //     Text(
-                              //       'Following',
-                              //       style:
-                              //           TextStyle(fontWeight: FontWeight.bold),
-                              //     )
-                              //   ],
-                              // ),
-                              // Column(
-                              //   children: [
-                              //     model.user == null
-                              //         ? Container()
-                              //         : Text('${model.user['followersCount']}'),
-                              //     Text(
-                              //       'Followers',
-                              //       style:
-                              //           TextStyle(fontWeight: FontWeight.bold),
-                              //     )
-                              //   ],
-                              // ),
-                            ],
+                            children: [],
                           ),
                         ),
                       ),

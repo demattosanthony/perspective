@@ -1,3 +1,5 @@
+import 'package:point_of_view/core/models/User.dart';
+
 import 'auth_service.dart';
 import 'package:point_of_view/locator.dart';
 import 'package:http/http.dart' as http;
@@ -81,6 +83,22 @@ class ApiService {
         client.close();
       }
     } catch (e) {
+      return null;
+    }
+  }
+
+  Future<List<User>> getUserInfo() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var userId = prefs.getInt('userId');
+    var url = host + 'getUserInfo/$userId';
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      var jsonResponse = convert.jsonDecode(response.body);
+      List<User> userInfo =
+          (jsonResponse as List).map((data) => User.fromJson(data)).toList();
+      return userInfo;
+    } else {
+      print("Request failed");
       return null;
     }
   }

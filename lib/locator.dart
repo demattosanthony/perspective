@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:point_of_view/core/services/ApiService.dart';
+import 'package:point_of_view/core/services/UserInfoService.dart';
 import 'package:point_of_view/core/services/auth_service.dart';
 import 'package:point_of_view/core/viewmodels/BottomNavBarModel.dart';
 import 'package:point_of_view/core/viewmodels/CameraViewModel.dart';
@@ -14,6 +15,7 @@ GetIt locator = GetIt.instance;
 void setupLocator() {
   locator.registerLazySingleton(() => ApiService());
   locator.registerLazySingleton(() => AuthService());
+  locator.registerLazySingleton(() => UserInfoService());
 
   locator.registerFactory(() => LoginModel());
   locator.registerFactory(() => RegisterModel());

@@ -1,48 +1,16 @@
-import 'package:point_of_view/core/models/Event.dart';
-
 class User {
-  String id;
-  String firstName;
-  String lastName;
+  int userId;
+  String name;
+  String username;
   String email;
-  String password;
-  String profileImage;
-  int followersCount;
-  int followingCount;
-  List<String> followers;
-  List<String> following;
-  List<Event> attendedEvents;
-  List<Event> createdEvents;
-  List<Event> planningOnAttendingEvents;
+  String profileImageUrl;
 
-  User(
-      {this.id,
-      this.firstName,
-      this.lastName,
-      this.email,
-      this.password,
-      this.profileImage,
-      this.attendedEvents,
-      this.createdEvents,
-      this.followers,
-      this.following,
-      this.planningOnAttendingEvents,
-      this.followersCount,
-      this.followingCount});
+  User({this.userId, this.username, this.name, this.email, this.profileImageUrl});
 
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'firstName': firstName,
-        'lastName': lastName,
-        'email': email,
-        'password': password,
-        'profile_image': profileImage,
-        'followers': followers,
-        'following': following,
-        'attended_events': attendedEvents,
-        'created_events': createdEvents,
-        'planning_on_attending_events': planningOnAttendingEvents,
-        'followersCount' : followersCount,
-        'followingCount' : followingCount
-      };
+  User.fromJson(Map<String, dynamic> parsedJSON)
+      : userId = parsedJSON['user_id'],
+        username = parsedJSON['username'],
+        name = parsedJSON['name'],
+        email = parsedJSON['email'],
+        profileImageUrl = parsedJSON['profile_img_url'];
 }

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:point_of_view/core/models/Album.dart';
+import 'package:point_of_view/ui/widgets/profile_icon.dart';
 
 class AlbumRow extends StatelessWidget {
   final List<Album> myAlbums;
+  final String profileImgUrl;
 
-  AlbumRow(this.myAlbums);
+  AlbumRow(this.myAlbums, this.profileImgUrl);
 
   @override
   Widget build(BuildContext context) {
@@ -23,10 +25,21 @@ class AlbumRow extends StatelessWidget {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      album.title,
-                      style:
-                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          backgroundColor: Colors.white,
+                          radius: 25,
+                          backgroundImage: NetworkImage(profileImgUrl)),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            album.title,
+                            style:
+                                TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],

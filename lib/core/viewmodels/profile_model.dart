@@ -1,4 +1,6 @@
 import 'package:point_of_view/core/enums/viewstate.dart';
+import 'package:point_of_view/core/services/ApiService.dart';
+import 'package:point_of_view/core/services/UserInfoService.dart';
 import 'package:point_of_view/core/services/auth_service.dart';
 import 'package:point_of_view/core/viewmodels/base_model.dart';
 import '../../locator.dart';
@@ -6,13 +8,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileModel extends BaseModel {
   final AuthService _authService = locator<AuthService>();
-  //final CloudFirestoreService _cloudfirestoreService =
-  //  locator<CloudFirestoreService>();
-  String _profileImage;
-  //DocumentSnapshot _user;
+  final ApiService _apiService = locator<ApiService>();
+  final UserInfoService _userInfoService = locator<UserInfoService>();
 
-  String get profileImage => _profileImage;
-  //DocumentSnapshot get user => _user;
+  String get profileImage => _userInfoService.profileImgUrl;
+  String get username => _userInfoService.username;
+  String get name => _userInfoService.name;
 
   void getUserInfo() async {
     setState(ViewState.Busy);
@@ -23,7 +24,7 @@ class ProfileModel extends BaseModel {
   void getImage() async {
     setState(ViewState.Busy);
 
-    //_profileImage = await _cloudfirestoreService.getProfileImage();
+    _userInfoService.getUserInfo();
 
     setState(ViewState.Idle);
   }
@@ -36,7 +37,7 @@ class ProfileModel extends BaseModel {
   }
 
   ProfileModel() {
-    this.getImage();
-    this.getUserInfo();
+    //getImage();
+    //this.getUserInfo();
   }
 }
