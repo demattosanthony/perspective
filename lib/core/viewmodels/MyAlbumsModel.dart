@@ -21,6 +21,12 @@ class MyAlbumsModel extends BaseModel {
     setState(ViewState.Idle);
   }
 
+  void getPhotos(albumId) {
+    setState(ViewState.Busy);
+    _albumService.getPhotos(albumId);
+    setState(ViewState.Idle);
+  }
+
   MyAlbumsModel() {
     print('ININTING');
     if (myAlbums == null) getAlbums();

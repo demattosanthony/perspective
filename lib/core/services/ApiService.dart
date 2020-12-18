@@ -1,3 +1,4 @@
+import 'package:point_of_view/core/models/Photo.dart';
 import 'package:point_of_view/core/models/User.dart';
 
 import 'auth_service.dart';
@@ -105,6 +106,20 @@ class ApiService {
     } else {
       print("Request failed");
       return null;
+    }
+  }
+
+  Future<List<Photo>> getPhotos(albumId) async {
+    var url = host + "getImages/$albumId";
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      var jsonResponse = convert.jsonDecode(response.body);
+      List<Photo> photos =
+          (jsonResponse as List).map((data) => Photo.fromJson(data)).toList();
+      print(photos);
+      return photos;
+    } else {
+      throw Exception('Failed to fetch images');
     }
   }
 }

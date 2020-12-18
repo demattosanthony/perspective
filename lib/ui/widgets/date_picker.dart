@@ -4,7 +4,6 @@ import 'package:point_of_view/core/viewmodels/CreateAlbumModel.dart';
 import 'package:point_of_view/ui/views/base_view.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import '../../core/models/Event.dart';
 
 class DatePicker extends StatelessWidget {
   final DatePickerCallBack selectDate;

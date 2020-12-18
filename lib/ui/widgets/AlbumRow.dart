@@ -5,8 +5,9 @@ import 'package:point_of_view/ui/widgets/profile_icon.dart';
 class AlbumRow extends StatelessWidget {
   final List<Album> myAlbums;
   final String profileImgUrl;
+  final GetPhotosCallBack getPhotos;
 
-  AlbumRow(this.myAlbums, this.profileImgUrl);
+  AlbumRow(this.myAlbums, this.profileImgUrl, this.getPhotos);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,9 @@ class AlbumRow extends StatelessWidget {
         var album = myAlbums[index];
         return GestureDetector(
           onTap: () {
-            Navigator.of(context).pushNamed('albumView');
+            getPhotos(album.albumId);
+            Navigator.of(context)
+                .pushNamed('albumView', arguments: album.albumId);
           },
           child: Padding(
             padding: const EdgeInsets.all(5.0),
@@ -56,3 +59,5 @@ class AlbumRow extends StatelessWidget {
     );
   }
 }
+
+typedef GetPhotosCallBack = void Function(int albumId);
