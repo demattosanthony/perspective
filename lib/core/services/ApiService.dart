@@ -12,9 +12,6 @@ import 'dart:io';
 class ApiService {
   var host = "https://hidden-woodland-36838.herokuapp.com/";
 
-  List<Album> _myAlbums;
-  List<Album> get myAlbums => _myAlbums;
-
   Future<String> createAlbum(albumTitle) async {
     var url = host + 'createAlbum';
 
@@ -42,10 +39,7 @@ class ApiService {
       var jsonResponse = convert.jsonDecode(response.body);
       List<Album> myAlbums =
           (jsonResponse as List).map((data) => Album.fromJson(data)).toList();
-      _myAlbums = myAlbums;
-      print(_myAlbums);
       return myAlbums;
-      print(myAlbums[0].title);
     } else {
       print('Request failed with status: ${response.statusCode}.');
       return null;
@@ -74,7 +68,10 @@ class ApiService {
             await http.put(uploadUrl, body: image.readAsBytesSync());
         print(response2.body);
         var photoUploadUrl = host + "uploadImageUrl";
-        Map photoBody = {"photoUrl": result['downloadUrl'], "albumId": albumId.toString()};
+        Map photoBody = {
+          "photoUrl": result['downloadUrl'],
+          "albumId": albumId.toString()
+        };
         var photoUploadUrlResponse =
             await http.post(photoUploadUrl, body: photoBody);
         print(photoUploadUrlResponse.statusCode);
@@ -103,6 +100,7 @@ class ApiService {
       var jsonResponse = convert.jsonDecode(response.body);
       List<User> userInfo =
           (jsonResponse as List).map((data) => User.fromJson(data)).toList();
+      print(userInfo);
       return userInfo;
     } else {
       print("Request failed");

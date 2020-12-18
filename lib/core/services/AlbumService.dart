@@ -7,5 +7,10 @@ class AlbumService {
 
   String _shareString;
 
-  
+  Future<List<Album>> _myAlbums;
+  Future<List<Album>> get myAlbums => _myAlbums;
+
+  void getAlbums() {
+    _myAlbums = _apiService.getAlbums();
+  }
 }

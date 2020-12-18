@@ -4,6 +4,7 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:point_of_view/core/models/Album.dart';
 import 'package:point_of_view/core/viewmodels/CameraViewModel.dart';
+import 'package:point_of_view/ui/widgets/ShowAlert.dart';
 import 'base_view.dart';
 import 'dart:io';
 import 'package:path/path.dart' show join;
@@ -54,7 +55,8 @@ class CameraView extends StatelessWidget {
                                                       model.setSelectedAlbum(
                                                           model
                                                               .myAlbums[index]);
-                                                      Navigator.of(context).pop();
+                                                      Navigator.of(context)
+                                                          .pop();
                                                     },
                                                     child: Column(
                                                       children: [
@@ -79,9 +81,9 @@ class CameraView extends StatelessWidget {
                                           });
                                     },
                                     child: Text(
-                                      model.selctedAlbum.title == null
+                                      model.selectedAlbum == null
                                           ? "Select Album"
-                                          : model.selctedAlbum.title,
+                                          : model.selectedAlbum.title,
                                       style: TextStyle(color: Colors.white),
                                     ),
                                     shape: RoundedRectangleBorder(
@@ -100,7 +102,11 @@ class CameraView extends StatelessWidget {
                                 backgroundColor: Colors.grey.withOpacity(0.30),
                               ),
                             ),
-                            model.isUploading ? Center(child: CircularProgressIndicator(),) : Container()  
+                            model.isUploading
+                                ? Center(
+                                    child: CircularProgressIndicator(),
+                                  )
+                                : Container()
                           ],
                         ));
                   } else {
@@ -124,27 +130,34 @@ class CameraView extends StatelessWidget {
                         shape: BoxShape.circle),
                   ),
                   onPressed: () async {
-                    try {
-                      await model.initalizeControllerFuture;
+                    if (model.selectedAlbum == null) {
+                      showPlatformDialog(
+                          context: context,
+                          builder: (_) =>
+                              ShowAlert("Please select a Album", 'Try again.'));
+                    } else {
+                      try {
+                        await model.initalizeControllerFuture;
 
-                      final path = join(
-                          //store in tmp directory
-                          //find tmp firectory using path_provider
-                          (await getTemporaryDirectory()).path,
-                          '${DateTime.now()}.png');
+                        final path = join(
+                            //store in tmp directory
+                            //find tmp firectory using path_provider
+                            (await getTemporaryDirectory()).path,
+                            '${DateTime.now()}.png');
 
-                      await model.controller.takePicture(path);
+                        await model.controller.takePicture(path);
 
-                      model.uploadImage(File(path));
+                        model.uploadImage(File(path));
 
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => DisplayPictureScreen(
-                      //               imagePath: path,
-                      //             )));
-                    } catch (e) {
-                      print(e);
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => DisplayPictureScreen(
+                        //               imagePath: path,
+                        //             )));
+                      } catch (e) {
+                        print(e);
+                      }
                     }
                   },
                 ),

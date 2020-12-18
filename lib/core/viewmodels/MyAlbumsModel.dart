@@ -1,4 +1,5 @@
 import 'package:point_of_view/core/enums/viewstate.dart';
+import 'package:point_of_view/core/models/User.dart';
 import 'package:point_of_view/core/services/AlbumService.dart';
 import 'package:point_of_view/core/services/ApiService.dart';
 import 'package:point_of_view/core/services/UserInfoService.dart';
@@ -11,12 +12,12 @@ class MyAlbumsModel extends BaseModel {
   UserInfoService _userInfoService = locator<UserInfoService>();
   AlbumService _albumService = locator<AlbumService>();
 
-  List<Album> get myAlbums => _apiService.myAlbums;
-  String get profileImgUrl => _userInfoService.profileImgUrl;
+  Future<List<Album>> get myAlbums => _albumService.myAlbums;
+  Future<List<User>> get userInfo => _userInfoService.userInfo;
 
   Future<List<Album>> getAlbums() async {
     setState(ViewState.Busy);
-    await _apiService.getAlbums();
+    _albumService.getAlbums();
     setState(ViewState.Idle);
   }
 

@@ -37,37 +37,50 @@ class ProfileView extends StatelessWidget {
                 ),
               ),
               body: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                        padding: EdgeInsets.only(top: 10),
-                        alignment: Alignment.center,
-                        height: MediaQuery.of(context).size.height * .30,
-                        child: ProfileIcon()),
-                    Container(
-                        child: Text(
-                      '@${model.username}',
-                      style:
-                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                    )),
-                    Container(
-                      padding: EdgeInsets.all(15),
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        elevation: 15,
-                        child: ListTile(
-                          title: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [],
+                child: FutureBuilder(
+                  future: model.userInfo,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                              padding: EdgeInsets.only(top: 10),
+                              alignment: Alignment.center,
+                              height: MediaQuery.of(context).size.height * .30,
+                              child: ProfileIcon(
+                                  snapshot.data[0].profileImageUrl)),
+                          Container(
+                              child: Text(
+                            '@${snapshot.data[0].username}',
+                            style: TextStyle(
+                                fontSize: 22, fontWeight: FontWeight.bold),
+                          )),
+                          Container(
+                            padding: EdgeInsets.all(15),
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                              elevation: 15,
+                              child: ListTile(
+                                title: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [],
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
-                  ],
+                        ],
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text("${snapshot.error}");
+                    }
+
+                    return PlatformCircularProgressIndicator();
+                  },
                 ),
               ),
             ));

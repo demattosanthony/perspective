@@ -13,13 +13,14 @@ class CameraViewModel extends BaseModel {
   CameraDescription _camera;
   List<CameraDescription> _availableCameras;
   List<Album> _myAlbums = [];
-  Album selctedAlbum = Album();
+  Album _selctedAlbum;
   bool isUploading = false;
 
   CameraDescription get camera => _camera;
   Future<void> get initalizeControllerFuture => _initializeControllerFuture;
   CameraController get controller => _controller;
   List<Album> get myAlbums => _myAlbums;
+  Album get selectedAlbum => _selctedAlbum;
 
   void setUpCamera() async {
     setState(ViewState.Busy);
@@ -55,14 +56,15 @@ class CameraViewModel extends BaseModel {
   void uploadImage(File image) async {
     setState(ViewState.Busy);
     isUploading = true;
-    var reponseCode = await _apiService.uploadAlbumImage(image, selctedAlbum.title, selctedAlbum.albumId);
+    var reponseCode = await _apiService.uploadAlbumImage(
+        image, _selctedAlbum.title, _selctedAlbum.albumId);
     if (reponseCode != null) isUploading = false;
     setState(ViewState.Idle);
   }
 
   void setSelectedAlbum(album) {
     setState(ViewState.Busy);
-    selctedAlbum = album;
+    _selctedAlbum = album;
     setState(ViewState.Idle);
   }
 

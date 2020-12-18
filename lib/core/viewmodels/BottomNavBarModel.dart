@@ -27,7 +27,6 @@ class BottomNavBarModel extends BaseModel {
   int get currentIndex => _currentIndex;
   Widget get currentPage => _currentPage;
   PageStorageBucket get bucket => _bucket;
-  List<Album> get myAlbums => _apiService.myAlbums;
 
   void getLoginState() async {
     setState(ViewState.Busy);
@@ -38,12 +37,6 @@ class BottomNavBarModel extends BaseModel {
     } else {
       _isSignedIn = false;
     }
-    setState(ViewState.Idle);
-  }
-
-  Future<List<Album>> getAlbums() async {
-    setState(ViewState.Busy);
-    await _apiService.getAlbums();
     setState(ViewState.Idle);
   }
 
@@ -72,9 +65,8 @@ class BottomNavBarModel extends BaseModel {
 
   BottomNavBarModel() {
     getLoginState();
-    getAlbums();
     _userInfoService.getUserInfo();
+    _albumService.getAlbums();
     initPages();
-    
   }
 }
