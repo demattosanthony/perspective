@@ -52,7 +52,7 @@ class ApiService {
     }
   }
 
-  Future<String> uploadImage(File image, String title) async {
+  Future<String> uploadAlbumImage(File image, String title, int albumId) async {
     try {
       var client = http.Client();
       try {
@@ -73,6 +73,12 @@ class ApiService {
         var response2 =
             await http.put(uploadUrl, body: image.readAsBytesSync());
         print(response2.body);
+        var photoUploadUrl = host + "uploadImageUrl";
+        Map photoBody = {"photoUrl": result['downloadUrl'], "albumId": albumId.toString()};
+        var photoUploadUrlResponse =
+            await http.post(photoUploadUrl, body: photoBody);
+        print(photoUploadUrlResponse.statusCode);
+
         if (response2.statusCode == 200) {
           print("Uploaded");
           return result['downloadUrl'];

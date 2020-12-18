@@ -73,7 +73,8 @@ class BottomNavBarModel extends BaseModel {
   BottomNavBarModel() {
     getLoginState();
     getAlbums();
-    initPages();
     _userInfoService.getUserInfo();
+    initPages();
+    
   }
 }
