@@ -12,18 +12,21 @@ class CreateAlbumModel extends BaseModel {
   final AlbumService _albumService = locator<AlbumService>();
 
   TextEditingController _albumTitleController = new TextEditingController();
+  TextEditingController _albumCodeController = new TextEditingController();
 
   TextEditingController get albumTitleController => _albumTitleController;
+  TextEditingController get albumCodeController => _albumCodeController;
 
   String _image;
   String get image => _image;
 
   final picker = ImagePicker();
 
-  void joinAlbum(sharedString) {
+  Future<int> joinAlbum(sharedString) async {
     setState(ViewState.Busy);
-    _albumService.joinAlbum(sharedString);
+    var code = await _albumService.joinAlbum(sharedString);
     setState(ViewState.Idle);
+    return code;
   }
 
   Future getImage() async {

@@ -37,7 +37,7 @@ class AlbumRow extends StatelessWidget {
             onTap: () {
               getPhotos(album.albumId);
               Navigator.of(context)
-                  .pushNamed('albumView', arguments: album.albumId);
+                  .pushNamed('albumView', arguments: album);
             },
             child: Padding(
               padding: const EdgeInsets.all(5.0),

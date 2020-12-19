@@ -28,7 +28,8 @@ class AlbumService {
     _apiService.deleteAlbum(albumId);
   }
 
-  void joinAlbum(sharedString) {
-    _apiService.joinAlbum(sharedString);
+  Future<int> joinAlbum(sharedString) async {
+    var code = await _apiService.joinAlbum(sharedString);
+    return code;
   }
 }

@@ -1,13 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:point_of_view/core/models/Album.dart';
 import 'package:point_of_view/core/viewmodels/AlbumModel.dart';
 import 'package:point_of_view/ui/views/base_view.dart';
+import 'package:point_of_view/ui/widgets/ShowAlert.dart';
 
 class AlbumView extends StatelessWidget {
-  final int albumId;
+  final Album album;
 
-  AlbumView(this.albumId);
+  AlbumView(this.album);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +21,12 @@ class AlbumView extends StatelessWidget {
                   trailingActions: [
                     PlatformButton(
                       child: Text('Share'),
-                      onPressed: () {},
+                      onPressed: () {
+                        showPlatformDialog(
+                            context: context,
+                            builder: (_) =>
+                                ShowAlert("Share string:", album.shareString));
+                      },
                       padding: EdgeInsets.all(0),
                     )
                   ],

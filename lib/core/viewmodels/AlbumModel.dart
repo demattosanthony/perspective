@@ -7,4 +7,6 @@ class AlbumModel extends BaseModel {
   final AlbumService _albumService = locator<AlbumService>();
 
   Future<List<Photo>> get photos => _albumService.photos;
+  
+
 }

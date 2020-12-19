@@ -133,19 +133,24 @@ class ApiService {
     }
   }
 
-  void joinAlbum(sharedString) async {
+  Future<int> joinAlbum(sharedString) async {
     var client = http.Client();
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var userId = prefs.getInt('userId');
-      var url = host + "getAlbumIdFromShareString/test";
+      var url = host + "getAlbumIdFromShareString/$sharedString";
       var response = await http.get(url);
       var albumId = jsonDecode(response.body)[0]['album_id'];
       Map body = {"albumId": albumId.toString(), "userId": userId.toString()};
       var joinAlbumUrl = host + "joinAlbum";
       var joinAlbumRes = await http.post(joinAlbumUrl, body: body);
       if (joinAlbumRes.statusCode == 200) {
-        print("success");
+        return 200;
+      } else if (joinAlbumRes.statusCode == 450) {
+        //User already in album
+        return 450;
+      } else {
+        return 400;
       }
     } catch (e) {
       throw Exception("Error joing album");
