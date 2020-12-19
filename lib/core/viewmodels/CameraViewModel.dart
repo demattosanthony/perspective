@@ -56,8 +56,9 @@ class CameraViewModel extends BaseModel {
   void uploadImage(File image) async {
     setState(ViewState.Busy);
     isUploading = true;
-    var reponseCode = await _apiService.uploadAlbumImage(
+    var reponseCode = await _apiService.uploadImage(
         image, _selctedAlbum.title, _selctedAlbum.albumId);
+        
     if (reponseCode != null) isUploading = false;
     setState(ViewState.Idle);
   }

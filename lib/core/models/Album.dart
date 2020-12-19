@@ -1,9 +1,16 @@
 class Album {
   final int albumId;
   final String title;
+  final int ownerId;
   final String shareString;
+  final String profileImgUrl;
 
-  Album({this.albumId, this.title, this.shareString});
+  Album(
+      {this.albumId,
+      this.title,
+      this.ownerId,
+      this.shareString,
+      this.profileImgUrl});
 
   Map<String, dynamic> toJson() =>
       {'albumId': albumId, 'title': title, 'shareString': shareString};
@@ -17,6 +24,8 @@ class Album {
     return Album(
         albumId: json['album_id'],
         title: json['title'],
-        shareString: json['share_string']);
+        ownerId: json['ownerId'],
+        shareString: json['share_string'],
+        profileImgUrl: json['profile_img_url']);
   }
 }

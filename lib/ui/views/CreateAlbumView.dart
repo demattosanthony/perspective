@@ -32,14 +32,15 @@ class CreateAlbumView extends StatelessWidget {
                           false,
                           TextStyle(
                               fontSize: 22, fontWeight: FontWeight.bold))),
-                  
                   Divider(
                     thickness: 1,
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: FlatButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          model.joinAlbum('test');
+                        },
                         child: Text(
                           'Join Album',
                           style: TextStyle(fontSize: 20, color: Colors.white),
@@ -54,8 +55,7 @@ class CreateAlbumView extends StatelessWidget {
                           showPlatformDialog(
                               context: context,
                               builder: (_) => PlatformAlertDialog(
-                                    title: Text(
-                                        'Share album:\n $shareString'),
+                                    title: Text('Share album:\n $shareString'),
                                     actions: [
                                       PlatformDialogAction(
                                           child: Text("OK"),

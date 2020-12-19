@@ -15,15 +15,23 @@ class MyAlbumsModel extends BaseModel {
   Future<List<Album>> get myAlbums => _albumService.myAlbums;
   Future<List<User>> get userInfo => _userInfoService.userInfo;
 
-  Future<List<Album>> getAlbums() async {
+  void getAlbums() async {
     setState(ViewState.Busy);
     _albumService.getAlbums();
     setState(ViewState.Idle);
   }
 
+  
+
   void getPhotos(albumId) {
     setState(ViewState.Busy);
     _albumService.getPhotos(albumId);
+    setState(ViewState.Idle);
+  }
+
+  void deleteAlbum(albumId) {
+    setState(ViewState.Busy);
+    _apiService.deleteAlbum(albumId);
     setState(ViewState.Idle);
   }
 

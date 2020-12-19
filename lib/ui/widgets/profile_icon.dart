@@ -10,18 +10,16 @@ class ProfileIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        width: MediaQuery.of(context).size.width / 2,
-        child: ClipRRect(
-          child: 
-              CircleAvatar(
-                  radius: 100,
-                  backgroundColor: Colors.white,
-                  backgroundImage: NetworkImage(
-                   profileImageUrl,
-                  ),
-                ),
+      width: MediaQuery.of(context).size.width / 2,
+      child: ClipRRect(
+        child: CircleAvatar(
+          radius: 100,
+          backgroundColor: Colors.white,
+          backgroundImage: NetworkImage(
+            profileImageUrl,
+          ),
         ),
-      
+      ),
     );
   }
 }

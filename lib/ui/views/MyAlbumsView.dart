@@ -38,13 +38,13 @@ class MyAlbumsView extends StatelessWidget {
                 ? Container()
                 : RefreshIndicator(
                     onRefresh: () async {
-                      await model.getAlbums();
+                      model.getAlbums();
                     },
                     child: FutureBuilder(
-                      future: Future.wait([model.myAlbums, model.userInfo]),
+                      future: model.myAlbums,
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          return AlbumRow(snapshot.data[0], snapshot.data[1][0].profileImageUrl, model.getPhotos);
+                          return AlbumRow(snapshot.data, model.getPhotos, model.deleteAlbum, model.getAlbums);
                         } else if (snapshot.hasError) {
                           return Text("${snapshot.error}");
                         }

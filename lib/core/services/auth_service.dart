@@ -20,8 +20,8 @@ class AuthService {
     try {
       String profileImageUrl;
       if (image != "") {
-        //profileImageUrl =
-            //await _apiService.uploadImage(File(image), "profileImage");
+        profileImageUrl =
+            await _apiService.uploadImage(File(image), "profileImage", 0);
       } else {
         profileImageUrl = "null";
       }

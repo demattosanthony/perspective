@@ -23,4 +23,12 @@ class AlbumService {
   void getPhotos(albumId) {
     _photos = _apiService.getPhotos(albumId);
   }
+
+  void deleteAlbum(albumId) {
+    _apiService.deleteAlbum(albumId);
+  }
+
+  void joinAlbum(sharedString) {
+    _apiService.joinAlbum(sharedString);
+  }
 }

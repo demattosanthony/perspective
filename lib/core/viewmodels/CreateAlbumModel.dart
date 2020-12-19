@@ -20,6 +20,12 @@ class CreateAlbumModel extends BaseModel {
 
   final picker = ImagePicker();
 
+  void joinAlbum(sharedString) {
+    setState(ViewState.Busy);
+    _albumService.joinAlbum(sharedString);
+    setState(ViewState.Idle);
+  }
+
   Future getImage() async {
     setState(ViewState.Busy);
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
