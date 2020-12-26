@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:point_of_view/core/enums/viewstate.dart';
 import 'package:point_of_view/core/services/AlbumService.dart';
-import 'package:point_of_view/core/services/ApiService.dart';
-
 import 'package:point_of_view/core/viewmodels/base_model.dart';
 import 'package:point_of_view/locator.dart';
-import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:image_picker/image_picker.dart';
 
 class CreateAlbumModel extends BaseModel {

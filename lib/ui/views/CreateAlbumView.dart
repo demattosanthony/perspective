@@ -1,22 +1,16 @@
-import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
 
 import 'package:point_of_view/core/viewmodels/CreateAlbumModel.dart';
 import 'package:point_of_view/ui/views/bottom_nav_bar.dart';
 import 'package:point_of_view/ui/widgets/CustomTextField.dart';
 import 'package:point_of_view/ui/widgets/ShowAlert.dart';
-import 'package:point_of_view/ui/widgets/map_widget.dart';
 import 'base_view.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:platform_maps_flutter/platform_maps_flutter.dart';
 
 class CreateAlbumView extends StatelessWidget {
-  PlatformMapController mapController;
 
   @override
   Widget build(BuildContext context) {

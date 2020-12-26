@@ -15,9 +15,6 @@ class ApiService {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var userId = prefs.getInt('userId');
-
-    Map<String, String> headers = {"Content-type": "application/json"};
-
     var response = await http
         .post(url, body: {"title": albumTitle, "userId": userId.toString()});
     print('Response status: ${response.statusCode}');

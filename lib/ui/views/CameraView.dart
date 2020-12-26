@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:point_of_view/core/models/Album.dart';
 import 'package:point_of_view/core/viewmodels/CameraViewModel.dart';
 import 'package:point_of_view/ui/widgets/ShowAlert.dart';
 import 'base_view.dart';

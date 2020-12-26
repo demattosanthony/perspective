@@ -4,7 +4,6 @@ import 'package:point_of_view/core/viewmodels/MyAlbumsModel.dart';
 import 'package:point_of_view/ui/widgets/AlbumRow.dart';
 import 'base_view.dart';
 import 'package:point_of_view/ui/views/CreateAlbumView.dart';
-import 'package:point_of_view/core/models/Album.dart';
 
 class MyAlbumsView extends StatelessWidget {
   const MyAlbumsView({Key key}) : super(key: key);

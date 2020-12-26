@@ -80,7 +80,7 @@ class AlbumRow extends StatelessWidget {
                                 backgroundColor: Colors.white,
                                 radius: 25,
                                 backgroundImage: album.profileImgUrl == null
-                                    ? Image()
+                                    ? Container()
                                     : NetworkImage(album.profileImgUrl)),
                             Padding(
                               padding: const EdgeInsets.all(8.0),

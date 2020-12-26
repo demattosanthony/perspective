@@ -3,16 +3,13 @@ import 'package:point_of_view/core/services/AlbumService.dart';
 import 'package:point_of_view/core/services/UserInfoService.dart';
 import 'package:point_of_view/core/viewmodels/base_model.dart';
 import 'package:point_of_view/locator.dart';
-import 'package:point_of_view/core/services/ApiService.dart';
 import 'package:flutter/material.dart';
-import 'package:point_of_view/core/models/Album.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:point_of_view/ui/views/CameraView.dart';
 import 'package:point_of_view/ui/views/MyAlbumsView.dart';
 import 'package:point_of_view/ui/views/profile_view.dart';
 
 class BottomNavBarModel extends BaseModel {
-  final ApiService _apiService = locator<ApiService>();
   final UserInfoService _userInfoService = locator<UserInfoService>();
   final AlbumService _albumService = locator<AlbumService>();
 

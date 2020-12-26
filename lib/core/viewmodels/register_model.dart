@@ -4,7 +4,6 @@ import 'package:point_of_view/core/viewmodels/base_model.dart';
 import '../services/auth_service.dart';
 import '../../locator.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:io';
 
 class RegisterModel extends BaseModel {
   final AuthService _authService = locator<AuthService>();
