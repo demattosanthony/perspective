@@ -26,7 +26,7 @@ class CustomTextField extends StatelessWidget {
               controller: controller,
               autocorrect: false,
               obscureText: isPassword ? true : false,
-              decoration: InputDecoration(labelText: placeholder),
+              decoration: InputDecoration(hintText: placeholder),
               style: style,
             ),
     );

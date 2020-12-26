@@ -17,14 +17,11 @@ class ApiService {
     var userId = prefs.getInt('userId');
     var response = await http
         .post(url, body: {"title": albumTitle, "userId": userId.toString()});
-    print('Response status: ${response.statusCode}');
-    print(response.body);
 
     return response.body;
   }
 
   Future<List<Album>> getAlbums() async {
-    print("getting albums");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var userId = prefs.getInt('userId');
     var url = host + 'getUserAlbums/$userId';
@@ -57,11 +54,9 @@ class ApiService {
 
         var response = await http.post(url, body: body);
         var result = jsonDecode(response.body);
-        print(result);
         var uploadUrl = result['uploadUrl'];
         var response2 =
             await http.put(uploadUrl, body: image.readAsBytesSync());
-        print(response2.body);
         if (title == "profileImage") return result['downloadUrl'];
         var photoUploadUrl = host + "uploadImageUrl";
         Map photoBody = {
@@ -70,7 +65,6 @@ class ApiService {
         };
         var photoUploadUrlResponse =
             await http.post(photoUploadUrl, body: photoBody);
-        print(photoUploadUrlResponse.statusCode);
 
         if (response2.statusCode == 200) {
           print("Uploaded");
@@ -96,7 +90,6 @@ class ApiService {
       var jsonResponse = jsonDecode(response.body);
       List<User> userInfo =
           (jsonResponse as List).map((data) => User.fromJson(data)).toList();
-      print(userInfo);
       return userInfo;
     } else {
       print("Request failed");

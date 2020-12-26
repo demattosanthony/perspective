@@ -18,7 +18,10 @@ class ProfileView extends StatelessWidget {
                 child: PlatformAppBar(
                   automaticallyImplyLeading: false,
                   backgroundColor: Colors.white,
-                  title: Text('Profile'),
+                  title: Text(
+                    'Profile',
+                    style: TextStyle(color: Colors.black),
+                  ),
                   trailingActions: [
                     GestureDetector(
                         onTap: () {
@@ -29,9 +32,12 @@ class ProfileView extends StatelessWidget {
                                   child: BottomNavBar(),
                                   type: PageTransitionType.fade));
                         },
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: PlatformText("Sign Out"),
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text("Sign Out",
+                                style: TextStyle(color: Colors.black)),
+                          ),
                         ))
                   ],
                 ),

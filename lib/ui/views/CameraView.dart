@@ -30,7 +30,9 @@ class CameraView extends StatelessWidget {
                                     aspectRatio:
                                         model.controller.value.aspectRatio,
                                     child: Stack(children: [
-                                      CameraPreview(model.controller)
+                                      GestureDetector(
+                                        onDoubleTap: () => model.cameraToggle(),
+                                        child: CameraPreview(model.controller))
                                     ]))),
                             SafeArea(
                               child: Container(
@@ -109,9 +111,7 @@ class CameraView extends StatelessWidget {
                           ],
                         ));
                   } else {
-                    return Center(
-                      child: PlatformCircularProgressIndicator(),
-                    );
+                    return Container();
                   }
                 },
               ),
@@ -148,12 +148,6 @@ class CameraView extends StatelessWidget {
 
                         model.uploadImage(File(path));
 
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => DisplayPictureScreen(
-                        //               imagePath: path,
-                        //             )));
                       } catch (e) {
                         print(e);
                       }
@@ -162,22 +156,5 @@ class CameraView extends StatelessWidget {
                 ),
               ),
             ));
-  }
-}
-
-//A widget that displays the picture taken by the user.
-class DisplayPictureScreen extends StatelessWidget {
-  final String imagePath;
-
-  const DisplayPictureScreen({Key key, this.imagePath}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Display the Picture')),
-      // The image is stored as a file on the device. Use the `Image.file`
-      // constructor with the given path to display the image.
-      body: Image.file(File(imagePath)),
-    );
   }
 }

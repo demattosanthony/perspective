@@ -1,9 +1,10 @@
+
 import 'package:flutter/material.dart';
 
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:point_of_view/core/viewmodels/BottomNavBarModel.dart';
 import 'login_view.dart';
-
+import 'dart:io' show Platform;
 import 'base_view.dart';
 
 class BottomNavBar extends StatelessWidget {
@@ -21,6 +22,7 @@ class BottomNavBar extends StatelessWidget {
                   child: Scaffold(
                       body: model.currentPage,
                       bottomNavigationBar: CurvedNavigationBar(
+                        height: Platform.isAndroid ? MediaQuery.of(context).size.height*.10 : 75,
                         animationDuration: Duration(milliseconds: 250),
                         index: model.currentIndex,
                         items: [

@@ -13,100 +13,117 @@ class RegisterView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BaseView<RegisterModel>(
       builder: (context, model, child) => Scaffold(
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(50),
+          child: PlatformAppBar(
+            title: Text('Register', style: TextStyle(color: Colors.black)),
+          ),
+        ),
         backgroundColor: Colors.white,
-        body: Container(
-          alignment: Alignment.center,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+        body: SafeArea(
+                  child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text(
-                'Perspective',
-                style: TextStyle(fontSize: 80, fontFamily: 'Billabong'),
+              Padding(
+                padding: const EdgeInsets.only(top: 65),
+                child: Text(
+                  'Perspective',
+                  style: TextStyle(fontSize: 80, fontFamily: 'Billabong'),
+                ),
               ),
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-                      child: Container(
-                        height: 100,
-                        width: 100,
-                        child: Stack(
-                          children: [
-                            Container(
-                              alignment: Alignment.center,
-                              child: CircleAvatar(
-                                radius: 50,
-                                backgroundColor: Colors.white,
-                                backgroundImage: model.image == ""
-                                    ? AssetImage('assets/profile_icon.png')
-                                    : FileImage(File(model.image)),
-                              ),
-                            ),
-                            FractionalTranslation(
-                              translation: Offset(0, 0.5),
-                              child: Align(
-                                child: GestureDetector(
-                                  onTap: model.getImage,
-                                  child: Container(
-                                    height: 35,
-                                    width: 35,
-                                    decoration: BoxDecoration(
-                                        color: Colors.blue,
-                                        borderRadius:
-                                            BorderRadius.circular(25)),
-                                    child: Icon(Icons.edit,
-                                        size: 15.0, color: Colors.white),
-                                  ),
+              Expanded(
+                flex: 3,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                        child: Container(
+                          height: 100,
+                          width: 100,
+                          child: Stack(
+                            children: [
+                              Container(
+                                alignment: Alignment.center,
+                                child: CircleAvatar(
+                                  radius: 50,
+                                  backgroundColor: Colors.white,
+                                  backgroundImage: model.image == ""
+                                      ? AssetImage('assets/profile_icon.png')
+                                      : FileImage(File(model.image)),
                                 ),
                               ),
-                            )
-                          ],
-                        ),
-                      )),
-                  CustomTextField('Name', model.nameController, false),
-                  model.isLoading ? CircularProgressIndicator() : Container(),
-                  CustomTextField('Username', model.usernameController, false),
-                  CustomTextField('Email', model.emailController, false),
-                  CustomTextField('Password', model.passwordController, true),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  FlatButton(
-                    onPressed: () async {
-                      var responseCode =
-                          await model.createUserWithEmailAndPassword();
+                              FractionalTranslation(
+                                translation: Offset(0, 0.5),
+                                child: Align(
+                                  child: GestureDetector(
+                                    onTap: model.getImage,
+                                    child: Container(
+                                      height: 35,
+                                      width: 35,
+                                      decoration: BoxDecoration(
+                                          color: Colors.blue,
+                                          borderRadius:
+                                              BorderRadius.circular(25)),
+                                      child: Icon(Icons.edit,
+                                          size: 15.0, color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        )),
+                    CustomTextField('Name', model.nameController, false),
+                    model.isLoading ? CircularProgressIndicator() : Container(),
+                    CustomTextField('Username', model.usernameController, false),
+                    CustomTextField('Email', model.emailController, false),
+                    CustomTextField('Password', model.passwordController, true),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Center(
+                      child: FlatButton(
+                        onPressed: () async {
+                          var responseCode =
+                              await model.createUserWithEmailAndPassword();
 
-                      if (responseCode == 200) {
-                        Navigator.pushReplacement(
-                            context,
-                            PageTransition(
-                                child: BottomNavBar(),
-                                type: PageTransitionType.fade));
-                      } else if (responseCode == 400) {
-                        showPlatformDialog(
-                            context: context,
-                            builder: (_) =>
-                                ShowAlert('Invalid Email', 'Try again'));
-                      } else if (responseCode == 475) {
-                        showPlatformDialog(
-                            context: context,
-                            builder: (_) =>
-                                ShowAlert('Email already exists', 'Try again'));
-                      } else if (responseCode == 450) {
-                        showPlatformDialog(
-                            context: context,
-                            builder: (_) =>
-                                ShowAlert('Username is taken', 'Try again'));
-                      }
-                    },
-                    child:
-                        Text('Register', style: TextStyle(color: Colors.white)),
-                    color: Colors.blue,
-                  ),
-                ],
+                          if (responseCode == 200) {
+                            Navigator.pushReplacement(
+                                context,
+                                PageTransition(
+                                    child: BottomNavBar(),
+                                    type: PageTransitionType.fade));
+                          } else if (responseCode == 400) {
+                            showPlatformDialog(
+                                context: context,
+                                builder: (_) =>
+                                    ShowAlert('Invalid Email', 'Try again'));
+                          } else if (responseCode == 475) {
+                            showPlatformDialog(
+                                context: context,
+                                builder: (_) => ShowAlert(
+                                    'Email already exists', 'Try again'));
+                          } else if (responseCode == 450) {
+                            showPlatformDialog(
+                                context: context,
+                                builder: (_) =>
+                                    ShowAlert('Username is taken', 'Try again'));
+                          }
+                        },
+                        child: Text('Register',
+                            style: TextStyle(color: Colors.white)),
+                        color: Colors.blue,
+                      ),
+                    ),
+                  ],
+                ),
               ),
+              Expanded(
+                child: Container(),
+              )
             ],
           ),
         ),

@@ -28,7 +28,6 @@ class BottomNavBarModel extends BaseModel {
   void getLoginState() async {
     setState(ViewState.Busy);
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    print(prefs.getBool('isLoggedIn'));
     if (prefs.getBool('isLoggedIn') ?? false) {
       _isSignedIn = true;
     } else {

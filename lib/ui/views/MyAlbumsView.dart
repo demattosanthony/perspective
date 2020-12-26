@@ -16,7 +16,7 @@ class MyAlbumsView extends StatelessWidget {
               preferredSize: const Size.fromHeight(50),
               child: PlatformAppBar(
                 backgroundColor: Colors.white,
-                title: Text('Albums'),
+                title: Text('Albums', style: TextStyle(color: Colors.black),),
                 automaticallyImplyLeading: false,
                 trailingActions: [
                   GestureDetector(
@@ -28,7 +28,10 @@ class MyAlbumsView extends StatelessWidget {
                               borderRadius: BorderRadius.circular(15)),
                           builder: (builder) => CreateAlbumView());
                     },
-                    child: Icon(Icons.add),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Icon(Icons.add, color: Colors.black,),
+                    ),
                   )
                 ],
               ),

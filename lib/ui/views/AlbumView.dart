@@ -41,6 +41,8 @@ class AlbumView extends StatelessWidget {
                     return GridView.builder(
                         itemCount: snapshot.data.length,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          mainAxisSpacing: 1,
+                          crossAxisSpacing: 1,
                             crossAxisCount:
                                 (orientation == Orientation.portrait) ? 4 : 3),
                         itemBuilder: (context, index) {
@@ -54,6 +56,7 @@ class AlbumView extends StatelessWidget {
                                 child: Image.network(
                               imageUrl,
                               fit: BoxFit.cover,
+                              
                             )),
                           );
                         });
