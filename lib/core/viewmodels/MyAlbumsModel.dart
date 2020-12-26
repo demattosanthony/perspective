@@ -29,9 +29,9 @@ class MyAlbumsModel extends BaseModel {
     setState(ViewState.Idle);
   }
 
-  void deleteAlbum(albumId) {
+  void deleteAlbum(int albumId, bool isOwner) {
     setState(ViewState.Busy);
-    _apiService.deleteAlbum(albumId);
+    _apiService.deleteAlbum(albumId, isOwner);
     setState(ViewState.Idle);
   }
 

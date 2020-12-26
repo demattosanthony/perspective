@@ -24,8 +24,8 @@ class AlbumService {
     _photos = _apiService.getPhotos(albumId);
   }
 
-  void deleteAlbum(albumId) {
-    _apiService.deleteAlbum(albumId);
+  void deleteAlbum(albumId, isOwner) {
+    _apiService.deleteAlbum(albumId, isOwner);
   }
 
   Future<int> joinAlbum(sharedString) async {

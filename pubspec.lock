@@ -15,13 +15,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.5.0-nullsafety.1"
-  aws_s3:
-    dependency: "direct main"
-    description:
-      name: aws_s3
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.1+hotfix.5"
   better_uuid:
     dependency: "direct main"
     description:

@@ -1,16 +1,6 @@
 PODS:
   - apple_maps_flutter (0.0.1):
     - Flutter
-  - aws_s3 (0.0.1):
-    - AWSCognito
-    - AWSCore
-    - AWSS3
-    - Flutter
-  - AWSCognito (2.19.1):
-    - AWSCore (= 2.19.1)
-  - AWSCore (2.19.1)
-  - AWSS3 (2.19.1):
-    - AWSCore (= 2.19.1)
   - camera (0.0.1):
     - Flutter
   - Flutter (1.0.0)
@@ -43,7 +33,6 @@ PODS:
 
 DEPENDENCIES:
   - apple_maps_flutter (from `.symlinks/plugins/apple_maps_flutter/ios`)
-  - aws_s3 (from `.symlinks/plugins/aws_s3/ios`)
   - camera (from `.symlinks/plugins/camera/ios`)
   - Flutter (from `Flutter`)
   - google_maps_flutter (from `.symlinks/plugins/google_maps_flutter/ios`)
@@ -57,17 +46,12 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
-    - AWSCognito
-    - AWSCore
-    - AWSS3
     - FMDB
     - GoogleMaps
 
 EXTERNAL SOURCES:
   apple_maps_flutter:
     :path: ".symlinks/plugins/apple_maps_flutter/ios"
-  aws_s3:
-    :path: ".symlinks/plugins/aws_s3/ios"
   camera:
     :path: ".symlinks/plugins/camera/ios"
   Flutter:
@@ -91,10 +75,6 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   apple_maps_flutter: c59725efea39e13e703cde52a1d2b14866ad68a8
-  aws_s3: 01f73004966a469c748da1336ba7be2bcf031ba6
-  AWSCognito: f50de600804941d083af37a7568905f31a774727
-  AWSCore: 55c154ae27efc5c98bdc30a0eeea5a35d10a2ab5
-  AWSS3: 2272253b098d07803af8dd20ce6ce7302bcffb47
   camera: a0ca5080336f7af47b88436e5e26da3dee5568f0
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a

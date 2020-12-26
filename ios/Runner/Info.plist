@@ -22,6 +22,12 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Need to use camera to take pictures for albums</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>To record sound in videos</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Need to access photos to choose profile image and album image</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -41,11 +47,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>NSCameraUsageDescription</key>
-	<string>Need to use camera to take pictures for albums</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Need to access photos to choose profile image and album image</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>To record sound in videos</string>
 </dict>
 </plist>

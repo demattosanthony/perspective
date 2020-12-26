@@ -1,8 +1,5 @@
 import 'package:point_of_view/core/models/Photo.dart';
 import 'package:point_of_view/core/models/User.dart';
-
-import 'auth_service.dart';
-import 'package:point_of_view/locator.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
@@ -124,9 +121,10 @@ class ApiService {
     }
   }
 
-  void deleteAlbum(albumId) async {
-    var url = host + "deleteAlbum/$albumId";
-    var response = await http.delete(url);
+  void deleteAlbum(int albumId, bool isOwner) async {
+    var url = host + "deleteAlbum";
+    Map body = {"albumId": albumId.toString(), "isOwner": isOwner.toString()};
+    var response = await http.post(url, body: body);
     if (response.statusCode == 200) {
     } else {
       throw Exception('Failed to delete album');

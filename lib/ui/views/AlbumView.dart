@@ -18,6 +18,7 @@ class AlbumView extends StatelessWidget {
               appBar: PreferredSize(
                 preferredSize: const Size.fromHeight(50),
                 child: PlatformAppBar(
+                  title: Text(album.title),
                   trailingActions: [
                     PlatformButton(
                       child: Text('Share'),
@@ -43,11 +44,18 @@ class AlbumView extends StatelessWidget {
                             crossAxisCount:
                                 (orientation == Orientation.portrait) ? 4 : 3),
                         itemBuilder: (context, index) {
-                          return GridTile(
-                              child: Image.network(
-                            snapshot.data[index].imageUrl,
-                            fit: BoxFit.cover,
-                          ));
+                          var imageUrl = snapshot.data[index].imageUrl;
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.of(context)
+                                  .pushNamed('imageView', arguments: imageUrl);
+                            },
+                            child: GridTile(
+                                child: Image.network(
+                              imageUrl,
+                              fit: BoxFit.cover,
+                            )),
+                          );
                         });
                   } else if (snapshot.hasError) {
                     return Text("${snapshot.error}");

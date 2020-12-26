@@ -24,7 +24,7 @@ class Album {
     return Album(
         albumId: json['album_id'],
         title: json['title'],
-        ownerId: json['ownerId'],
+        ownerId: json['ownerid'],
         shareString: json['share_string'],
         profileImgUrl: json['profile_img_url']);
   }

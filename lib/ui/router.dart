@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:point_of_view/ui/views/AlbumView.dart';
+import 'package:point_of_view/ui/views/ImageView.dart';
 import 'package:point_of_view/ui/views/bottom_nav_bar.dart';
 import 'package:point_of_view/ui/views/CameraView.dart';
 import 'package:point_of_view/ui/views/register_view.dart';
@@ -15,8 +16,10 @@ class Router {
         return MaterialPageRoute(builder: (_) => CameraView());
       case 'albumView':
         var albumid = settings.arguments;
-        print(settings);
         return MaterialPageRoute(builder: (_) => AlbumView(albumid));
+      case 'imageView':
+        var imageUrl = settings.arguments;
+        return MaterialPageRoute(builder: (_) => ImageView(imageUrl));
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(

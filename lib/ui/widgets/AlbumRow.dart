@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:point_of_view/core/models/Album.dart';
-import 'package:point_of_view/ui/widgets/profile_icon.dart';
-import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AlbumRow extends StatelessWidget {
   final List<Album> myAlbums;
@@ -9,8 +9,7 @@ class AlbumRow extends StatelessWidget {
   final DeleteAlbumCallBack deleteAlbum;
   final GetAlbumsCallBack getAlbums;
 
-  AlbumRow(this.myAlbums, this.getPhotos, this.deleteAlbum,
-      this.getAlbums);
+  AlbumRow(this.myAlbums, this.getPhotos, this.deleteAlbum, this.getAlbums);
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +19,37 @@ class AlbumRow extends StatelessWidget {
         var album = myAlbums[index];
         return Dismissible(
           key: ObjectKey(album),
-          onDismissed: (direction) async {
-            deleteAlbum(album.albumId);
-            myAlbums.remove(album);
+          confirmDismiss: (DismissDirection direction) async {
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            var userId = prefs.getInt('userId');
+            var isOwner = userId == album.ownerId ? true : false;
+            return showPlatformDialog(
+                context: context,
+                builder: (_) => PlatformAlertDialog(
+                      title: isOwner
+                          ? Text(
+                              "Are you sure you want to delete this album and all of its photos?")
+                          : Text('Are you sure you want to leave this album?'),
+                      content: Text("This action can not be undone."),
+                      actions: [
+                        PlatformDialogAction(
+                            child: Text('Cancel'),
+                            onPressed: () => Navigator.of(context).pop()),
+                        PlatformDialogAction(
+                            child: isOwner
+                                ? Text(
+                                    'Delete',
+                                    style: TextStyle(color: Colors.red),
+                                  )
+                                : Text('Leave',
+                                    style: TextStyle(color: Colors.red)),
+                            onPressed: () {
+                              deleteAlbum(album.albumId, isOwner);
+                              myAlbums.remove(album);
+                              Navigator.of(context).pop();
+                            })
+                      ],
+                    ));
           },
           background: Container(
             alignment: Alignment.centerRight,
@@ -34,10 +61,9 @@ class AlbumRow extends StatelessWidget {
             ),
           ),
           child: GestureDetector(
-            onTap: () {
+            onTap: () async {
               getPhotos(album.albumId);
-              Navigator.of(context)
-                  .pushNamed('albumView', arguments: album);
+              Navigator.of(context).pushNamed('albumView', arguments: album);
             },
             child: Padding(
               padding: const EdgeInsets.all(5.0),
@@ -80,5 +106,5 @@ class AlbumRow extends StatelessWidget {
 }
 
 typedef GetPhotosCallBack = void Function(int albumId);
-typedef DeleteAlbumCallBack = void Function(int albumId);
+typedef DeleteAlbumCallBack = void Function(int albumId, bool isOwner);
 typedef GetAlbumsCallBack = void Function();
