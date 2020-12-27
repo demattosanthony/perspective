@@ -4,6 +4,7 @@ import 'package:point_of_view/core/services/UserInfoService.dart';
 import 'package:point_of_view/core/viewmodels/base_model.dart';
 import 'package:point_of_view/locator.dart';
 import 'package:flutter/material.dart';
+import 'package:point_of_view/ui/views/AdvancedCameraView.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:point_of_view/ui/views/CameraView.dart';
 import 'package:point_of_view/ui/views/MyAlbumsView.dart';
@@ -42,7 +43,7 @@ class BottomNavBarModel extends BaseModel {
       MyAlbumsView(
         key: PageStorageKey('AlbumView'),
       ),
-      CameraView(
+      AdvCameraView(
         key: PageStorageKey('CameraView'),
       ),
       ProfileView(key: PageStorageKey('ProfileView'))

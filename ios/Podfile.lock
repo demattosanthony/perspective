@@ -1,4 +1,6 @@
 PODS:
+  - adv_camera (0.0.1):
+    - Flutter
   - apple_maps_flutter (0.0.1):
     - Flutter
   - camera (0.0.1):
@@ -22,6 +24,7 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
+  - adv_camera (from `.symlinks/plugins/adv_camera/ios`)
   - apple_maps_flutter (from `.symlinks/plugins/apple_maps_flutter/ios`)
   - camera (from `.symlinks/plugins/camera/ios`)
   - Flutter (from `Flutter`)
@@ -36,6 +39,8 @@ SPEC REPOS:
     - GoogleMaps
 
 EXTERNAL SOURCES:
+  adv_camera:
+    :path: ".symlinks/plugins/adv_camera/ios"
   apple_maps_flutter:
     :path: ".symlinks/plugins/apple_maps_flutter/ios"
   camera:
@@ -54,6 +59,7 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/shared_preferences/ios"
 
 SPEC CHECKSUMS:
+  adv_camera: 0e954c22d5a993a38ecce7581ade87ecf5660523
   apple_maps_flutter: c59725efea39e13e703cde52a1d2b14866ad68a8
   camera: a0ca5080336f7af47b88436e5e26da3dee5568f0
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec

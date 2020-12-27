@@ -3,6 +3,7 @@ import 'package:point_of_view/core/services/AlbumService.dart';
 import 'package:point_of_view/core/services/ApiService.dart';
 import 'package:point_of_view/core/services/UserInfoService.dart';
 import 'package:point_of_view/core/services/auth_service.dart';
+import 'package:point_of_view/core/viewmodels/AdvCameraModel.dart';
 import 'package:point_of_view/core/viewmodels/AlbumModel.dart';
 import 'package:point_of_view/core/viewmodels/BottomNavBarModel.dart';
 import 'package:point_of_view/core/viewmodels/CameraViewModel.dart';
@@ -28,4 +29,5 @@ void setupLocator() {
   locator.registerFactory(() => CameraViewModel());
   locator.registerFactory(() => BottomNavBarModel());
   locator.registerFactory(() => AlbumModel());
+  locator.registerFactory(() => AdvCameraModel());
 }
