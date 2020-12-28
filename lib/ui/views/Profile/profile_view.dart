@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:point_of_view/core/viewmodels/profile_model.dart';
-import 'package:point_of_view/ui/views/bottom_nav_bar.dart';
+import 'package:point_of_view/ui/views/Profile/components/sign_out_button.dart';
 import 'components/profile_icon.dart';
 import '../base_view.dart';
 
@@ -22,24 +21,7 @@ class ProfileView extends StatelessWidget {
                     'Profile',
                     style: TextStyle(color: Colors.black),
                   ),
-                  trailingActions: [
-                    GestureDetector(
-                        onTap: () {
-                          model.signOut();
-                          Navigator.pushReplacement(
-                              context,
-                              PageTransition(
-                                  child: BottomNavBar(),
-                                  type: PageTransitionType.fade));
-                        },
-                        child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text("Sign Out",
-                                style: TextStyle(color: Colors.black)),
-                          ),
-                        ))
-                  ],
+                  trailingActions: [SignOutButton(signOut: model.signOut)],
                 ),
               ),
               body: SingleChildScrollView(
@@ -92,6 +74,8 @@ class ProfileView extends StatelessWidget {
             ));
   }
 }
+
+
 
 extension StringExtension on String {
   String capitalize() {

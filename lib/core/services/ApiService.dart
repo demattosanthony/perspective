@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:point_of_view/core/models/Photo.dart';
 import 'package:point_of_view/core/models/User.dart';
 import 'package:http/http.dart' as http;
@@ -31,13 +32,13 @@ class ApiService {
       var jsonResponse = jsonDecode(response.body);
       List<Album> myAlbums =
           (jsonResponse as List).map((data) => Album.fromJson(data)).toList();
-      print(myAlbums[1].profileImgUrl);
       return myAlbums;
     } else {
       print('Request failed with status: ${response.statusCode}.');
       return null;
     }
   }
+
 
   Future<String> uploadImage(File image, String title, int albumId) async {
     try {
@@ -105,7 +106,6 @@ class ApiService {
       var jsonResponse = jsonDecode(response.body);
       List<Photo> photos =
           (jsonResponse as List).map((data) => Photo.fromJson(data)).toList();
-      print(photos);
       return photos;
     } else {
       throw Exception('Failed to fetch images');

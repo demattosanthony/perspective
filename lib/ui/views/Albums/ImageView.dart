@@ -9,9 +9,10 @@ class ImageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(50),
-        child: PlatformAppBar(),
+        child: PlatformAppBar(backgroundColor: Colors.black,),
       ),
       body: Image.network(imageUrl),
     );
