@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:point_of_view/core/viewmodels/BottomNavBarModel.dart';
-import 'login_view.dart';
 import 'dart:io' show Platform;
 import 'base_view.dart';
 
@@ -11,11 +10,7 @@ class BottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BaseView<BottomNavBarModel>(
-        builder: (context, model, child) => !model.isSignedIn
-            ? Scaffold(
-                body: LoginView(),
-              )
-            : WillPopScope(
+        builder: (context, model, child) => WillPopScope(
                 onWillPop: () async => false,
                 child: PageStorage(
                   bucket: model.bucket,

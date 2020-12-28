@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:point_of_view/ui/views/AlbumView.dart';
-import 'package:point_of_view/ui/views/ImageView.dart';
+import 'package:point_of_view/ui/views/Albums/ImageView.dart';
+import 'package:point_of_view/ui/views/Albums/AlbumView.dart';
+import 'package:point_of_view/ui/views/Camera/CameraView.dart';
+import 'package:point_of_view/ui/views/Authentication/register_view.dart';
 import 'package:point_of_view/ui/views/bottom_nav_bar.dart';
-import 'package:point_of_view/ui/views/CameraView.dart';
-import 'package:point_of_view/ui/views/register_view.dart';
 
 class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {

@@ -79,8 +79,8 @@ class AlbumRow extends StatelessWidget {
                             CircleAvatar(
                                 backgroundColor: Colors.white,
                                 radius: 25,
-                                backgroundImage: album.profileImgUrl == null
-                                    ? Container()
+                                backgroundImage: album.profileImgUrl == 'null'
+                                    ? AssetImage('assets/profile_icon.png')
                                     : NetworkImage(album.profileImgUrl)),
                             Padding(
                               padding: const EdgeInsets.all(8.0),

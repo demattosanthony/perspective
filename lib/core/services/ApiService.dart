@@ -31,6 +31,7 @@ class ApiService {
       var jsonResponse = jsonDecode(response.body);
       List<Album> myAlbums =
           (jsonResponse as List).map((data) => Album.fromJson(data)).toList();
+      print(myAlbums[1].profileImgUrl);
       return myAlbums;
     } else {
       print('Request failed with status: ${response.statusCode}.');

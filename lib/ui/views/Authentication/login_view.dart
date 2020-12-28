@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:point_of_view/core/viewmodels/login_model.dart';
 
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:point_of_view/ui/views/bottom_nav_bar.dart';
 import 'package:point_of_view/ui/widgets/CustomTextField.dart';
 import 'package:point_of_view/ui/widgets/ShowAlert.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:point_of_view/ui/views/bottom_nav_bar.dart';
 
 
-import 'base_view.dart';
+import '../base_view.dart';
 
 
 class LoginView extends StatelessWidget {

@@ -20,7 +20,6 @@ class MyAlbumsModel extends BaseModel {
     _albumService.getAlbums();
     setState(ViewState.Idle);
   }
-
   
 
   void getPhotos(albumId) {

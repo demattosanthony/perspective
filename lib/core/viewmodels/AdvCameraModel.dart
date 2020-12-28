@@ -15,18 +15,34 @@ class AdvCameraModel extends BaseModel {
   Album _selctedAlbum;
   bool isUploading = false;
   String imagePath;
+  bool _flashIsOn = false;
 
   AdvCameraController get cameraController => _cameraController;
   List<Album> get myAlbums => _myAlbums;
   Album get selectedAlbum => _selctedAlbum;
+  bool get flashIsOn => _flashIsOn;
 
-  onMapCreated(AdvCameraController cameraController) {
+  onCameraCreated(AdvCameraController cameraController) {
     setState(ViewState.Busy);
     _cameraController = cameraController;
 
     _cameraController
         .getPictureSizes()
         .then((pictureSizes) => {_pictureSizes = pictureSizes});
+    _cameraController.setFlashType(FlashType.off);
+    setState(ViewState.Idle);
+  }
+
+  void toggleFlash() {
+    setState(ViewState.Busy);
+    if (!_flashIsOn) {
+      _flashIsOn = true;
+      _cameraController.setFlashType(FlashType.on);
+    } else {
+      _flashIsOn = false;
+      _cameraController.setFlashType(FlashType.off);
+    }
+    setState(ViewState.Idle);
   }
 
   void getAlbums() async {
@@ -51,7 +67,7 @@ class AdvCameraModel extends BaseModel {
     setState(ViewState.Idle);
   }
 
-  void setImagePathAndUpload(String path)  {
+  void setImagePathAndUpload(String path) {
     setState(ViewState.Busy);
     imagePath = path;
     uploadImage(File(imagePath));

@@ -7,7 +7,7 @@ import 'package:point_of_view/core/viewmodels/CreateAlbumModel.dart';
 import 'package:point_of_view/ui/views/bottom_nav_bar.dart';
 import 'package:point_of_view/ui/widgets/CustomTextField.dart';
 import 'package:point_of_view/ui/widgets/ShowAlert.dart';
-import 'base_view.dart';
+import '../base_view.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
 class CreateAlbumView extends StatelessWidget {

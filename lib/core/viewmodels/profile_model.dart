@@ -10,9 +10,9 @@ class ProfileModel extends BaseModel {
 
   Future<List<User>> get userInfo => _userInfoService.userInfo;
 
-  void getUserInfo() async {
+  void getUserInfo() {
     setState(ViewState.Busy);
-    //_user = await _cloudfirestoreService.getUserInfo();
+    _userInfoService.getUserInfo();
     setState(ViewState.Idle);
   }
 
@@ -33,6 +33,6 @@ class ProfileModel extends BaseModel {
 
   ProfileModel() {
     //getImage();
-    //this.getUserInfo();
+    if(userInfo == null) getUserInfo();
   }
 }
