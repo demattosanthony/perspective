@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:point_of_view/core/viewmodels/MyAlbumsModel.dart';
-import 'package:point_of_view/ui/widgets/AlbumRow.dart';
-import '../base_view.dart';
-import 'package:point_of_view/ui/views/Albums/CreateAlbumView.dart';
+import 'package:point_of_view/ui/views/Albums/My Albums/components/AlbumRow.dart';
+import '../../base_view.dart';
+import 'package:point_of_view/ui/views/Albums/My Albums/components/app_bar.dart';
 
 class MyAlbumsView extends StatelessWidget {
   const MyAlbumsView({Key key}) : super(key: key);
@@ -14,33 +13,7 @@ class MyAlbumsView extends StatelessWidget {
       builder: (context, model, child) => Scaffold(
           appBar: PreferredSize(
             preferredSize: const Size.fromHeight(50),
-            child: PlatformAppBar(
-              backgroundColor: Colors.white,
-              title: Text(
-                'Albums',
-                style: TextStyle(color: Colors.black),
-              ),
-              automaticallyImplyLeading: false,
-              trailingActions: [
-                GestureDetector(
-                  onTap: () {
-                    showModalBottomSheet(
-                        context: context,
-                        isScrollControlled: true,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15)),
-                        builder: (builder) => CreateAlbumView());
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Icon(
-                      Icons.add,
-                      color: Colors.black,
-                    ),
-                  ),
-                )
-              ],
-            ),
+            child: MyAlbumsViewAppBar(),
           ),
           body: model.myAlbums == null
               ? Container()
@@ -65,3 +38,5 @@ class MyAlbumsView extends StatelessWidget {
     );
   }
 }
+
+

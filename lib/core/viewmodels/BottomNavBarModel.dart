@@ -2,7 +2,7 @@ import 'package:point_of_view/core/enums/viewstate.dart';
 import 'package:point_of_view/core/viewmodels/base_model.dart';
 import 'package:flutter/material.dart';
 import 'package:point_of_view/ui/views/Camera/AdvancedCameraView.dart';
-import 'package:point_of_view/ui/views/Albums/MyAlbumsView.dart';
+import 'package:point_of_view/ui/views/Albums/My%20Albums/MyAlbumsView.dart';
 import 'package:point_of_view/ui/views/Profile/profile_view.dart';
 
 class BottomNavBarModel extends BaseModel {

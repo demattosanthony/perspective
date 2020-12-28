@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:point_of_view/ui/views/Albums/ImageView.dart';
-import 'package:point_of_view/ui/views/Albums/AlbumView.dart';
+import 'package:point_of_view/ui/views/Albums/Selected%20Album/AlbumView.dart';
 import 'package:point_of_view/ui/views/Camera/CameraView.dart';
 import 'package:point_of_view/ui/views/Authentication/register_view.dart';
 import 'package:point_of_view/ui/views/bottom_nav_bar.dart';

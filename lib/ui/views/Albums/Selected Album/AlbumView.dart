@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:point_of_view/core/models/Album.dart';
 import 'package:point_of_view/core/viewmodels/AlbumModel.dart';
+import 'package:point_of_view/ui/views/Albums/Selected%20Album/components/app_bar.dart';
 import 'package:point_of_view/ui/views/base_view.dart';
-import 'package:point_of_view/ui/widgets/ShowAlert.dart';
 
 class AlbumView extends StatelessWidget {
   final Album album;
@@ -17,21 +17,7 @@ class AlbumView extends StatelessWidget {
         builder: (context, model, child) => Scaffold(
               appBar: PreferredSize(
                 preferredSize: const Size.fromHeight(50),
-                child: PlatformAppBar(
-                  title: Text(album.title),
-                  trailingActions: [
-                    PlatformButton(
-                      child: Text('Share'),
-                      onPressed: () {
-                        showPlatformDialog(
-                            context: context,
-                            builder: (_) =>
-                                ShowAlert("Share string:", album.shareString));
-                      },
-                      padding: EdgeInsets.all(0),
-                    )
-                  ],
-                ),
+                child: AlbumViewAppBar(album: album),
               ),
               body: FutureBuilder(
                 future: model.photos,
@@ -63,7 +49,6 @@ class AlbumView extends StatelessWidget {
                   } else if (snapshot.hasError) {
                     return Text("${snapshot.error}");
                   }
-
                   return Center(
                     child: PlatformCircularProgressIndicator(),
                   );
@@ -72,3 +57,4 @@ class AlbumView extends StatelessWidget {
             ));
   }
 }
+

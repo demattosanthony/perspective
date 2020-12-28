@@ -5,8 +5,8 @@ import 'dart:io';
 import 'package:point_of_view/core/viewmodels/register_model.dart';
 import 'package:point_of_view/ui/views/base_view.dart';
 import 'package:point_of_view/ui/views/bottom_nav_bar.dart';
-import 'package:point_of_view/ui/widgets/CustomTextField.dart';
-import 'package:point_of_view/ui/widgets/ShowAlert.dart';
+import 'package:point_of_view/ui/components/CustomTextField.dart';
+import 'package:point_of_view/ui/components/ShowAlert.dart';
 
 class RegisterView extends StatelessWidget {
   @override

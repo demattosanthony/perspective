@@ -3,7 +3,7 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:point_of_view/core/viewmodels/profile_model.dart';
 import 'package:point_of_view/ui/views/bottom_nav_bar.dart';
-import '../../widgets/profile_icon.dart';
+import 'components/profile_icon.dart';
 import '../base_view.dart';
 
 class ProfileView extends StatelessWidget {

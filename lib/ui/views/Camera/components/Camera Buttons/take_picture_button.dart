@@ -2,7 +2,7 @@ import 'package:adv_camera/adv_camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:point_of_view/core/models/Album.dart';
-import 'package:point_of_view/ui/widgets/ShowAlert.dart';
+import 'package:point_of_view/ui/components/ShowAlert.dart';
 
 class TakePictureButton extends StatelessWidget {
   const TakePictureButton({
