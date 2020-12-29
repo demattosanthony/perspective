@@ -8,9 +8,7 @@ import 'package:point_of_view/ui/components/CustomTextField.dart';
 import 'package:point_of_view/ui/components/ShowAlert.dart';
 import 'package:page_transition/page_transition.dart';
 
-
 import '../base_view.dart';
-
 
 class LoginView extends StatelessWidget {
   final _formkey = GlobalKey<FormState>();
@@ -22,7 +20,7 @@ class LoginView extends StatelessWidget {
         backgroundColor: Colors.white,
         body: Center(
           child: SingleChildScrollView(
-                      child: Column(
+            child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -35,8 +33,10 @@ class LoginView extends StatelessWidget {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        CustomTextField('Username', model.usernameController, false),
-                        CustomTextField('Password', model.passwordController, true),
+                        CustomTextField(
+                            'Username', model.usernameController, false),
+                        CustomTextField(
+                            'Password', model.passwordController, true),
                         SizedBox(
                           height: 20,
                         ),
@@ -44,11 +44,13 @@ class LoginView extends StatelessWidget {
                           onPressed: () async {
                             var loginSuccess = await model.login();
                             if (loginSuccess) {
+                              model.albumService.getAlbums();
+                              model.userInfoService.getUserInfo();
                               Navigator.pushReplacement(
-                              context,
-                              PageTransition(
-                                  child: BottomNavBar(),
-                                  type: PageTransitionType.fade));
+                                  context,
+                                  PageTransition(
+                                      child: BottomNavBar(),
+                                      type: PageTransitionType.fade));
                             } else {
                               showPlatformDialog(
                                   context: context,

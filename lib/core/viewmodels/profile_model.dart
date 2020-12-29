@@ -52,6 +52,6 @@ class ProfileModel extends BaseModel {
 
   ProfileModel() {
     //getImage();
-    getUserInfo();
+    if (userInfo == null) getUserInfo();
   }
 }

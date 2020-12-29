@@ -97,6 +97,8 @@ class RegisterView extends StatelessWidget {
                                 await model.createUserWithEmailAndPassword();
 
                             if (responseCode == 200) {
+                              model.albumService.getAlbums();
+                              model.userInfoService.getUserInfo();
                               Navigator.pushReplacement(
                                   context,
                                   PageTransition(

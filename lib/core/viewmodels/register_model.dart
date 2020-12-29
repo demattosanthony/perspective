@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:point_of_view/core/enums/viewstate.dart';
+import 'package:point_of_view/core/services/AlbumService.dart';
+import 'package:point_of_view/core/services/UserInfoService.dart';
 import 'package:point_of_view/core/viewmodels/base_model.dart';
 import '../services/auth_service.dart';
 import '../../locator.dart';
@@ -7,6 +9,8 @@ import 'package:image_picker/image_picker.dart';
 
 class RegisterModel extends BaseModel {
   final AuthService _authService = locator<AuthService>();
+  UserInfoService userInfoService = locator<UserInfoService>();
+  AlbumService albumService = locator<AlbumService>();
 
   var _emailcontorller = TextEditingController();
   var _passwordcontroller = TextEditingController();
