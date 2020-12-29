@@ -35,6 +35,6 @@ class MyAlbumsModel extends BaseModel {
   }
 
   MyAlbumsModel() {
-    if (myAlbums == null) getAlbums();
+    getAlbums();
   }
 }

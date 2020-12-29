@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:point_of_view/core/viewmodels/profile_model.dart';
+import 'package:point_of_view/ui/views/Authentication/login_view.dart';
+import 'package:point_of_view/ui/views/Profile/components/profile_list_tile.dart';
+import 'package:point_of_view/ui/views/Profile/components/profile_pic.dart';
 import 'package:point_of_view/ui/views/Profile/components/sign_out_button.dart';
-import 'components/profile_icon.dart';
 import '../base_view.dart';
 
 class ProfileView extends StatelessWidget {
@@ -12,17 +15,10 @@ class ProfileView extends StatelessWidget {
     return BaseView<ProfileModel>(
         builder: (context, model, child) => Scaffold(
               backgroundColor: Colors.white,
-              appBar: PreferredSize(
-                preferredSize: const Size.fromHeight(50),
-                child: PlatformAppBar(
-                  automaticallyImplyLeading: false,
-                  backgroundColor: Colors.white,
-                  title: Text(
-                    'Profile',
-                    style: TextStyle(color: Colors.black),
-                  ),
-                  trailingActions: [SignOutButton(signOut: model.signOut)],
-                ),
+              appBar: AppBar(
+                title: Text('Profile', style: TextStyle(color: Colors.black),),
+                elevation: 0,
+                backgroundColor: Colors.white,
               ),
               body: SingleChildScrollView(
                 child: FutureBuilder(
@@ -33,34 +29,40 @@ class ProfileView extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Container(
-                              padding: EdgeInsets.only(top: 10),
-                              alignment: Alignment.center,
-                              height: MediaQuery.of(context).size.height * .30,
-                              child: ProfileIcon(
-                                  snapshot.data[0].profileImageUrl)),
-                          Container(
-                              child: Text(
-                            '@${snapshot.data[0].username}',
-                            style: TextStyle(
-                                fontSize: 22, fontWeight: FontWeight.bold),
-                          )),
-                          Container(
-                            padding: EdgeInsets.all(15),
-                            child: Card(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15.0),
-                              ),
-                              elevation: 15,
-                              child: ListTile(
-                                title: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [],
-                                ),
-                              ),
-                            ),
+                          Padding(padding: EdgeInsets.only(top: 25)),
+                          ProfilePic(
+                            snapshot: snapshot,
+                            updateProfileImg: model.updateProfileImage,
+                            selectImg: model.selectImage,
                           ),
+                          ProfileListTile(
+                            icon: Icons.person,
+                            title: 'My Account',
+                          ),
+                          ProfileListTile(
+                            icon: Icons.photo_album_rounded,
+                            title: 'Created Albums',
+                          ),
+                          ProfileListTile(
+                            icon: Icons.add_a_photo,
+                            title: 'Joined Albums',
+                          ),
+                          ProfileListTile(
+                            icon: Icons.settings,
+                            title: 'Settings',
+                          ),
+                          ProfileListTile(
+                            icon: Icons.logout,
+                            title: 'Log Out',
+                            press: () {
+                              model.signOut();
+                              Navigator.pushReplacement(
+                                  context,
+                                  PageTransition(
+                                      child: LoginView(),
+                                      type: PageTransitionType.fade));
+                            },
+                          )
                         ],
                       );
                     } else if (snapshot.hasError) {
@@ -74,8 +76,6 @@ class ProfileView extends StatelessWidget {
             ));
   }
 }
-
-
 
 extension StringExtension on String {
   String capitalize() {

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:point_of_view/ui/views/Albums/ImageView.dart';
 import 'package:point_of_view/ui/views/Albums/Selected%20Album/AlbumView.dart';
+import 'package:point_of_view/ui/views/Authentication/login_view.dart';
 import 'package:point_of_view/ui/views/Camera/CameraView.dart';
 import 'package:point_of_view/ui/views/Authentication/register_view.dart';
+import 'package:point_of_view/ui/views/Profile/profile_view.dart';
 import 'package:point_of_view/ui/views/bottom_nav_bar.dart';
 
 class Router {
@@ -10,16 +12,20 @@ class Router {
     switch (settings.name) {
       case '/':
         return MaterialPageRoute(builder: (_) => BottomNavBar());
+      case 'loginView':
+        return MaterialPageRoute(builder: (_) => LoginView());
       case 'register':
         return MaterialPageRoute(builder: (_) => RegisterView());
       case 'camera':
         return MaterialPageRoute(builder: (_) => CameraView());
       case 'albumView':
         var albumid = settings.arguments;
-        return MaterialPageRoute(builder: (_) => AlbumView(albumid));
+        return MaterialPageRoute(builder: (_) => AlbumView(album: albumid));
       case 'imageView':
         var imageUrl = settings.arguments;
         return MaterialPageRoute(builder: (_) => ImageView(imageUrl));
+      case 'profileView':
+        return MaterialPageRoute(builder: (_) => ProfileView());
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(

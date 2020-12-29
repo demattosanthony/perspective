@@ -43,6 +43,24 @@ class AuthService {
     }
   }
 
+  void changeProfileImage(int userId, String image) async {
+    var client = http.Client();
+    try {
+      String profileImageUrl =
+          await _apiService.uploadImage(File(image), "profileImage", 0);
+
+      var url = host + 'updateProfileImg';
+      Map body = {'profileImageUrl': profileImageUrl, 'userId': userId.toString()};
+      var response = await http.put(url, body: body);
+      if (response.statusCode == 200) print('Success');
+      else {
+        
+      }
+    } finally {
+      client.close();
+    }
+  }
+
   Future<int> login(String username, String password) async {
     var client = http.Client();
     try {

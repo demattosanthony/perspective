@@ -5,11 +5,12 @@ import 'package:point_of_view/core/models/Album.dart';
 import 'package:point_of_view/core/viewmodels/AlbumModel.dart';
 import 'package:point_of_view/ui/views/Albums/Selected%20Album/components/app_bar.dart';
 import 'package:point_of_view/ui/views/base_view.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class AlbumView extends StatelessWidget {
-  final Album album;
+  const AlbumView({this.album});
 
-  AlbumView(this.album);
+  final Album album;
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +28,8 @@ class AlbumView extends StatelessWidget {
                     return GridView.builder(
                         itemCount: snapshot.data.length,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          mainAxisSpacing: 1,
-                          crossAxisSpacing: 1,
+                            mainAxisSpacing: 1,
+                            crossAxisSpacing: 1,
                             crossAxisCount:
                                 (orientation == Orientation.portrait) ? 4 : 3),
                         itemBuilder: (context, index) {
@@ -39,10 +40,11 @@ class AlbumView extends StatelessWidget {
                                   .pushNamed('imageView', arguments: imageUrl);
                             },
                             child: GridTile(
-                                child: Image.network(
-                              imageUrl,
+                                child: CachedNetworkImage(
+                                  fadeInDuration: Duration(microseconds: 0),
+                                  placeholder: (context, url) => PlatformCircularProgressIndicator(),
+                              imageUrl: imageUrl,
                               fit: BoxFit.cover,
-                              
                             )),
                           );
                         });
@@ -50,11 +52,10 @@ class AlbumView extends StatelessWidget {
                     return Text("${snapshot.error}");
                   }
                   return Center(
-                    child: PlatformCircularProgressIndicator(),
+                    child: Container(),
                   );
                 },
               ),
             ));
   }
 }
-

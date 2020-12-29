@@ -52,9 +52,9 @@ class AlbumRow extends StatelessWidget {
                     ));
           },
           background: Container(
+            decoration: BoxDecoration(color: Colors.red, borderRadius: BorderRadius.circular(25)),
             alignment: Alignment.centerRight,
             padding: EdgeInsets.only(right: 20),
-            color: Colors.red,
             child: Icon(
               Icons.delete,
               color: Colors.white,

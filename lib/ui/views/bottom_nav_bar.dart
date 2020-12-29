@@ -17,6 +17,7 @@ class BottomNavBar extends StatelessWidget {
                   child: Scaffold(
                       body: model.currentPage,
                       bottomNavigationBar: CurvedNavigationBar(
+                        backgroundColor: Colors.blue,
                         height: Platform.isAndroid ? MediaQuery.of(context).size.height*.10 : 75,
                         animationDuration: Duration(milliseconds: 250),
                         index: model.currentIndex,
