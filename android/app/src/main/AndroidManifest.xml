@@ -2,6 +2,8 @@
     package="com.example.point_of_view">
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+     <application android:requestLegacyExternalStorage="true"/>
+
    <application
         android:label="point_of_view"
         android:icon="@mipmap/ic_launcher">

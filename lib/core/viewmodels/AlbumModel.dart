@@ -1,8 +1,12 @@
+import 'dart:typed_data';
+
 import 'package:point_of_view/core/enums/viewstate.dart';
 import 'package:point_of_view/core/models/Photo.dart';
 import 'package:point_of_view/core/services/AlbumService.dart';
 import 'package:point_of_view/core/viewmodels/base_model.dart';
 import 'package:point_of_view/locator.dart';
+import 'package:http/http.dart' as http;
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 
 class AlbumModel extends BaseModel {
   final AlbumService _albumService = locator<AlbumService>();
@@ -32,5 +36,42 @@ class AlbumModel extends BaseModel {
       }
     }
     setState(ViewState.Busy);
+  }
+
+  // ignore: missing_return
+  Future<bool> save() async {
+    setState(ViewState.Busy);
+    var client = http.Client();
+    try {
+      var photosList = await photos;
+      for (var photo in photosList) {
+        //only download select photos
+        if (isSelectingImages) {
+          if (photo.isSelected) {
+            var response = await http.get(photo.imageUrl);
+
+            await ImageGallerySaver.saveImage(
+                Uint8List.fromList(response.bodyBytes),
+                quality: 60,
+                name: photo.photoId.toString());
+          }
+        } else {
+          //download entire album
+          var response = await http.get(photo.imageUrl);
+
+          await ImageGallerySaver.saveImage(
+              Uint8List.fromList(response.bodyBytes),
+              quality: 60,
+              name: photo.photoId.toString());
+        }
+        setSelectingImages();
+        return true;
+      }
+      setState(ViewState.Busy);
+    } catch (e) {
+      return false;
+    } finally {
+      client.close();
+    }
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:point_of_view/core/models/Album.dart';
 import 'package:point_of_view/core/viewmodels/AlbumModel.dart';
+import 'package:point_of_view/ui/components/ShowAlert.dart';
 import 'package:point_of_view/ui/views/Albums/Selected%20Album/components/app_bar.dart';
 import 'package:point_of_view/ui/views/Albums/Selected%20Album/components/grid_item.dart';
 import 'package:point_of_view/ui/views/base_view.dart';
@@ -63,12 +64,26 @@ class AlbumView extends StatelessWidget {
           fixedColor: Colors.blueAccent,
           unselectedItemColor: Colors.blueAccent,
           currentIndex: 0,
+          onTap: (index) async {
+            if (index == 2) {
+              var success = await model.save();
+              if (success) {
+                showPlatformDialog(
+                    context: context,
+                    builder: (_) =>
+                        ShowAlert('Download Success!!', 'Complete.'));
+              }
+            }
+          },
           items: [
             BottomNavigationBarItem(icon: Icon(Icons.share), label: 'Share'),
             BottomNavigationBarItem(
                 icon: Icon(Icons.add_a_photo_rounded), label: 'Upload Images'),
             BottomNavigationBarItem(
-                icon: Icon(Icons.download_rounded), label: 'Download Album')
+                icon: Icon(Icons.download_rounded),
+                label: model.isSelectingImages
+                    ? 'Download Images'
+                    : 'Download Album')
           ],
         ),
       ),
