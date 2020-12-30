@@ -16,7 +16,10 @@ class ProfileView extends StatelessWidget {
         builder: (context, model, child) => Scaffold(
               backgroundColor: Colors.white,
               appBar: AppBar(
-                title: Text('Profile', style: TextStyle(color: Colors.black),),
+                title: Text(
+                  'Profile',
+                  style: TextStyle(color: Colors.black),
+                ),
                 elevation: 0,
                 backgroundColor: Colors.white,
               ),
@@ -42,10 +45,18 @@ class ProfileView extends StatelessWidget {
                           ProfileListTile(
                             icon: Icons.photo_album_rounded,
                             title: 'Created Albums',
+                            press: () {
+                              Navigator.of(context)
+                                  .pushNamed('createdAlbumsView');
+                            },
                           ),
                           ProfileListTile(
                             icon: Icons.add_a_photo,
                             title: 'Joined Albums',
+                            press: () {
+                              Navigator.of(context)
+                                  .pushNamed('joinedAlbumsView');
+                            },
                           ),
                           ProfileListTile(
                             icon: Icons.settings,

@@ -19,9 +19,7 @@ class AlbumViewAppBar extends StatelessWidget {
       ),
       elevation: 0,
       backgroundColor: Colors.white,
-      iconTheme: IconThemeData(
-        color: Colors.black, //change your color here
-      ),
+      
       actions: [
         Padding(
           padding: const EdgeInsets.all(5.0),

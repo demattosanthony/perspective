@@ -37,7 +37,7 @@ class SelectAlbumButton extends StatelessWidget {
                             children: [
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Text(myAlbums[index].title,
+                                child: Text(myAlbums[index].title.toUpperCase(),
                                     style: TextStyle(fontSize: 18)),
                               ),
                               Divider()
@@ -48,7 +48,7 @@ class SelectAlbumButton extends StatelessWidget {
                 });
           },
           child: Text(
-            selectedAlbum == null ? 'Select Album' : selectedAlbum.title,
+            selectedAlbum == null ? 'Select Album' : selectedAlbum.title.toUpperCase(),
             style: TextStyle(color: Colors.white, fontSize: 18),
           ),
           color: Colors.grey.withOpacity(0.30),

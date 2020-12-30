@@ -64,10 +64,10 @@ class AlbumModel extends BaseModel {
               quality: 60,
               name: photo.photoId.toString());
         }
-        setSelectingImages();
-        return true;
       }
+      setSelectingImages();
       setState(ViewState.Busy);
+      return true;
     } catch (e) {
       return false;
     } finally {

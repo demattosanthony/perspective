@@ -4,6 +4,8 @@ import 'package:point_of_view/ui/views/Albums/Selected%20Album/AlbumView.dart';
 import 'package:point_of_view/ui/views/Authentication/login_view.dart';
 import 'package:point_of_view/ui/views/Camera/CameraView.dart';
 import 'package:point_of_view/ui/views/Authentication/register_view.dart';
+import 'package:point_of_view/ui/views/Created%20&%20Joined%20Albums/created_albums_view.dart';
+import 'package:point_of_view/ui/views/Created%20&%20Joined%20Albums/joined_albums_view.dart';
 import 'package:point_of_view/ui/views/Profile/profile_view.dart';
 import 'package:point_of_view/ui/views/bottom_nav_bar.dart';
 
@@ -26,6 +28,10 @@ class Router {
         return MaterialPageRoute(builder: (_) => ImageView(imageUrl));
       case 'profileView':
         return MaterialPageRoute(builder: (_) => ProfileView());
+      case 'createdAlbumsView':
+        return MaterialPageRoute(builder: (_) => CreatedAlbumsView());
+      case 'joinedAlbumsView':
+        return MaterialPageRoute(builder: (_) => JoinedAlbumsView());
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(

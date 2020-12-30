@@ -85,7 +85,7 @@ class AlbumRow extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
-                                album.title,
+                                album.title.toUpperCase(),
                                 style: TextStyle(
                                     fontSize: 22, fontWeight: FontWeight.bold),
                               ),
