@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:point_of_view/ui/views/Albums/Create%20Album/CreateAlbumView.dart';
-
 
 class MyAlbumsViewAppBar extends StatelessWidget {
   const MyAlbumsViewAppBar({
@@ -10,14 +8,15 @@ class MyAlbumsViewAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PlatformAppBar(
+    return AppBar(
       backgroundColor: Colors.white,
       title: Text(
         'Albums',
         style: TextStyle(color: Colors.black),
       ),
+      elevation: 0,
       automaticallyImplyLeading: false,
-      trailingActions: [
+      actions: [
         GestureDetector(
           onTap: () {
             showModalBottomSheet(
@@ -28,7 +27,7 @@ class MyAlbumsViewAppBar extends StatelessWidget {
                 builder: (builder) => CreateAlbumView());
           },
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(15.0),
             child: Icon(
               Icons.add,
               color: Colors.black,

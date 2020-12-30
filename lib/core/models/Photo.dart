@@ -2,8 +2,9 @@ class Photo {
   final int photoId;
   final String imageUrl;
   final int albumId;
+  bool isSelected;
 
-  Photo({this.photoId, this.imageUrl, this.albumId});
+  Photo({this.photoId, this.imageUrl, this.albumId, this.isSelected = false});
 
   factory Photo.fromJson(Map<String, dynamic> json) {
     return Photo(

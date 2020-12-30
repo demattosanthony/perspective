@@ -19,7 +19,7 @@ class ProfileListTile extends StatelessWidget {
           ),
           elevation: 5,
           child: ListTile(
-            leading: Icon(icon, color: Colors.blue),
+            leading: Icon(icon, color: Colors.blueAccent),
             title: Text(
               title,
               style: TextStyle(fontSize: 18),

@@ -106,6 +106,7 @@ class ApiService {
       var jsonResponse = jsonDecode(response.body);
       List<Photo> photos =
           (jsonResponse as List).map((data) => Photo.fromJson(data)).toList();
+      
       return photos;
     } else {
       throw Exception('Failed to fetch images');

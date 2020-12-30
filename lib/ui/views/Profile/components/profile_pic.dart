@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:page_transition/page_transition.dart';
-import 'package:point_of_view/ui/views/Profile/profile_view.dart';
 
 class ProfilePic extends StatelessWidget {
   const ProfilePic(
