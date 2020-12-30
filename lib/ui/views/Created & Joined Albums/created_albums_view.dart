@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:point_of_view/core/models/Album.dart';
 import 'package:point_of_view/core/viewmodels/MyAlbumsModel.dart';
 import 'package:point_of_view/ui/views/base_view.dart';
-import 'package:point_of_view/ui/views/Created Albums/components/album_row.dart';
+import 'package:point_of_view/ui/views/Created & Joined Albums/components/album_row.dart';
+
 class CreatedAlbumsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,10 @@ class CreatedAlbumsView extends StatelessWidget {
                     List<Album> createdAlbums = albums
                         .where((element) => element.ownerId == userId)
                         .toList();
-                    return AlbumRow(albums: createdAlbums);
+                    return AlbumRow(
+                      albums: createdAlbums,
+                      getPhotos: model.getPhotos,
+                    );
                   } else if (snapshot.hasError) {
                     return Text("${snapshot.error}");
                   }
@@ -29,5 +33,3 @@ class CreatedAlbumsView extends StatelessWidget {
                 })));
   }
 }
-
-

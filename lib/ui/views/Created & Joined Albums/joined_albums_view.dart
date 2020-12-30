@@ -20,7 +20,7 @@ class JoinedAlbumsView extends StatelessWidget {
                       List<Album> joinedAlbums = albums
                           .where((element) => element.ownerId != userId)
                           .toList();
-                      return AlbumRow(albums: joinedAlbums);
+                      return AlbumRow(albums: joinedAlbums, getPhotos: model.getPhotos,);
                     } else if (snapshot.hasError) {
                       return Text("${snapshot.error}");
                     }
