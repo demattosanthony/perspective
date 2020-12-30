@@ -8,6 +8,7 @@ import 'package:point_of_view/ui/views/Created%20&%20Joined%20Albums/created_alb
 import 'package:point_of_view/ui/views/Created%20&%20Joined%20Albums/joined_albums_view.dart';
 import 'package:point_of_view/ui/views/Profile/profile_view.dart';
 import 'package:point_of_view/ui/views/bottom_nav_bar.dart';
+import 'package:point_of_view/ui/views/my_account/my_account_view.dart';
 
 class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -32,6 +33,9 @@ class Router {
         return MaterialPageRoute(builder: (_) => CreatedAlbumsView());
       case 'joinedAlbumsView':
         return MaterialPageRoute(builder: (_) => JoinedAlbumsView());
+      case 'myAccountView':
+        var data = settings.arguments;
+        return MaterialPageRoute(builder: (_) => MyAccountView(userData: data,));
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(

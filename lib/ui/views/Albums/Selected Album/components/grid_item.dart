@@ -52,7 +52,7 @@ class GridItem extends StatelessWidget {
               ),
               fadeInDuration: Duration(microseconds: 0),
               placeholder: (context, url) =>
-                  PlatformCircularProgressIndicator(),
+                  Center(child: PlatformCircularProgressIndicator()),
               imageUrl: imageUrl,
               fit: BoxFit.cover,
             ),

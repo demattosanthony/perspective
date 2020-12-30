@@ -25,7 +25,7 @@ class AdvCameraModel extends BaseModel {
   onCameraCreated(AdvCameraController cameraController) {
     setState(ViewState.Busy);
     _cameraController = cameraController;
-
+    
     _cameraController
         .getPictureSizes()
         .then((pictureSizes) => {_pictureSizes = pictureSizes});
@@ -73,6 +73,7 @@ class AdvCameraModel extends BaseModel {
     uploadImage(File(imagePath));
     setState(ViewState.Idle);
   }
+
 
   AdvCameraModel() {
     getAlbums();

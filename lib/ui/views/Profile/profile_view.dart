@@ -41,6 +41,9 @@ class ProfileView extends StatelessWidget {
                           ProfileListTile(
                             icon: Icons.person,
                             title: 'My Account',
+                            press: () {
+                              Navigator.of(context).pushNamed('myAccountView', arguments: snapshot.data[0]);
+                            },
                           ),
                           ProfileListTile(
                             icon: Icons.photo_album_rounded,

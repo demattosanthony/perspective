@@ -18,6 +18,7 @@ class AdvCameraView extends StatelessWidget {
             await model.cameraController.switchCamera();
           },
           child: AdvCamera(
+          
             cameraSessionPreset: CameraSessionPreset.high,
             initialCameraType: CameraType.rear,
             onCameraCreated: model.onCameraCreated,

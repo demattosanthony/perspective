@@ -15,7 +15,7 @@ class RegisterView extends StatelessWidget {
       builder: (context, model, child) => Scaffold(
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(50),
-          child: PlatformAppBar(
+          child: AppBar(
             title: Text('Register', style: TextStyle(color: Colors.black)),
           ),
         ),
