@@ -1,42 +1,58 @@
 import 'package:flutter/material.dart';
-import 'package:point_of_view/core/viewmodels/MyAlbumsModel.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:point_of_view/core/managers/album_manager.dart';
+import 'package:point_of_view/core/models/Album.dart';
+import 'package:point_of_view/locator.dart';
 import 'package:point_of_view/ui/views/Albums/My Albums/components/AlbumRow.dart';
-import '../../base_view.dart';
 import 'package:point_of_view/ui/views/Albums/My Albums/components/app_bar.dart';
 
-class MyAlbumsView extends StatelessWidget {
+class MyAlbumsView extends StatefulWidget {
   const MyAlbumsView({Key key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return BaseView<MyAlbumsModel>(
-      builder: (context, model, child) => Scaffold(
-          appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(50),
-            child: MyAlbumsViewAppBar(),
-          ),
-          body: model.myAlbums == null
-              ? Container()
-              : RefreshIndicator(
-                  onRefresh: () async {
-                    model.getAlbums();
-                  },
-                  child: FutureBuilder(
-                    future: model.myAlbums,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return AlbumRow(snapshot.data, model.getPhotos,
-                            model.deleteAlbum, model.getAlbums);
-                      } else if (snapshot.hasError) {
-                        return Text("${snapshot.error}");
-                      }
+  _MyAlbumsViewState createState() => _MyAlbumsViewState();
+}
 
-                      return Container();
-                    },
-                  )),),
-                
+class _MyAlbumsViewState extends State<MyAlbumsView>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  void initState() {
+    locator<AlbumManager>().getAlbums();
+    super.initState();
+  }
+
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(50),
+        child: MyAlbumsViewAppBar(),
+      ),
+      body: RefreshIndicator(
+          onRefresh: () async {
+            locator<AlbumManager>().getAlbums();
+          },
+          child: StreamBuilder<List<Album>>(
+            stream: locator<AlbumManager>().getAlbums,
+            initialData: [],
+            builder: (context, albums) {
+              if (albums.hasData) {
+                return AlbumRow(myAlbums: albums.data);
+              } else if (albums.hasError) {
+                return Text("${albums.error}");
+              } else if (albums.data.isEmpty) {
+                return Center(
+                  child: PlatformCircularProgressIndicator(),
+                );
+              }
+
+              return Container();
+            },
+          )),
     );
   }
 }
-
-

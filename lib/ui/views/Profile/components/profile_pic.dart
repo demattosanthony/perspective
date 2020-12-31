@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:point_of_view/core/services/user_service.dart';
+import 'package:point_of_view/locator.dart';
 
 class ProfilePic extends StatelessWidget {
-  const ProfilePic(
-      {Key key, this.snapshot, this.updateProfileImg, this.selectImg})
-      : super(key: key);
+  const ProfilePic({Key key, this.snapshot, this.selectImg}) : super(key: key);
 
   final AsyncSnapshot<dynamic> snapshot;
-  final UpdateProfileImg updateProfileImg;
+
   final SelectImg selectImg;
   @override
   Widget build(BuildContext context) {
@@ -18,10 +18,10 @@ class ProfilePic extends StatelessWidget {
         overflow: Overflow.visible,
         children: [
           CircleAvatar(
-            backgroundColor: Colors.white,
-              backgroundImage: snapshot.data[0].profileImageUrl == 'null'
+              backgroundColor: Colors.white,
+              backgroundImage: snapshot.data.profileImageUrl == 'null'
                   ? AssetImage('assets/profile_icon.png')
-                  : NetworkImage(snapshot.data[0].profileImageUrl)),
+                  : NetworkImage(snapshot.data.profileImageUrl)),
           Positioned(
               right: -12,
               bottom: 0,
@@ -32,7 +32,9 @@ class ProfilePic extends StatelessWidget {
                     padding: EdgeInsets.zero,
                     onPressed: () async {
                       String imgPath = await selectImg();
-                      updateProfileImg(imgPath);
+                      // updateProfileImg(imgPath);
+                      locator<UserService>()
+                          .changeProfileImage(imgPath);
                     },
                     color: Color(0xFFF5F6F9),
                     child: Icon(Icons.person),
@@ -45,5 +47,4 @@ class ProfilePic extends StatelessWidget {
   }
 }
 
-typedef UpdateProfileImg = Function(String image);
 typedef SelectImg = Function();

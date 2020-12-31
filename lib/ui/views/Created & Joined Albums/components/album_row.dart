@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:point_of_view/core/models/Album.dart';
 
 class AlbumRow extends StatelessWidget {
-  const AlbumRow({Key key, @required this.albums, this.getPhotos})
+  const AlbumRow({Key key, @required this.albums})
       : super(key: key);
 
   final List<Album> albums;
-  final GetPhotosCallBack getPhotos;
+
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,6 @@ class AlbumRow extends StatelessWidget {
 
           return InkWell(
             onTap: () {
-              getPhotos(album.albumId);
               Navigator.of(context).pushNamed('albumView', arguments: album);
             },
             child: Container(
@@ -32,10 +31,14 @@ class AlbumRow extends StatelessWidget {
                             ? AssetImage('assets/profile_icon.png')
                             : NetworkImage(album.profileImgUrl),
                       ),
-                      title: Text(
-                        album.title.toUpperCase(),
-                        style: TextStyle(
-                            fontSize: 22, fontWeight: FontWeight.bold),
+                      title: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        alignment: Alignment.centerLeft,
+                                              child: Text(
+                          album.title.toUpperCase(),
+                          style: TextStyle(
+                              fontSize: 22, fontWeight: FontWeight.bold),
+                        ),
                       ),
                       trailing: Icon(Icons.keyboard_arrow_right),
                     ),
@@ -46,4 +49,3 @@ class AlbumRow extends StatelessWidget {
   }
 }
 
-typedef GetPhotosCallBack = void Function(int albumId);

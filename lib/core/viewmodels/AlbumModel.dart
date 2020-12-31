@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 import 'package:point_of_view/core/enums/viewstate.dart';
 import 'package:point_of_view/core/models/Photo.dart';
-import 'package:point_of_view/core/services/AlbumService.dart';
+import 'package:point_of_view/core/services/album_service.dart';
 import 'package:point_of_view/core/viewmodels/base_model.dart';
 import 'package:point_of_view/locator.dart';
 import 'package:http/http.dart' as http;
@@ -11,39 +11,39 @@ import 'package:image_gallery_saver/image_gallery_saver.dart';
 class AlbumModel extends BaseModel {
   final AlbumService _albumService = locator<AlbumService>();
 
-  Future<List<Photo>> get photos => _albumService.photos;
+  // Future<List<Photo>> get photos => _albumService.photos;
 
   bool isSelectingImages = false;
 
-  void setSelectingImages() async {
-    setState(ViewState.Busy);
-    isSelectingImages = !isSelectingImages;
-    if (isSelectingImages == false) {
-      var photosList = await photos;
-      for (var photo in photosList) {
-        photo.isSelected = false;
-      }
-    }
-    setState(ViewState.Idle);
-  }
+  // void setSelectingImages() async {
+  //   setState(ViewState.Busy);
+  //   isSelectingImages = !isSelectingImages;
+  //   if (isSelectingImages == false) {
+  //     var photosList = await photos;
+  //     for (var photo in photosList) {
+  //       photo.isSelected = false;
+  //     }
+  //   }
+  //   setState(ViewState.Idle);
+  // }
 
-  void setImageSelected(int photoId) async {
-    setState(ViewState.Busy);
-    var photosList = await photos;
-    for (var photo in photosList) {
-      if (photo.photoId == photoId) {
-        photo.isSelected = !photo.isSelected;
-      }
-    }
-    setState(ViewState.Busy);
-  }
+  // void setImageSelected(int photoId) async {
+  //   setState(ViewState.Busy);
+  //   var photosList = await photos;
+  //   for (var photo in photosList) {
+  //     if (photo.photoId == photoId) {
+  //       photo.isSelected = !photo.isSelected;
+  //     }
+  //   }
+  //   setState(ViewState.Busy);
+  // }
 
   // ignore: missing_return
-  Future<bool> save() async {
+  Future<bool> save(List<Photo> photosList) async {
     setState(ViewState.Busy);
     var client = http.Client();
     try {
-      var photosList = await photos;
+      // var photosList = await photos;
       for (var photo in photosList) {
         //only download select photos
         if (isSelectingImages) {
@@ -65,7 +65,7 @@ class AlbumModel extends BaseModel {
               name: photo.photoId.toString());
         }
       }
-      setSelectingImages();
+      // setSelectingImages();
       setState(ViewState.Busy);
       return true;
     } catch (e) {

@@ -1,18 +1,29 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:point_of_view/core/managers/album_manager.dart';
 import 'package:point_of_view/core/models/Album.dart';
 import 'package:point_of_view/core/viewmodels/AlbumModel.dart';
-import 'package:point_of_view/ui/components/ShowAlert.dart';
+import 'package:point_of_view/locator.dart';
 import 'package:point_of_view/ui/views/Albums/Selected%20Album/components/app_bar.dart';
 import 'package:point_of_view/ui/views/Albums/Selected%20Album/components/grid_item.dart';
 import 'package:point_of_view/ui/views/base_view.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:point_of_view/core/models/Photo.dart';
 
-class AlbumView extends StatelessWidget {
+class AlbumView extends StatefulWidget {
   const AlbumView({this.album});
 
   final Album album;
+
+  @override
+  _AlbumViewState createState() => _AlbumViewState();
+}
+
+class _AlbumViewState extends State<AlbumView> {
+  @override
+  void initState() {
+    locator<AlbumManager>().getAlbumImages(widget.album.albumId);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,13 +32,13 @@ class AlbumView extends StatelessWidget {
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(50),
           child: AlbumViewAppBar(
-            album: album,
-            setSelectingImages: model.setSelectingImages,
+            album: widget.album,
+            setSelectingImages: false,
             isSelecting: model.isSelectingImages,
           ),
         ),
-        body: FutureBuilder(
-          future: model.photos,
+        body: StreamBuilder<List<Photo>>(
+          stream: locator<AlbumManager>().getAlbumImages,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               final orientation = MediaQuery.of(context).orientation;
@@ -44,7 +55,7 @@ class AlbumView extends StatelessWidget {
                     var imageId = snapshot.data[index].photoId;
                     return GridItem(
                       imageUrl: imageUrl,
-                      setSelectedImage: model.setImageSelected,
+                      setSelectedImage: false,
                       isSelectingImages: model.isSelectingImages,
                       isSelected: isSelected,
                       imageId: imageId,
@@ -64,17 +75,17 @@ class AlbumView extends StatelessWidget {
           fixedColor: Colors.blueAccent,
           unselectedItemColor: Colors.blueAccent,
           currentIndex: 0,
-          onTap: (index) async {
-            if (index == 2) {
-              var success = await model.save();
-              if (success) {
-                showPlatformDialog(
-                    context: context,
-                    builder: (_) =>
-                        ShowAlert('Download Success!!', 'Complete.'));
-              }
-            }
-          },
+          // onTap: (index) async {
+          //   if (index == 2) {
+          //     var success = await model.save();
+          //     if (success) {
+          //       showPlatformDialog(
+          //           context: context,
+          //           builder: (_) =>
+          //               ShowAlert('Download Success!!', 'Complete.'));
+          //     }
+          //   }
+          // },
           items: [
             BottomNavigationBarItem(icon: Icon(Icons.share), label: 'Share'),
             BottomNavigationBarItem(

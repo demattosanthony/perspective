@@ -47,7 +47,7 @@ class GridItem extends StatelessWidget {
                             image: imageProvider,
                             fit: BoxFit.cover,
                             colorFilter: ColorFilter.mode(
-                                Colors.grey.withOpacity(.35),
+                                Colors.transparent.withOpacity(.65),
                                 BlendMode.color))),
               ),
               fadeInDuration: Duration(microseconds: 0),

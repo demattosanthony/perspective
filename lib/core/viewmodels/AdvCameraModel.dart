@@ -25,10 +25,10 @@ class AdvCameraModel extends BaseModel {
   onCameraCreated(AdvCameraController cameraController) {
     setState(ViewState.Busy);
     _cameraController = cameraController;
-    
-    _cameraController
-        .getPictureSizes()
-        .then((pictureSizes) => {_pictureSizes = pictureSizes});
+
+    // _cameraController
+    //     .getPictureSizes()
+    //     .then((pictureSizes) => {_pictureSizes = pictureSizes});
     _cameraController.setFlashType(FlashType.off);
     setState(ViewState.Idle);
   }
@@ -74,8 +74,14 @@ class AdvCameraModel extends BaseModel {
     setState(ViewState.Idle);
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    print('dispose');
+  }
 
   AdvCameraModel() {
     getAlbums();
+    print('reopned');
   }
 }

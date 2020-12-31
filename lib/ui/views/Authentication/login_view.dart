@@ -1,22 +1,23 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:point_of_view/core/viewmodels/login_model.dart';
+import 'package:point_of_view/core/services/auth_service.dart';
 
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:point_of_view/locator.dart';
 import 'package:point_of_view/ui/views/bottom_nav_bar.dart';
 import 'package:point_of_view/ui/components/CustomTextField.dart';
 import 'package:point_of_view/ui/components/ShowAlert.dart';
 import 'package:page_transition/page_transition.dart';
 
-import '../base_view.dart';
 
 class LoginView extends StatelessWidget {
   final _formkey = GlobalKey<FormState>();
+  final _usernameController = TextEditingController();
+  final  _passwordcontroller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return BaseView<LoginModel>(
-      builder: (context, model, child) => Scaffold(
+    return Scaffold(
         backgroundColor: Colors.white,
         body: Center(
           child: SingleChildScrollView(
@@ -33,19 +34,17 @@ class LoginView extends StatelessWidget {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        CustomTextField(
-                            'Username', model.usernameController, false),
-                        CustomTextField(
-                            'Password', model.passwordController, true),
+                        CustomTextField('Username', _usernameController, false),
+                        CustomTextField('Password', _passwordcontroller, true),
                         SizedBox(
                           height: 20,
                         ),
                         FlatButton(
                           onPressed: () async {
-                            var loginSuccess = await model.login();
-                            if (loginSuccess) {
-                              model.albumService.getAlbums();
-                              model.userInfoService.getUserInfo();
+                            var response = await locator<AuthService>()
+                                .login(_usernameController.text,
+                                    _passwordcontroller.text);
+                            if (response == 200) {
                               Navigator.pushReplacement(
                                   context,
                                   PageTransition(
@@ -99,7 +98,7 @@ class LoginView extends StatelessWidget {
                 ]),
           ),
         ),
-      ),
+  
     );
   }
 }

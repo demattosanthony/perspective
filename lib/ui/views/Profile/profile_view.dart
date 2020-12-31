@@ -1,15 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:point_of_view/core/managers/user_manager.dart';
 import 'package:point_of_view/core/viewmodels/profile_model.dart';
+import 'package:point_of_view/locator.dart';
 import 'package:point_of_view/ui/views/Authentication/login_view.dart';
 import 'package:point_of_view/ui/views/Profile/components/profile_list_tile.dart';
 import 'package:point_of_view/ui/views/Profile/components/profile_pic.dart';
-import 'package:point_of_view/ui/views/Profile/components/sign_out_button.dart';
 import '../base_view.dart';
 
-class ProfileView extends StatelessWidget {
+class ProfileView extends StatefulWidget {
   const ProfileView({Key key}) : super(key: key);
+
+  @override
+  _ProfileViewState createState() => _ProfileViewState();
+}
+
+class _ProfileViewState extends State<ProfileView> {
+  @override
+  void initState() {
+    locator<UserManager>().getUserInfo();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BaseView<ProfileModel>(
@@ -24,8 +36,8 @@ class ProfileView extends StatelessWidget {
                 backgroundColor: Colors.white,
               ),
               body: SingleChildScrollView(
-                child: FutureBuilder(
-                  future: model.userInfo,
+                child: StreamBuilder(
+                  stream: locator<UserManager>().getUserInfo,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       return Column(
@@ -35,14 +47,14 @@ class ProfileView extends StatelessWidget {
                           Padding(padding: EdgeInsets.only(top: 25)),
                           ProfilePic(
                             snapshot: snapshot,
-                            updateProfileImg: model.updateProfileImage,
                             selectImg: model.selectImage,
                           ),
                           ProfileListTile(
                             icon: Icons.person,
                             title: 'My Account',
                             press: () {
-                              Navigator.of(context).pushNamed('myAccountView', arguments: snapshot.data[0]);
+                              Navigator.of(context).pushNamed('myAccountView',
+                                  arguments: snapshot.data);
                             },
                           ),
                           ProfileListTile(

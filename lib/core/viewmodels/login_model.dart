@@ -1,6 +1,6 @@
 import 'package:point_of_view/core/enums/viewstate.dart';
-import 'package:point_of_view/core/services/AlbumService.dart';
-import 'package:point_of_view/core/services/UserInfoService.dart';
+import 'package:point_of_view/core/services/album_service.dart';
+import 'package:point_of_view/core/services/user_service.dart';
 import 'package:point_of_view/core/services/auth_service.dart';
 import 'package:point_of_view/core/viewmodels/base_model.dart';
 import '../../locator.dart';
@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 
 class LoginModel extends BaseModel {
   final AuthService _authService = locator<AuthService>();
-  UserInfoService userInfoService = locator<UserInfoService>();
   AlbumService albumService = locator<AlbumService>();
 
   var _usernameController = TextEditingController();

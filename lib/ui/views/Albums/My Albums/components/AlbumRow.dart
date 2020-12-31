@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:point_of_view/core/managers/album_manager.dart';
 import 'package:point_of_view/core/models/Album.dart';
+import 'package:point_of_view/core/services/ApiService.dart';
+import 'package:point_of_view/locator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AlbumRow extends StatelessWidget {
+  AlbumRow({this.myAlbums});
   final List<Album> myAlbums;
-  final GetPhotosCallBack getPhotos;
-  final DeleteAlbumCallBack deleteAlbum;
-  final GetAlbumsCallBack getAlbums;
-
-  AlbumRow(this.myAlbums, this.getPhotos, this.deleteAlbum, this.getAlbums);
 
   @override
   Widget build(BuildContext context) {
@@ -44,15 +43,18 @@ class AlbumRow extends StatelessWidget {
                                 : Text('Leave',
                                     style: TextStyle(color: Colors.red)),
                             onPressed: () {
-                              deleteAlbum(album.albumId, isOwner);
-                              myAlbums.remove(album);
+                              // deleteAlbum(album.albumId, isOwner);
+                              locator<ApiService>()
+                                  .deleteAlbum(album.albumId, isOwner);
+                              locator<AlbumManager>().getAlbums();
                               Navigator.of(context).pop();
                             })
                       ],
                     ));
           },
           background: Container(
-            decoration: BoxDecoration(color: Colors.red, borderRadius: BorderRadius.circular(25)),
+            decoration: BoxDecoration(
+                color: Colors.red, borderRadius: BorderRadius.circular(25)),
             alignment: Alignment.centerRight,
             padding: EdgeInsets.only(right: 20),
             child: Icon(
@@ -61,50 +63,38 @@ class AlbumRow extends StatelessWidget {
             ),
           ),
           child: GestureDetector(
-            onTap: () async {
-              getPhotos(album.albumId);
-              Navigator.of(context).pushNamed('albumView', arguments: album);
-            },
-            child: Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: Card(
+              onTap: () async {
+                // getPhotos(album.albumId);
+                Navigator.of(context).pushNamed('albumView', arguments: album);
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Card(
                   elevation: 5,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Row(
-                          children: [
-                            CircleAvatar(
-                                backgroundColor: Colors.white,
-                                radius: 25,
-                                backgroundImage: album.profileImgUrl == 'null'
-                                    ? AssetImage('assets/profile_icon.png')
-                                    : NetworkImage(album.profileImgUrl)),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                album.title.toUpperCase(),
-                                style: TextStyle(
-                                    fontSize: 22, fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                            Spacer(),
-                            Icon(Icons.arrow_forward_ios)
-                          ],
+                  child: ListTile(
+                      leading: CircleAvatar(
+                          backgroundColor: Colors.white,
+                          radius: 25,
+                          backgroundImage: album.profileImgUrl == 'null'
+                              ? AssetImage('assets/profile_icon.png')
+                              : NetworkImage(album.profileImgUrl)),
+                      title: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            album.title.toUpperCase(),
+                            style: TextStyle(
+                                fontSize: 22, fontWeight: FontWeight.bold),
+                          ),
                         ),
                       ),
-                    ],
-                  )),
-            ),
-          ),
+                      trailing: Icon(Icons.arrow_forward_ios)),
+                ),
+              )),
         );
       },
     );
   }
 }
-
-typedef GetPhotosCallBack = void Function(int albumId);
-typedef DeleteAlbumCallBack = void Function(int albumId, bool isOwner);
-typedef GetAlbumsCallBack = void Function();

@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:point_of_view/core/services/album_service.dart';
+import 'package:point_of_view/locator.dart';
 import 'package:point_of_view/ui/components/CustomTextField.dart';
 import 'package:point_of_view/ui/components/ShowAlert.dart';
 import 'package:point_of_view/ui/views/bottom_nav_bar.dart';
 
 class JoinAlbumButton extends StatelessWidget {
-  const JoinAlbumButton({Key key, this.albumCodeController, this.joinAlbum})
+  const JoinAlbumButton({Key key, this.albumCodeController})
       : super(key: key);
 
   final TextEditingController albumCodeController;
-  final JoinAlbumCallback joinAlbum;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +35,7 @@ class JoinAlbumButton extends StatelessWidget {
                             child: Text("Join"),
                             onPressed: () async {
                               var responseCode =
-                                  await joinAlbum(albumCodeController.text);
+                                  await locator<AlbumService>().joinAlbum(albumCodeController.text);
                               if (responseCode == 450) {
                                 showPlatformDialog(
                                     context: context,
@@ -61,4 +62,3 @@ class JoinAlbumButton extends StatelessWidget {
   }
 }
 
-typedef JoinAlbumCallback = Future<int> Function(String shareString);
