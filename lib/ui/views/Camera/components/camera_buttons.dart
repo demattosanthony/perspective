@@ -1,6 +1,8 @@
 import 'package:adv_camera/adv_camera.dart';
 import 'package:flutter/material.dart';
+import 'package:point_of_view/core/managers/album_manager.dart';
 import 'package:point_of_view/core/models/Album.dart';
+import 'package:point_of_view/locator.dart';
 import 'package:point_of_view/ui/views/Camera/components/Camera%20Buttons/select_album_button.dart';
 import 'package:point_of_view/ui/views/Camera/components/Camera%20Buttons/take_picture_button.dart';
 import 'package:point_of_view/ui/views/Camera/components/Camera%20Buttons/toggle_camera_button.dart';
@@ -48,7 +50,7 @@ class CameraButtons extends StatelessWidget {
           ),
         ),
         SelectAlbumButton(
-            myAlbums: myAlbums,
+            myAlbums: locator<AlbumManager>().getAlbums.lastResult,
             setSelectedAlbum: setSelectedAlbum,
             selectedAlbum: selectedAlbum),
         TakePictureButton(selectedAlbum: selectedAlbum, controller: controller),

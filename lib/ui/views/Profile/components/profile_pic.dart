@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:point_of_view/core/managers/user_manager.dart';
 import 'package:point_of_view/core/services/user_service.dart';
 import 'package:point_of_view/locator.dart';
 
 class ProfilePic extends StatelessWidget {
-  const ProfilePic({Key key, this.snapshot, this.selectImg}) : super(key: key);
+  const ProfilePic({
+    Key key,
+    @required this.snapshot,
+  }) : super(key: key);
 
   final AsyncSnapshot<dynamic> snapshot;
 
-  final SelectImg selectImg;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -31,10 +34,10 @@ class ProfilePic extends StatelessWidget {
                 child: FlatButton(
                     padding: EdgeInsets.zero,
                     onPressed: () async {
-                      String imgPath = await selectImg();
+                      String imgPath =
+                          await locator<UserManager>().selectImage();
                       // updateProfileImg(imgPath);
-                      locator<UserService>()
-                          .changeProfileImage(imgPath);
+                      locator<UserService>().changeProfileImage(imgPath);
                     },
                     color: Color(0xFFF5F6F9),
                     child: Icon(Icons.person),
@@ -46,5 +49,3 @@ class ProfilePic extends StatelessWidget {
     );
   }
 }
-
-typedef SelectImg = Function();

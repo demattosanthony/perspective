@@ -62,11 +62,14 @@ class RegisterView extends StatelessWidget {
                                     builder: (context, snapshot) {
                                       if (snapshot.hasData) {
                                         return CircleAvatar(
+                                            radius: 60,
                                             backgroundImage: FileImage(
-                                          File(snapshot.data.path),
-                                        ));
+                                              File(snapshot.data.path),
+                                            ));
                                       } else {
-                                        CircleAvatar(
+                                        return CircleAvatar(
+                                            radius: 60,
+                                            backgroundColor: Colors.white,
                                             backgroundImage: AssetImage(
                                                 'assets/profile_icon.png'));
                                       }
