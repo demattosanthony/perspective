@@ -71,7 +71,7 @@ class RegisterView extends StatelessWidget {
                                             radius: 60,
                                             backgroundColor: Colors.white,
                                             backgroundImage: AssetImage(
-                                                'assets/profile_icon.png'));
+                                                'assets/images/profile_icon.png'));
                                       }
                                     }),
                               ),

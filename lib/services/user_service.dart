@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:point_of_view/locator.dart';
 import 'package:http/http.dart' as http;
+import 'package:point_of_view/managers/user_manager.dart';
 import 'package:point_of_view/models/User.dart';
 import 'package:point_of_view/services/ApiService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,7 +11,7 @@ import 'dart:convert';
 abstract class UserService {
   Future<int> getUserIdFromSharedPrefs();
   Future<User> getUserInfo();
-  void changeProfileImage(String image);
+  Future<void> changeProfileImage(String image);
   Future<bool> updateUserInfo(String name, String username, String email);
 }
 
@@ -26,6 +27,7 @@ class UserServiceImplementation implements UserService {
 
   @override
   Future<User> getUserInfo() async {
+    print('getting user info');
     int userId = await locator<UserService>().getUserIdFromSharedPrefs();
     var url = host + 'getUserInfo/$userId';
     var response = await http.get(url);
@@ -40,7 +42,7 @@ class UserServiceImplementation implements UserService {
   }
 
   @override
-  void changeProfileImage(String image) async {
+  Future<void> changeProfileImage(String image) async {
     var client = http.Client();
     try {
       int userId = await locator<UserService>().getUserIdFromSharedPrefs();
@@ -54,9 +56,13 @@ class UserServiceImplementation implements UserService {
         'userId': userId.toString()
       };
       var response = await http.put(url, body: body);
-      if (response.statusCode == 200)
+      if (response.statusCode == 200) {
         print('Success');
-      else {}
+        await locator<UserManager>().getUserInfo();
+        return;
+      } else {
+        throw Exception('failed to change profile image');
+      }
     } finally {
       client.close();
     }

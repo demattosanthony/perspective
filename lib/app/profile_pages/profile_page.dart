@@ -3,6 +3,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:point_of_view/managers/user_manager.dart';
 import 'package:point_of_view/locator.dart';
 import 'package:point_of_view/app/login_pages/login_view.dart';
+import 'package:point_of_view/models/User.dart';
 import 'package:point_of_view/widgets/profile_list_tile.dart';
 import 'package:point_of_view/widgets/profile_pic.dart';
 
@@ -33,7 +34,7 @@ class _ProfilePageState extends State<ProfilePage> {
         backgroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
-        child: StreamBuilder(
+        child: StreamBuilder<User>(
           stream: locator<UserManager>().getUserInfo,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
@@ -43,7 +44,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: [
                   Padding(padding: EdgeInsets.only(top: 25)),
                   ProfilePic(
-                    snapshot: snapshot,
+                    userSnapshot: snapshot,
                   ),
                   ProfileListTile(
                     icon: Icons.person,

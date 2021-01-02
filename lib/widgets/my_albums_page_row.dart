@@ -4,6 +4,7 @@ import 'package:point_of_view/managers/album_manager.dart';
 import 'package:point_of_view/models/Album.dart';
 import 'package:point_of_view/services/ApiService.dart';
 import 'package:point_of_view/locator.dart';
+import 'package:point_of_view/services/album_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MyAlbumsPageRow extends StatelessWidget {
@@ -43,7 +44,7 @@ class MyAlbumsPageRow extends StatelessWidget {
                                 : Text('Leave',
                                     style: TextStyle(color: Colors.red)),
                             onPressed: () async {
-                              await locator<ApiService>()
+                              await locator<AlbumService>()
                                   .deleteAlbum(album.albumId, isOwner);
                               await locator<AlbumManager>().getAlbums();
                               Navigator.of(context).pop();
@@ -75,7 +76,7 @@ class MyAlbumsPageRow extends StatelessWidget {
                           backgroundColor: Colors.white,
                           radius: 25,
                           backgroundImage: album.profileImgUrl == 'null'
-                              ? AssetImage('assets/profile_icon.png')
+                              ? AssetImage('assets/images/profile_icon.png')
                               : NetworkImage(album.profileImgUrl)),
                       title: Padding(
                         padding: const EdgeInsets.all(8.0),

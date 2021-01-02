@@ -23,27 +23,42 @@ class SelectAlbumButton extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10)),
                 context: context,
                 builder: (builder) {
-                  return ListView.builder(
-                      itemCount: myAlbums.length,
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () {
-                            locator<CameraManager>()
-                                .selectedAlbum(myAlbums[index]);
-                            Navigator.of(context).pop();
-                          },
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(myAlbums[index].title.toUpperCase(),
-                                    style: TextStyle(fontSize: 18)),
+                  return Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * .10,
+                          height: 5,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(25), color: Colors.grey),
+                        ),
+                      ),
+                      ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: myAlbums.length,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () {
+                                locator<CameraManager>()
+                                    .selectedAlbum(myAlbums[index]);
+                                Navigator.of(context).pop();
+                              },
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                        myAlbums[index].title.toUpperCase(),
+                                        style: TextStyle(fontSize: 18)),
+                                  ),
+                                  Divider()
+                                ],
                               ),
-                              Divider()
-                            ],
-                          ),
-                        );
-                      });
+                            );
+                          }),
+                    ],
+                  );
                 });
           },
           child: StreamBuilder<Album>(

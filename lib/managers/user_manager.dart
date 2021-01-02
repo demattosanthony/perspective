@@ -9,6 +9,7 @@ abstract class UserManager {
   RxCommand<void, User> getUserInfo;
   void signOut();
   Future<String> selectImage();
+  RxCommand<String, void> updateProfileImg;
 }
 
 class UserManagerImplementation implements UserManager {
@@ -30,5 +31,11 @@ class UserManagerImplementation implements UserManager {
   UserManagerImplementation() {
     getUserInfo = RxCommand.createAsyncNoParam(
         () => locator<UserService>().getUserInfo());
+
+    updateProfileImg = RxCommand.createAsyncNoResult(
+        (image) => locator<UserService>().changeProfileImage(image));
   }
+
+  @override
+  RxCommand<String, void> updateProfileImg;
 }

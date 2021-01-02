@@ -1,4 +1,3 @@
-
 import 'package:point_of_view/locator.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -6,21 +5,17 @@ import 'package:point_of_view/models/Album.dart';
 import 'package:point_of_view/models/Photo.dart';
 import 'package:point_of_view/services/user_service.dart';
 
-import 'ApiService.dart';
-
 abstract class AlbumService {
   Future<List<Album>> getAlbums();
   Future<List<Photo>> getPhotos(int albumId);
   Future<String> createAlbum(String albumTitle);
   Future<int> joinAlbum(String sharedString);
+  void deleteAlbum(int albumId, bool isOwner);
 }
 
 class AlbumServiceImplementation implements AlbumService {
   var host = "https://hidden-woodland-36838.herokuapp.com/";
-  final ApiService _apiService = locator<ApiService>();
 
-  Future<List<Photo>> _photos;
-  Future<List<Photo>> get photos => _photos;
 
   @override
   Future<List<Album>> getAlbums() async {
@@ -69,8 +64,15 @@ class AlbumServiceImplementation implements AlbumService {
     }
   }
 
-  void deleteAlbum(albumId, isOwner) {
-    _apiService.deleteAlbum(albumId, isOwner);
+  @override
+  void deleteAlbum(int albumId, bool isOwner) async {
+    var url = host + "deleteAlbum";
+    Map body = {"albumId": albumId.toString(), "isOwner": isOwner.toString()};
+    var response = await http.post(url, body: body);
+    if (response.statusCode == 200) {
+    } else {
+      throw Exception('Failed to delete album');
+    }
   }
 
   @override

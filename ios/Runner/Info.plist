@@ -23,7 +23,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>Need to use camera to take pictures for albums</string>
+	<string>camera</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>To record sound in videos</string>
 	<key>NSPhotoLibraryUsageDescription</key>

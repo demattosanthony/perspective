@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:adv_camera/adv_camera.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:point_of_view/managers/camera_manager.dart';
 import 'package:point_of_view/locator.dart';
 import 'package:point_of_view/widgets/camera_buttons_stack.dart';
@@ -14,6 +15,7 @@ class AdvCameraPage extends StatefulWidget {
 class _AdvCameraPageState extends State<AdvCameraPage> {
   AdvCameraController _cameraController;
   bool _flashIsOn = false;
+  PermissionStatus cameraPermissionStatus;
 
   void _onCameraCreated(AdvCameraController cameraController) {
     setState(() {
@@ -34,6 +36,10 @@ class _AdvCameraPageState extends State<AdvCameraPage> {
     });
   }
 
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
