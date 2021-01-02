@@ -27,6 +27,12 @@ dependencies:
   rxdart: ^0.24.1
   rx_command: ^5.2.1
 
+  #firebase
+  firebase_core: ^0.5.3
+  firebase_auth: ^0.18.4+1
+  firebase_storage: ^5.2.0
+  cloud_firestore: ^0.14.4
+
   curved_navigation_bar: ^0.3.4
   image_picker: ^0.6.7+11
   permission_handler: ^5.0.1+1

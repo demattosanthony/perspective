@@ -7,7 +7,7 @@ import 'package:point_of_view/app/profile_pages/created_albums_page.dart';
 import 'package:point_of_view/app/profile_pages/joined_albums_page.dart';
 import 'package:point_of_view/app/profile_pages/profile_page.dart';
 import 'package:point_of_view/app/bottom_nav_bar.dart';
-import 'package:point_of_view/app/my_account/my_account_page.dart';
+import 'package:point_of_view/app/profile_pages/my_account_page.dart';
 
 class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {

@@ -16,12 +16,12 @@ class CreateAlbumButton extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: FlatButton(
           onPressed: () async {
-            var shareString = await locator<AlbumService>().createAlbum(title.text);
+            await locator<AlbumService>().createAlbum(title.text);
             
             showPlatformDialog(
                 context: context,
                 builder: (_) => PlatformAlertDialog(
-                      title: Text('Share album:\n $shareString'),
+                      title: Text('Share album:\n'),
                       actions: [
                         PlatformDialogAction(
                             child: Text("OK"),

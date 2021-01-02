@@ -1,9 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:point_of_view/managers/album_manager.dart';
-import 'package:point_of_view/models/Album.dart';
 import 'package:point_of_view/locator.dart';
-import 'package:point_of_view/widgets/my_albums_page_row.dart';
+import 'package:point_of_view/services/album_service.dart';
 import 'package:point_of_view/widgets/my_albums_app_bar.dart';
 
 class MyAlbumsPage extends StatefulWidget {
@@ -15,11 +13,7 @@ class MyAlbumsPage extends StatefulWidget {
 
 class _MyAlbumsPageState extends State<MyAlbumsPage>
     with AutomaticKeepAliveClientMixin {
-  @override
-  void initState() {
-    locator<AlbumManager>().getAlbums();
-    super.initState();
-  }
+
 
   @override
   bool get wantKeepAlive => true;
@@ -34,20 +28,36 @@ class _MyAlbumsPageState extends State<MyAlbumsPage>
       ),
       body: RefreshIndicator(
           onRefresh: () async {
-            locator<AlbumManager>().getAlbums();
+            // locator<AlbumManager>().getAlbums();
           },
-          child: StreamBuilder<List<Album>>(
-            stream: locator<AlbumManager>().getAlbums,
-            initialData: [],
+          child: StreamBuilder<QuerySnapshot>(
+            stream: locator<AlbumService>().getAlbums(),
             builder: (context, albums) {
               if (albums.hasData) {
-                return MyAlbumsPageRow(myAlbums: albums.data);
+                // return MyAlbumsPageRow(myAlbums: albums.data);
+
+                return ListView(
+                  children: albums.data.docs.map((album) {
+                    return Card(
+                      elevation: 5,
+                      child: ListTile(
+                        leading: FutureBuilder(
+                          future: locator<AlbumService>().getUserProfileImg(
+                            album.data()['userId'],
+                          ),
+                          builder: (context, snapshot) {
+                            return CircleAvatar(
+                                backgroundColor: Colors.white,
+                                backgroundImage: NetworkImage(snapshot.data));
+                          },
+                        ),
+                        title: Text(album.data()['title']),
+                      ),
+                    );
+                  }).toList(),
+                );
               } else if (albums.hasError) {
                 return Text("${albums.error}");
-              } else if (albums.data.isEmpty) {
-                return Center(
-                  child: PlatformCircularProgressIndicator(),
-                );
               }
 
               return Container();

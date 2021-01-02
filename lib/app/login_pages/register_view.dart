@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:image_picker/image_picker.dart';
@@ -57,14 +58,14 @@ class RegisterView extends StatelessWidget {
                             children: [
                               Container(
                                 alignment: Alignment.center,
-                                child: StreamBuilder<PickedFile>(
+                                child: StreamBuilder(
                                     stream: locator<AuthManager>().getImage,
                                     builder: (context, snapshot) {
                                       if (snapshot.hasData) {
                                         return CircleAvatar(
                                             radius: 60,
                                             backgroundImage: FileImage(
-                                              File(snapshot.data.path),
+                                              File(snapshot.data),
                                             ));
                                       } else {
                                         return CircleAvatar(
@@ -108,35 +109,43 @@ class RegisterView extends StatelessWidget {
                       child: FlatButton(
                         onPressed: () async {
                           var responseCode = await locator<AuthService>()
-                              .createUser(
+                              .register(
                                   _usernamecontroller.text,
                                   _passwordcontroller.text,
                                   _emailController.text,
                                   _nameController.text,
-                                  "",
-                                  'profileImage');
+                                  "");
 
-                          if (responseCode == 200) {
-                            Navigator.pushReplacement(
-                                context,
-                                PageTransition(
-                                    child: BottomNavBar(),
-                                    type: PageTransitionType.fade));
-                          } else if (responseCode == 400) {
+                          FirebaseAuth.instance
+                              .authStateChanges()
+                              .listen((User user) {
+                            if (user != null) {
+                              Navigator.of(context).pushReplacement(PageTransition(
+                                  child: BottomNavBar(),
+                                  type: PageTransitionType.fade));
+                            }
+                          });
+
+                          if (responseCode == 'email-already-in-use') {
+                            showPlatformDialog(
+                                context: context,
+                                builder: (_) => ShowAlert(
+                                    'Email Already in use.', 'Try again'));
+                          } else if (responseCode == 'weak-password') {
+                            showPlatformDialog(
+                                context: context,
+                                builder: (_) => ShowAlert(
+                                    'Password is too weak.', 'Try again'));
+                          } else if (responseCode == 'username-taken') {
+                            showPlatformDialog(
+                                context: context,
+                                builder: (_) => ShowAlert(
+                                    'Username is taken.', 'Try again'));
+                          } else if (responseCode == 'invalid-email') {
                             showPlatformDialog(
                                 context: context,
                                 builder: (_) =>
-                                    ShowAlert('Invalid Email', 'Try again'));
-                          } else if (responseCode == 475) {
-                            showPlatformDialog(
-                                context: context,
-                                builder: (_) => ShowAlert(
-                                    'Email already exists', 'Try again'));
-                          } else if (responseCode == 450) {
-                            showPlatformDialog(
-                                context: context,
-                                builder: (_) => ShowAlert(
-                                    'Username is taken', 'Try again'));
+                                    ShowAlert('Invalid Email.', 'Try again'));
                           }
                         },
                         child: Text('Register',

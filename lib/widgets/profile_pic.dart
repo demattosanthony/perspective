@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:point_of_view/managers/user_manager.dart';
-import 'package:point_of_view/services/user_service.dart';
 import 'package:point_of_view/locator.dart';
 
 class ProfilePic extends StatelessWidget {
@@ -32,9 +31,9 @@ class ProfilePic extends StatelessWidget {
               } else {
                 return CircleAvatar(
                     backgroundColor: Colors.white,
-                    backgroundImage: userSnapshot.data.profileImageUrl == 'null'
+                    backgroundImage: userSnapshot.data['profileImgUrl'] == ''
                         ? AssetImage('assets/images/profile_icon.png')
-                        : NetworkImage(userSnapshot.data.profileImageUrl));
+                        : NetworkImage(userSnapshot.data['profileImgUrl']));
               }
             },
           ),
@@ -51,7 +50,7 @@ class ProfilePic extends StatelessWidget {
                           await locator<UserManager>().selectImage();
                       // updateProfileImg(imgPath);
                       await locator<UserManager>().updateProfileImg(imgPath);
-                      await locator<UserManager>().getUserInfo();
+                      // await locator<UserManager>().getUserInfo();
                     },
                     color: Color(0xFFF5F6F9),
                     child: Icon(Icons.person),

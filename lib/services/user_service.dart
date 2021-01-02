@@ -1,86 +1,60 @@
 import 'dart:io';
 
-import 'package:point_of_view/locator.dart';
-import 'package:http/http.dart' as http;
-import 'package:point_of_view/managers/user_manager.dart';
-import 'package:point_of_view/models/User.dart';
-import 'package:point_of_view/services/ApiService.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 abstract class UserService {
-  Future<int> getUserIdFromSharedPrefs();
-  Future<User> getUserInfo();
-  Future<void> changeProfileImage(String image);
-  Future<bool> updateUserInfo(String name, String username, String email);
+  Stream<DocumentSnapshot> getUserInfo();
+  Future<void> uploadProfileImg(String image);
+  // Future<bool> updateUserInfo(String name, String username, String email);
 }
 
 class UserServiceImplementation implements UserService {
-  var host = "https://hidden-woodland-36838.herokuapp.com/";
-  ApiService _apiService = locator<ApiService>();
+  
 
   @override
-  Future<int> getUserIdFromSharedPrefs() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getInt('userId');
+  Stream<DocumentSnapshot> getUserInfo() {
+    String userId = FirebaseAuth.instance.currentUser.uid;
+    return FirebaseFirestore.instance
+        .collection("users")
+        .doc(userId)
+        .snapshots();
   }
 
   @override
-  Future<User> getUserInfo() async {
-    print('getting user info');
-    int userId = await locator<UserService>().getUserIdFromSharedPrefs();
-    var url = host + 'getUserInfo/$userId';
-    var response = await http.get(url);
-    if (response.statusCode == 200) {
-      var jsonResponse = jsonDecode(response.body);
-      List<User> userInfo =
-          (jsonResponse as List).map((data) => User.fromJson(data)).toList();
-      return userInfo[0];
-    } else {
-      throw Exception('Failed to fetch User Info');
-    }
-  }
+  Future<void> uploadProfileImg(String imagePath) async {
+    File file = File(imagePath);
+    String userId = FirebaseAuth.instance.currentUser.uid;
 
-  @override
-  Future<void> changeProfileImage(String image) async {
-    var client = http.Client();
     try {
-      int userId = await locator<UserService>().getUserIdFromSharedPrefs();
-
-      String profileImageUrl =
-          await _apiService.uploadImage(File(image), "profileImage", 0);
-
-      var url = host + 'updateProfileImg';
-      Map body = {
-        'profileImageUrl': profileImageUrl,
-        'userId': userId.toString()
-      };
-      var response = await http.put(url, body: body);
-      if (response.statusCode == 200) {
-        print('Success');
-        await locator<UserManager>().getUserInfo();
-        return;
-      } else {
-        throw Exception('failed to change profile image');
-      }
-    } finally {
-      client.close();
+      TaskSnapshot result = await FirebaseStorage.instance
+          .ref('user_profile_images/$userId/profile_img')
+          .putFile(file);
+      result.ref.getDownloadURL().then((value) => {
+            FirebaseFirestore.instance
+                .collection("users")
+                .doc(userId)
+                .update({"profileImgUrl": value})
+          });
+    } on FirebaseException catch (e) {
+      print(e.code);
     }
   }
 
-  @override
-  Future<bool> updateUserInfo(
-      String name, String username, String email) async {
-    int userId = await locator<UserService>().getUserIdFromSharedPrefs();
-    User _userInfo = await getUserInfo();
-    var url = host + 'updateUserInfo';
-    Map body = {
-      'name': name == '' ? _userInfo.name : name,
-      'userId': userId.toString(),
-      'username': username == '' ? _userInfo.username : username,
-      'email': email == '' ? _userInfo.email : email
-    };
-    var response = await http.put(url, body: body);
-    return response.statusCode == 200;
-  }
+  // @override
+  // Future<bool> updateUserInfo(
+  //     String name, String username, String email) async {
+  //   int userId = await locator<UserService>().getUserIdFromSharedPrefs();
+  //   User _userInfo = await getUserInfo();
+  //   var url = host + 'updateUserInfo';
+  //   Map body = {
+  //     'name': name == '' ? _userInfo.name : name,
+  //     'userId': userId.toString(),
+  //     'username': username == '' ? _userInfo.username : username,
+  //     'email': email == '' ? _userInfo.email : email
+  //   };
+  //   var response = await http.put(url, body: body);
+  //   return response.statusCode == 200;
+  // }
 }

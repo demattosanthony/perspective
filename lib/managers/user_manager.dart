@@ -6,20 +6,15 @@ import 'package:rx_command/rx_command.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class UserManager {
-  RxCommand<void, User> getUserInfo;
-  void signOut();
+  RxCommand<void, Stream> getUserInfo;
   Future<String> selectImage();
   RxCommand<String, void> updateProfileImg;
 }
 
 class UserManagerImplementation implements UserManager {
   @override
-  RxCommand<void, User> getUserInfo;
+  RxCommand<void, Stream> getUserInfo;
 
-  void signOut() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool('isLoggedIn', false);
-  }
 
   Future<String> selectImage() async {
     final picker = ImagePicker();
@@ -29,11 +24,11 @@ class UserManagerImplementation implements UserManager {
   }
 
   UserManagerImplementation() {
-    getUserInfo = RxCommand.createAsyncNoParam(
-        () => locator<UserService>().getUserInfo());
+    // getUserInfo = RxCommand.createAsyncNoParam(
+    //     () => locator<UserService>().getUserInfo());
 
     updateProfileImg = RxCommand.createAsyncNoResult(
-        (image) => locator<UserService>().changeProfileImage(image));
+        (image) => locator<UserService>().uploadProfileImg(image));
   }
 
   @override

@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:point_of_view/locator.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -6,47 +8,43 @@ import 'package:point_of_view/models/Photo.dart';
 import 'package:point_of_view/services/user_service.dart';
 
 abstract class AlbumService {
-  Future<List<Album>> getAlbums();
+  Stream getAlbums();
   Future<List<Photo>> getPhotos(int albumId);
-  Future<String> createAlbum(String albumTitle);
+  Future<void> createAlbum(String albumTitle);
   Future<int> joinAlbum(String sharedString);
   void deleteAlbum(int albumId, bool isOwner);
+  Future<String> getUserProfileImg(String userId);
 }
 
 class AlbumServiceImplementation implements AlbumService {
   var host = "https://hidden-woodland-36838.herokuapp.com/";
 
-
   @override
-  Future<List<Album>> getAlbums() async {
-    int userId = await locator<UserService>().getUserIdFromSharedPrefs();
-    var url = host + 'getUserAlbums/$userId';
+  Stream getAlbums() {
+    String userId = FirebaseAuth.instance.currentUser.uid;
+    return FirebaseFirestore.instance
+        .collection("albums")
+        .where("userId", isEqualTo: userId)
+        .snapshots();
+  }
 
-    var response = await http.get(url);
-    if (response.statusCode == 200) {
-      var jsonResponse = jsonDecode(response.body);
-      List<Album> myAlbums =
-          (jsonResponse as List).map((data) => Album.fromJson(data)).toList();
-      return myAlbums;
-    } else {
-      print('Request failed with status: ${response.statusCode}.');
-      return null;
-    }
+  Future<String> getUserProfileImg(String userId) async {
+    var user =
+        await FirebaseFirestore.instance.collection("users").doc(userId).get();
+    return user['profileImgUrl'];
   }
 
   @override
-  Future<String> createAlbum(String albumTitle) async {
-    var url = host + 'createAlbum';
-
-    int userId = await locator<UserService>().getUserIdFromSharedPrefs();
-    var response = await http
-        .post(url, body: {"title": albumTitle, "userId": userId.toString()});
-
-    if (response.statusCode == 200) {
-      return response.body;
-    } else {
-      throw Exception('Failed to create new album');
-    }
+  Future<void> createAlbum(String albumTitle) async {
+    String userId = FirebaseAuth.instance.currentUser.uid;
+    FirebaseFirestore.instance
+        .collection("albums")
+        .add({"title": albumTitle, "userId": userId}).then((value) => {
+              FirebaseFirestore.instance
+                  .collection("albums")
+                  .doc(value.id)
+                  .update({"albumId": value.id})
+            });
   }
 
   @override
@@ -79,7 +77,7 @@ class AlbumServiceImplementation implements AlbumService {
   Future<int> joinAlbum(String sharedString) async {
     var client = http.Client();
     try {
-      int userId = await locator<UserService>().getUserIdFromSharedPrefs();
+      int userId = 42;
       var url = host + "getAlbumIdFromShareString/$sharedString";
       var response = await http.get(url);
       var albumId = jsonDecode(response.body)[0]['album_id'];

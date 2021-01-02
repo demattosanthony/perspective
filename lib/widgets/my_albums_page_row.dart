@@ -46,7 +46,7 @@ class MyAlbumsPageRow extends StatelessWidget {
                             onPressed: () async {
                               await locator<AlbumService>()
                                   .deleteAlbum(album.albumId, isOwner);
-                              await locator<AlbumManager>().getAlbums();
+                              // await locator<AlbumManager>().getAlbums();
                               Navigator.of(context).pop();
                             })
                       ],

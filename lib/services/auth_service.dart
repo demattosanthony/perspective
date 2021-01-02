@@ -1,46 +1,81 @@
 import 'dart:io';
-import 'package:path_provider/path_provider.dart';
-import 'package:flutter/services.dart' show rootBundle;
-import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
+import 'package:point_of_view/managers/auth_manager.dart';
 import 'package:point_of_view/services/ApiService.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:point_of_view/services/user_service.dart';
 import 'package:point_of_view/locator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AuthService {
   final ApiService _apiService = locator<ApiService>();
   var host = "https://hidden-woodland-36838.herokuapp.com/";
+  FirebaseAuth auth = FirebaseAuth.instance;
 
-  var userId;
-  bool isSignedIn = false;
+  Future<bool> validateUsername(String username) async {
+    bool isValid = true;
+    await FirebaseFirestore.instance
+        .collection('users')
+        .get()
+        .then((QuerySnapshot querySnapshot) => {
+              querySnapshot.docs.forEach((doc) {
+                if (username == doc['username']) {
+                  isValid = false;
+                }
+              })
+            });
 
-  Future<int> createUser(String username, String password, String email,
-      String name, String image, String title) async {
-    var client = http.Client();
-    try {
-      String profileImageUrl;
-      if (image != "") {
-        profileImageUrl =
-            await _apiService.uploadImage(File(image), "profileImage", 0);
-      } else {
-        profileImageUrl = "null";
+    if (isValid)
+      return true;
+    else
+      return false;
+  }
+
+  // ignore: missing_return
+  Future<String> register(String username, String password, String email,
+      String name, String imagePath) async {
+    bool usernameIsValid = await validateUsername(username);
+
+    if (usernameIsValid) {
+      print('valid username');
+      try {
+        await auth
+            .createUserWithEmailAndPassword(email: email, password: password)
+            .then((currentUser) => FirebaseFirestore.instance
+                    .collection('users')
+                    .doc(currentUser.user.uid)
+                    .set({
+                  "uid": currentUser.user.uid,
+                  "name": name,
+                  "username": username,
+                  "email": email,
+                  "password": password,
+                  "profileImgUrl": ""
+                }));
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'weak-password') {
+          print('The password provided is too weak.');
+          return e.code;
+        } else if (e.code == 'email-already-in-use') {
+          print('The account already exists for that email.');
+          return e.code;
+        } else if (e.code == 'invalid-email') {
+          return e.code;
+        }
+      } catch (e) {
+        print(e);
+        return e.code;
       }
-      var url = host + 'addUser';
-      var response = await http.post(url, body: {
-        'username': username,
-        'password': password,
-        'email': email,
-        'name': name,
-        'profileImageUrl': profileImageUrl
-      });
-      print('Response status: ${response.statusCode}');
-      print('Response body: ${response.body}');
-      if (response.statusCode == 200) await login(username, password);
 
-      return response.statusCode;
-    } finally {
-      client.close();
+      locator<UserService>().uploadProfileImg(locator<AuthManager>().getImage.lastResult);
+
+    } else {
+      return 'username-taken';
     }
+  }
+
+  Future<void> signOut() async {
+    await auth.signOut();
   }
 
   void changeProfileImage(int userId, String image) async {
@@ -50,49 +85,36 @@ class AuthService {
           await _apiService.uploadImage(File(image), "profileImage", 0);
 
       var url = host + 'updateProfileImg';
-      Map body = {'profileImageUrl': profileImageUrl, 'userId': userId.toString()};
+      Map body = {
+        'profileImageUrl': profileImageUrl,
+        'userId': userId.toString()
+      };
       var response = await http.put(url, body: body);
-      if (response.statusCode == 200) print('Success');
-      else {
-        
-      }
+      if (response.statusCode == 200)
+        print('Success');
+      else {}
     } finally {
       client.close();
     }
   }
 
-  Future<int> login(String username, String password) async {
-    var client = http.Client();
+  Future<String> login(String email, String password) async {
     try {
-      var url = host + 'login/$username/$password';
-      //var url2 = host + 'setLoginState';
-      var response = await client.get(url);
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-
-      if (response.statusCode == 200) {
-        var jsonResponse = convert.jsonDecode(response.body);
-        if (jsonResponse.length == 0) return 400;
-        print(jsonResponse[0]['user_id']);
-        userId = jsonResponse[0]['user_id'];
-        prefs.setInt('userId', userId);
-        prefs.setBool('isLoggedIn', true);
-        return 200;
-      } else {
-        print('Request failed with status: ${response.statusCode}.');
-        return 400;
+      await auth.signInWithEmailAndPassword(email: email, password: password);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+        return e.code;
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
+        return e.code;
+      } else if (e.code == 'invalid-email') {
+        return e.code;
       }
-    } finally {
-      client.close();
     }
+
+    return 'success';
   }
+
 }
 
-Future<File> getImageFileFromAssets(String path) async {
-  final byteData = await rootBundle.load('$path');
-
-  final file = File('${(await getTemporaryDirectory()).path}/$path');
-  await file.writeAsBytes(byteData.buffer
-      .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
-
-  return file;
-}
