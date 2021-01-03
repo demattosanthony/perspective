@@ -3,12 +3,10 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:point_of_view/locator.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:point_of_view/models/Album.dart';
 import 'package:point_of_view/models/Photo.dart';
-import 'package:point_of_view/services/user_service.dart';
 
 abstract class AlbumService {
   Stream<List<Album>> getAlbums();

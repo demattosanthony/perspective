@@ -4,10 +4,9 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:point_of_view/models/Album.dart';
 import 'package:point_of_view/locator.dart';
 import 'package:point_of_view/services/album_service.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class MyAlbumsPageRow extends StatelessWidget {
-  MyAlbumsPageRow({this.myAlbums});
+class AlbumList extends StatelessWidget {
+  AlbumList({this.myAlbums});
   final List<Album> myAlbums;
 
   @override
@@ -19,7 +18,6 @@ class MyAlbumsPageRow extends StatelessWidget {
         return Dismissible(
           key: ObjectKey(album),
           confirmDismiss: (DismissDirection direction) async {
-            SharedPreferences prefs = await SharedPreferences.getInstance();
             var userId = FirebaseAuth.instance.currentUser.uid;
             var isOwner = userId == album.ownerId ? true : false;
             return showPlatformDialog(
@@ -64,14 +62,14 @@ class MyAlbumsPageRow extends StatelessWidget {
               onTap: () async {
                 Navigator.of(context).pushNamed('albumView', arguments: album);
               },
-              child: Padding(
+              child: Container(
                 padding: const EdgeInsets.all(5.0),
                 child: Card(
                   elevation: 5,
                   child: ListTile(
                       leading: SizedBox(
-                        height: 50,
-                        width: 50,
+                        height: 45,
+                        width: 45,
                         child: FutureBuilder(
                           future: locator<AlbumService>().getUserProfileImg(
                             album.ownerId,
@@ -80,7 +78,9 @@ class MyAlbumsPageRow extends StatelessWidget {
                             if (snapshot.hasData) {
                               return CircleAvatar(
                                   backgroundColor: Colors.white,
-                                  backgroundImage: NetworkImage(snapshot.data));
+                                  backgroundImage: snapshot.data == ""
+                                      ? AssetImage('assets/images/profile_icon.png')
+                                      : NetworkImage(snapshot.data));
                             }
                             return Container();
                           },

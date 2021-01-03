@@ -68,27 +68,7 @@ class LoginView extends StatelessWidget {
                             style: TextStyle(color: Colors.white)),
                         color: Colors.blue,
                       ),
-                      Row(children: <Widget>[
-                        Expanded(
-                          child: new Container(
-                              margin: const EdgeInsets.only(
-                                  left: 10.0, right: 20.0),
-                              child: Divider(
-                                color: Colors.black,
-                                height: 36,
-                              )),
-                        ),
-                        PlatformText("OR"),
-                        Expanded(
-                          child: new Container(
-                              margin: const EdgeInsets.only(
-                                  left: 20.0, right: 10.0),
-                              child: Divider(
-                                color: Colors.black,
-                                height: 36,
-                              )),
-                        ),
-                      ]),
+                      LoginDivider(),
                       FlatButton(
                         onPressed: () =>
                             Navigator.pushNamed(context, 'register'),
@@ -105,5 +85,39 @@ class LoginView extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+
+
+
+class LoginDivider extends StatelessWidget {
+  const LoginDivider({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(children: <Widget>[
+      Expanded(
+        child: new Container(
+            margin: const EdgeInsets.only(
+                left: 10.0, right: 20.0),
+            child: Divider(
+              color: Colors.black,
+              height: 36,
+            )),
+      ),
+      PlatformText("OR"),
+      Expanded(
+        child: new Container(
+            margin: const EdgeInsets.only(
+                left: 20.0, right: 10.0),
+            child: Divider(
+              color: Colors.black,
+              height: 36,
+            )),
+      ),
+    ]);
   }
 }

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart' hide Router;
 import 'package:point_of_view/app/theme.dart';
 import 'package:point_of_view/app/login_pages/login_view.dart';
 import 'package:point_of_view/app/bottom_nav_bar.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'router.dart';
 import 'locator.dart';
 

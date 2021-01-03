@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:point_of_view/managers/user_manager.dart';
 import 'package:point_of_view/locator.dart';
 import 'package:point_of_view/app/login_pages/login_view.dart';
 import 'package:point_of_view/models/User.dart';
@@ -34,6 +33,7 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
         elevation: 0,
         backgroundColor: Colors.white,
+        automaticallyImplyLeading: false,
       ),
       body: SingleChildScrollView(
         child: StreamBuilder<UserAccount>(
@@ -98,11 +98,5 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       ),
     );
-  }
-}
-
-extension StringExtension on String {
-  String capitalize() {
-    return "${this[0].toUpperCase()}${this.substring(1)}";
   }
 }

@@ -1,15 +1,18 @@
-import 'dart:io';
-import 'package:http/http.dart' as http;
 import 'package:point_of_view/managers/auth_manager.dart';
-import 'package:point_of_view/services/ApiService.dart';
 import 'package:point_of_view/services/user_service.dart';
 import 'package:point_of_view/locator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class AuthService {
-  final ApiService _apiService = locator<ApiService>();
-  var host = "https://hidden-woodland-36838.herokuapp.com/";
+abstract class AuthService {
+  Future<bool> validateUsername(String username);
+  Future<String> register(String username, String password, String email,
+      String name, String imagePath);
+  Future<void> signOut();
+  Future<String> login(String email, String password);
+}
+
+class AuthServiceImplementation implements AuthService {
   FirebaseAuth auth = FirebaseAuth.instance;
 
   Future<bool> validateUsername(String username) async {
@@ -67,8 +70,8 @@ class AuthService {
         return e.code;
       }
 
-      locator<UserService>().uploadProfileImg(locator<AuthManager>().getImage.lastResult);
-
+      locator<UserService>()
+          .uploadProfileImg(locator<AuthManager>().getImage.lastResult);
     } else {
       return 'username-taken';
     }
@@ -76,26 +79,6 @@ class AuthService {
 
   Future<void> signOut() async {
     await auth.signOut();
-  }
-
-  void changeProfileImage(int userId, String image) async {
-    var client = http.Client();
-    try {
-      String profileImageUrl =
-          await _apiService.uploadImage(File(image), "profileImage", 0);
-
-      var url = host + 'updateProfileImg';
-      Map body = {
-        'profileImageUrl': profileImageUrl,
-        'userId': userId.toString()
-      };
-      var response = await http.put(url, body: body);
-      if (response.statusCode == 200)
-        print('Success');
-      else {}
-    } finally {
-      client.close();
-    }
   }
 
   Future<String> login(String email, String password) async {
@@ -115,6 +98,4 @@ class AuthService {
 
     return 'success';
   }
-
 }
-

@@ -1,11 +1,4 @@
 
-import 'package:point_of_view/models/Album.dart';
-import 'package:point_of_view/models/Photo.dart';
-import 'package:point_of_view/services/album_service.dart';
-import 'package:rx_command/rx_command.dart';
-
-import 'package:point_of_view/locator.dart';
-
 abstract class AlbumManager {
   // RxCommand<void, List<Album>> getAlbums;
   // RxCommand<int, List<Photo>> getAlbumImages;

@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:point_of_view/managers/user_manager.dart';
 import 'package:point_of_view/models/User.dart';
-import 'package:point_of_view/services/user_service.dart';
-import 'package:point_of_view/locator.dart';
-import 'package:point_of_view/widgets/ShowAlert.dart';
 import 'package:point_of_view/widgets/account_detail_row.dart';
 
 class MyAccountPage extends StatelessWidget {

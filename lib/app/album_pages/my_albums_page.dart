@@ -1,10 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:point_of_view/locator.dart';
 import 'package:point_of_view/models/Album.dart';
 import 'package:point_of_view/services/album_service.dart';
 import 'package:point_of_view/widgets/my_albums_app_bar.dart';
-import 'package:point_of_view/widgets/my_albums_page_row.dart';
+import 'package:point_of_view/widgets/album_list.dart';
 
 class MyAlbumsPage extends StatefulWidget {
   const MyAlbumsPage({Key key}) : super(key: key);
@@ -34,7 +33,7 @@ class _MyAlbumsPageState extends State<MyAlbumsPage>
             stream: locator<AlbumService>().getAlbums(),
             builder: (context, albums) {
               if (albums.hasData) {
-                return MyAlbumsPageRow(
+                return AlbumList(
                   myAlbums: albums.data,
                 );
               } else if (albums.hasError) {

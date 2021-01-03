@@ -1,9 +1,6 @@
 
 import 'package:adv_camera/adv_camera.dart';
 import 'package:flutter/material.dart';
-import 'package:point_of_view/managers/album_manager.dart';
-import 'package:point_of_view/managers/camera_manager.dart';
-import 'package:point_of_view/locator.dart';
 import 'package:point_of_view/widgets/camera_buttons/select_album_button.dart';
 import 'package:point_of_view/widgets/camera_buttons/take_picture_button.dart';
 import 'package:point_of_view/widgets/camera_buttons/toggle_camera_button.dart';

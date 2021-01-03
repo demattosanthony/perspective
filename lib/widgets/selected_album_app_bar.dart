@@ -10,7 +10,7 @@ class SelectedAlbumAppBar extends StatefulWidget {
       : super(key: key);
 
   final Album album;
-  var isSelecting;
+  final  isSelecting;
   final SetSelctingImagesCallBack setSelectingImages;
 
   @override
