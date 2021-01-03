@@ -4,6 +4,7 @@ import 'package:point_of_view/managers/auth_manager.dart';
 import 'package:point_of_view/managers/camera_manager.dart';
 import 'package:point_of_view/managers/user_manager.dart';
 import 'package:point_of_view/services/album_service.dart';
+import 'package:point_of_view/services/dynamic_links_service.dart';
 import 'package:point_of_view/services/user_service.dart';
 import 'package:point_of_view/services/auth_service.dart';
 
@@ -15,6 +16,8 @@ void setupLocator() {
   locator.registerLazySingleton<UserService>(() => UserServiceImplementation());
   locator
       .registerLazySingleton<AlbumService>(() => AlbumServiceImplementation());
+  locator.registerLazySingleton<DynamicLinkService>(
+      () => DynamicLinksServiceImplemenation());
 
   //managers
   locator

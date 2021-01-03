@@ -34,7 +34,7 @@ class SelectAlbumButton extends StatelessWidget {
                         ),
                       ),
                       StreamBuilder<List<Album>>(
-                        stream: locator<AlbumService>().getAlbums(),
+                        stream: locator<AlbumService>().getCreatedAlbums(),
                         builder: (context, snapshot) {
                           return ListView.builder(
                               shrinkWrap: true,

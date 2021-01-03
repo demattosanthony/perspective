@@ -19,7 +19,7 @@ class _CreatedAlbumsPageState extends State<CreatedAlbumsPage> {
           title: Text('Created Albums'),
         ),
         body: StreamBuilder(
-            stream: locator<AlbumService>().getAlbums(),
+            stream: locator<AlbumService>().getCreatedAlbums(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 List<Album> albums = snapshot.data;

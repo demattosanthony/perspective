@@ -9,7 +9,8 @@ import 'package:point_of_view/models/Album.dart';
 import 'package:point_of_view/models/Photo.dart';
 
 abstract class AlbumService {
-  Stream<List<Album>> getAlbums();
+  Stream<List<Album>> getCreatedAlbums();
+  Stream<List<Album>> getJoinedAlbums();
   Stream<List<Photo>> getPhotos(String albumId);
   Future<void> createAlbum(String albumTitle);
   Future<int> joinAlbum(String sharedString);
@@ -22,12 +23,24 @@ class AlbumServiceImplementation implements AlbumService {
   var host = "https://hidden-woodland-36838.herokuapp.com/";
 
   @override
-  Stream<List<Album>> getAlbums() {
+  Stream<List<Album>> getCreatedAlbums() {
     String userId = FirebaseAuth.instance.currentUser.uid;
     var ref = FirebaseFirestore.instance
         .collection("albums")
         .where("userId", isEqualTo: userId)
         .snapshots();
+    return ref.map((list) {
+      return list.docs.map((doc) => Album.fromSnap(doc)).toList();
+    });
+  }
+
+  Stream<List<Album>> getJoinedAlbums() {
+    String userId = FirebaseAuth.instance.currentUser.uid;
+    var ref = FirebaseFirestore.instance
+        .collection("albums")
+        .where("attendeeIds", arrayContains: userId)
+        .snapshots();
+
     return ref.map((list) {
       return list.docs.map((doc) => Album.fromSnap(doc)).toList();
     });
@@ -83,7 +96,6 @@ class AlbumServiceImplementation implements AlbumService {
       return list.docs.map((doc) => Photo.fromSnap(doc)).toList();
     });
   }
-
 
   @override
   void deleteAlbum(String albumId, bool isOwner) async {

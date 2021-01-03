@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:point_of_view/models/Album.dart';
@@ -69,8 +68,11 @@ class _SelectedAlbumPageState extends State<SelectedAlbumPage> {
           );
         },
       ),
-      bottomNavigationBar: SelectedAlbumBottomNavBar(widget: widget, isSelectingImages: isSelectingImages),
+      bottomNavigationBar: SelectedAlbumBottomNavBar(
+        widget: widget,
+        isSelectingImages: isSelectingImages,
+        album: widget.album,
+      ),
     );
   }
 }
-

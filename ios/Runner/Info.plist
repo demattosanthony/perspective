@@ -18,6 +18,19 @@
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>Bundle ID</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
@@ -26,10 +39,10 @@
 	<string>camera</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>To record sound in videos</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Need to access photos to choose profile image and album image</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Need to download album photos</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Need to access photos to choose profile image and album image</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -49,6 +62,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	
 </dict>
 </plist>
