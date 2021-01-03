@@ -28,7 +28,7 @@ class _MyAlbumsPageState extends State<MyAlbumsPage>
       ),
       body: RefreshIndicator(
           onRefresh: () async {
-            // locator<AlbumManager>().getAlbums();
+            locator<AlbumService>().getAlbums();
           },
           child: StreamBuilder<List<Album>>(
             stream: locator<AlbumService>().getAlbums(),

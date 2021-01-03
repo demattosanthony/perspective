@@ -1,32 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:point_of_view/models/Album.dart';
 
-class SelectedAlbumAppBar extends StatelessWidget {
-  const SelectedAlbumAppBar(
-      {Key key, @required this.album, this.setSelectingImages, this.isSelecting})
+class SelectedAlbumAppBar extends StatefulWidget {
+  SelectedAlbumAppBar(
+      {Key key,
+      @required this.album,
+      this.isSelecting,
+      this.setSelectingImages})
       : super(key: key);
 
   final Album album;
-  final isSelecting;
-  final setSelectingImages;
+  var isSelecting;
+  final SetSelctingImagesCallBack setSelectingImages;
 
+  @override
+  _SelectedAlbumAppBarState createState() => _SelectedAlbumAppBarState();
+}
+
+class _SelectedAlbumAppBarState extends State<SelectedAlbumAppBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
       title: Text(
-        album.title.toUpperCase(),
+        widget.album.title.toUpperCase(),
         style: TextStyle(color: Colors.black),
       ),
       elevation: 0,
       backgroundColor: Colors.white,
-      
+
       actions: [
         Padding(
           padding: const EdgeInsets.all(5.0),
           child: FittedBox(
             child: GestureDetector(
               onTap: () {
-                setSelectingImages();
+                widget.setSelectingImages();
               },
               child: Container(
                 alignment: Alignment.center,
@@ -35,7 +43,7 @@ class SelectedAlbumAppBar extends StatelessWidget {
                     borderRadius: BorderRadius.circular(55),
                     color: Colors.black.withOpacity(.55)),
                 child: Text(
-                  isSelecting ? 'Cancel' : 'Select',
+                  widget.isSelecting ? 'Cancel' : 'Select',
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 14,
@@ -62,3 +70,5 @@ class SelectedAlbumAppBar extends StatelessWidget {
     );
   }
 }
+
+typedef SetSelctingImagesCallBack = Function();

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:point_of_view/managers/album_manager.dart';
 import 'package:point_of_view/models/Album.dart';
@@ -12,19 +13,6 @@ class JoinedAlbumsPage extends StatefulWidget {
 }
 
 class _JoinedAlbumsPageState extends State<JoinedAlbumsPage> {
-  int userId;
-
-  void getUserId() async {
-    userId = 42;
-  }
-
-  @override
-  void initState() {
-    // locator<AlbumManager>().getAlbums();
-    getUserId();
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,6 +24,7 @@ class _JoinedAlbumsPageState extends State<JoinedAlbumsPage> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               List<Album> albums = snapshot.data;
+              String userId = FirebaseAuth.instance.currentUser.uid;
               List<Album> joinedAlbums =
                   albums.where((element) => element.ownerId != userId).toList();
               return AlbumRow(

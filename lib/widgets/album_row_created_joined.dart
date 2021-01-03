@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:point_of_view/locator.dart';
 import 'package:point_of_view/models/Album.dart';
+import 'package:point_of_view/services/album_service.dart';
 
 class AlbumRow extends StatelessWidget {
   const AlbumRow({Key key, @required this.albums})
@@ -25,12 +27,19 @@ class AlbumRow extends StatelessWidget {
                   elevation: 5,
                   child: Center(
                     child: ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor: Colors.white,
-                        backgroundImage: album.profileImgUrl == 'null'
-                            ? AssetImage('assets/profile_icon.png')
-                            : NetworkImage(album.profileImgUrl),
-                      ),
+                      leading:  FutureBuilder(
+                          future: locator<AlbumService>().getUserProfileImg(
+                            album.ownerId,
+                          ),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return CircleAvatar(
+                                  backgroundColor: Colors.white,
+                                  backgroundImage: NetworkImage(snapshot.data));
+                            }
+                            return Container();
+                          },
+                        ),
                       title: FittedBox(
                         fit: BoxFit.scaleDown,
                         alignment: Alignment.centerLeft,

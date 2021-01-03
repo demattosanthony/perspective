@@ -15,7 +15,7 @@ abstract class AlbumService {
   Stream<List<Photo>> getPhotos(String albumId);
   Future<void> createAlbum(String albumTitle);
   Future<int> joinAlbum(String sharedString);
-  void deleteAlbum(int albumId, bool isOwner);
+  void deleteAlbum(String albumId, bool isOwner);
   Future<String> getUserProfileImg(String userId);
   Future<void> uploadImage(String imagePath, String albumId);
 }
@@ -86,15 +86,10 @@ class AlbumServiceImplementation implements AlbumService {
     });
   }
 
+
   @override
-  void deleteAlbum(int albumId, bool isOwner) async {
-    var url = host + "deleteAlbum";
-    Map body = {"albumId": albumId.toString(), "isOwner": isOwner.toString()};
-    var response = await http.post(url, body: body);
-    if (response.statusCode == 200) {
-    } else {
-      throw Exception('Failed to delete album');
-    }
+  void deleteAlbum(String albumId, bool isOwner) async {
+    FirebaseFirestore.instance.collection("albums").doc(albumId).delete();
   }
 
   @override

@@ -3,30 +3,36 @@ import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
 // ignore: must_be_immutable
-class ImageGridItem extends StatelessWidget {
+class ImageGridItem extends StatefulWidget {
   ImageGridItem(
       {Key key,
       @required this.imageUrl,
-      this.setSelectedImage,
       this.isSelectingImages,
       this.isSelected,
       this.imageId})
       : super(key: key);
 
-  final imageUrl;
-  final setSelectedImage;
-  final isSelectingImages;
-  final isSelected;
-  final imageId;
+  final String imageUrl;
+  bool isSelectingImages;
+  bool isSelected;
+  final int imageId;
 
+  @override
+  _ImageGridItemState createState() => _ImageGridItemState();
+}
+
+class _ImageGridItemState extends State<ImageGridItem> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if (isSelectingImages) {
-          setSelectedImage(imageId);
+        if (widget.isSelectingImages) {
+          setState(() {
+            widget.isSelected = !widget.isSelected;
+          });
         } else {
-          Navigator.of(context).pushNamed('imageView', arguments: imageUrl);
+          Navigator.of(context)
+              .pushNamed('imageView', arguments: widget.imageUrl);
         }
       },
       onLongPress: () {
@@ -38,7 +44,7 @@ class ImageGridItem extends StatelessWidget {
           Container(
             child: CachedNetworkImage(
               imageBuilder: (context, imageProvider) => Container(
-                decoration: !isSelected
+                decoration: !widget.isSelected
                     ? BoxDecoration(
                         image: DecorationImage(
                             image: imageProvider, fit: BoxFit.cover))
@@ -53,11 +59,11 @@ class ImageGridItem extends StatelessWidget {
               fadeInDuration: Duration(microseconds: 0),
               placeholder: (context, url) =>
                   Center(child: PlatformCircularProgressIndicator()),
-              imageUrl: imageUrl,
+              imageUrl: widget.imageUrl,
               fit: BoxFit.cover,
             ),
           ),
-          isSelected
+          widget.isSelected
               ? Positioned(
                   bottom: 0,
                   right: 0,

@@ -19,6 +19,15 @@ class Photo {
     Map data = doc.data();
     return Photo(
       imageUrl: data['imageUrl'],
+      isSelected: false
+    );
+  }
+
+  factory Photo.fromQuerySnap(QueryDocumentSnapshot doc) {
+    Map data = doc.data();
+    return Photo(
+      imageUrl: data['imageUrl'],
+      isSelected: false
     );
   }
 }

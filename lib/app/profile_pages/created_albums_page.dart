@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:point_of_view/managers/album_manager.dart';
 import 'package:point_of_view/models/Album.dart';
@@ -37,6 +38,7 @@ class _CreatedAlbumsPageState extends State<CreatedAlbumsPage> {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 List<Album> albums = snapshot.data;
+                String userId = FirebaseAuth.instance.currentUser.uid;
                 List<Album> createdAlbums = albums
                     .where((element) => element.ownerId == userId)
                     .toList();

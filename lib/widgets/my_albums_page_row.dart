@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:point_of_view/models/Album.dart';
@@ -19,7 +20,7 @@ class MyAlbumsPageRow extends StatelessWidget {
           key: ObjectKey(album),
           confirmDismiss: (DismissDirection direction) async {
             SharedPreferences prefs = await SharedPreferences.getInstance();
-            var userId = prefs.getInt('userId');
+            var userId = FirebaseAuth.instance.currentUser.uid;
             var isOwner = userId == album.ownerId ? true : false;
             return showPlatformDialog(
                 context: context,
@@ -42,9 +43,8 @@ class MyAlbumsPageRow extends StatelessWidget {
                                 : Text('Leave',
                                     style: TextStyle(color: Colors.red)),
                             onPressed: () async {
-                              // await locator<AlbumService>()
-                              //     .deleteAlbum(album.albumId, isOwner);
-                              // await locator<AlbumManager>().getAlbums();
+                              locator<AlbumService>()
+                                  .deleteAlbum(album.albumId, true);
                               Navigator.of(context).pop();
                             })
                       ],
