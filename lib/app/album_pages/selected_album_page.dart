@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:point_of_view/managers/album_manager.dart';
 import 'package:point_of_view/models/Album.dart';
 import 'package:point_of_view/locator.dart';
+import 'package:point_of_view/services/album_service.dart';
 import 'package:point_of_view/widgets/selected_album_app_bar.dart';
 import 'package:point_of_view/widgets/image_grid_item.dart';
 import 'package:point_of_view/models/Photo.dart';
@@ -21,7 +22,7 @@ class _SelectedAlbumPageState extends State<SelectedAlbumPage> {
 
   @override
   void initState() {
-    locator<AlbumManager>().getAlbumImages(widget.album.albumId);
+    // locator<AlbumManager>().getAlbumImages(widget.album.albumId);
     super.initState();
   }
 
@@ -37,7 +38,7 @@ class _SelectedAlbumPageState extends State<SelectedAlbumPage> {
         ),
       ),
       body: StreamBuilder<List<Photo>>(
-        stream: locator<AlbumManager>().getAlbumImages,
+        stream: locator<AlbumService>().getPhotos(widget.album.albumId),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final orientation = MediaQuery.of(context).orientation;

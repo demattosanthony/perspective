@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:point_of_view/managers/album_manager.dart';
 import 'package:point_of_view/models/Album.dart';
-import 'package:point_of_view/services/ApiService.dart';
 import 'package:point_of_view/locator.dart';
 import 'package:point_of_view/services/album_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -44,8 +42,8 @@ class MyAlbumsPageRow extends StatelessWidget {
                                 : Text('Leave',
                                     style: TextStyle(color: Colors.red)),
                             onPressed: () async {
-                              await locator<AlbumService>()
-                                  .deleteAlbum(album.albumId, isOwner);
+                              // await locator<AlbumService>()
+                              //     .deleteAlbum(album.albumId, isOwner);
                               // await locator<AlbumManager>().getAlbums();
                               Navigator.of(context).pop();
                             })
@@ -64,7 +62,6 @@ class MyAlbumsPageRow extends StatelessWidget {
           ),
           child: GestureDetector(
               onTap: () async {
-                // getPhotos(album.albumId);
                 Navigator.of(context).pushNamed('albumView', arguments: album);
               },
               child: Padding(
@@ -72,12 +69,23 @@ class MyAlbumsPageRow extends StatelessWidget {
                 child: Card(
                   elevation: 5,
                   child: ListTile(
-                      leading: CircleAvatar(
-                          backgroundColor: Colors.white,
-                          radius: 25,
-                          backgroundImage: album.profileImgUrl == 'null'
-                              ? AssetImage('assets/images/profile_icon.png')
-                              : NetworkImage(album.profileImgUrl)),
+                      leading: SizedBox(
+                        height: 50,
+                        width: 50,
+                        child: FutureBuilder(
+                          future: locator<AlbumService>().getUserProfileImg(
+                            album.ownerId,
+                          ),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return CircleAvatar(
+                                  backgroundColor: Colors.white,
+                                  backgroundImage: NetworkImage(snapshot.data));
+                            }
+                            return Container();
+                          },
+                        ),
+                      ),
                       title: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: FittedBox(

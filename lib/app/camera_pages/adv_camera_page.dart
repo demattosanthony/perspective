@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:point_of_view/managers/camera_manager.dart';
 import 'package:point_of_view/locator.dart';
+import 'package:point_of_view/services/album_service.dart';
 import 'package:point_of_view/widgets/camera_buttons_stack.dart';
 
 class AdvCameraPage extends StatefulWidget {
@@ -54,7 +55,7 @@ class _AdvCameraPageState extends State<AdvCameraPage> {
           initialCameraType: CameraType.rear,
           onCameraCreated: _onCameraCreated,
           onImageCaptured: (String path) {
-            locator<CameraManager>().uploadImage(File(path));
+            locator<AlbumService>().uploadImage(path, locator<CameraManager>().selectedAlbum.lastResult.albumId);
           },
           cameraPreviewRatio: CameraPreviewRatio.r16_9,
         ),

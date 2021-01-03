@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Album {
-  final int albumId;
+  final String albumId;
   final String title;
-  final int ownerId;
+  final String ownerId;
   final String shareString;
   final String profileImgUrl;
 
@@ -27,5 +29,17 @@ class Album {
         ownerId: json['ownerid'],
         shareString: json['share_string'],
         profileImgUrl: json['profile_img_url']);
+  }
+
+  factory Album.fromSnap(DocumentSnapshot doc) {
+    Map data = doc.data();
+
+    return Album(
+        albumId: data['albumId'],
+        title: data['title'],
+        ownerId: data['userId'],
+        // shareString: data['share_string'],
+        // profileImgUrl: data['profile_img_url']
+        );
   }
 }

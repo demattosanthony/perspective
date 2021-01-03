@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:point_of_view/managers/user_manager.dart';
 import 'package:point_of_view/locator.dart';
+import 'package:point_of_view/models/User.dart';
 
 class ProfilePic extends StatelessWidget {
   const ProfilePic({
     Key key,
-    @required this.userSnapshot,
+    @required this.user,
   }) : super(key: key);
 
-  final AsyncSnapshot<dynamic> userSnapshot;
+  final UserAccount user;
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +32,9 @@ class ProfilePic extends StatelessWidget {
               } else {
                 return CircleAvatar(
                     backgroundColor: Colors.white,
-                    backgroundImage: userSnapshot.data['profileImgUrl'] == ''
+                    backgroundImage: user.profileImageUrl == ''
                         ? AssetImage('assets/images/profile_icon.png')
-                        : NetworkImage(userSnapshot.data['profileImgUrl']));
+                        : NetworkImage(user.profileImageUrl));
               }
             },
           ),

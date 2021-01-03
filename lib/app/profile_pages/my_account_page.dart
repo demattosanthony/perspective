@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:point_of_view/managers/user_manager.dart';
+import 'package:point_of_view/models/User.dart';
 import 'package:point_of_view/services/user_service.dart';
 import 'package:point_of_view/locator.dart';
 import 'package:point_of_view/widgets/ShowAlert.dart';
@@ -8,7 +9,7 @@ import 'package:point_of_view/widgets/account_detail_row.dart';
 
 class MyAccountPage extends StatelessWidget {
   MyAccountPage({this.userData});
-  final userData;
+  final UserAccount userData;
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
@@ -43,17 +44,17 @@ class MyAccountPage extends StatelessWidget {
           children: [
             AccountDetailRow(
               controller: _nameController,
-              userData: userData['name'],
+              userData: userData.name,
               title: 'Name',
             ),
             AccountDetailRow(
               controller: _usernameController,
-              userData: userData['username'],
+              userData: userData.username,
               title: 'Username',
             ),
             AccountDetailRow(
               controller: _emailController,
-              userData: userData['email'],
+              userData: userData.email,
               title: 'Email',
             ),
           ],

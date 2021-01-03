@@ -36,7 +36,7 @@ class _ProfilePageState extends State<ProfilePage> {
         backgroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
-        child: StreamBuilder(
+        child: StreamBuilder<UserAccount>(
           stream: locator<UserService>().getUserInfo(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
@@ -47,7 +47,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: [
                   Padding(padding: EdgeInsets.only(top: 25)),
                   ProfilePic(
-                    userSnapshot: snapshot,
+                    user: snapshot.data
                   ),
                   ProfileListTile(
                     icon: Icons.person,
