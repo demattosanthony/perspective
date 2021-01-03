@@ -42,7 +42,7 @@ class AlbumList extends StatelessWidget {
                                     style: TextStyle(color: Colors.red)),
                             onPressed: () async {
                               locator<AlbumService>()
-                                  .deleteAlbum(album.albumId, true);
+                                  .deleteOrLeaveAlbum(album.albumId, isOwner);
                               Navigator.of(context).pop();
                             })
                       ],

@@ -34,21 +34,21 @@ class JoinAlbumButton extends StatelessWidget {
                         PlatformDialogAction(
                             child: Text("Join"),
                             onPressed: () async {
-                              var responseCode =
-                                  await locator<AlbumService>().joinAlbum(albumCodeController.text);
-                              if (responseCode == 450) {
-                                showPlatformDialog(
-                                    context: context,
-                                    builder: (_) => ShowAlert(
-                                        "Already joined album",
-                                        "Enter different code"));
-                              } else if (responseCode == 200) {
-                                Navigator.pushReplacement(
-                                    context,
-                                    PageTransition(
-                                        child: BottomNavBar(),
-                                        type: PageTransitionType.fade));
-                              }
+                              // var responseCode =
+                              //     await locator<AlbumService>().joinAlbum(albumCodeController.text);
+                              // if (responseCode == 450) {
+                              //   showPlatformDialog(
+                              //       context: context,
+                              //       builder: (_) => ShowAlert(
+                              //           "Already joined album",
+                              //           "Enter different code"));
+                              // } else if (responseCode == 200) {
+                              //   Navigator.pushReplacement(
+                              //       context,
+                              //       PageTransition(
+                              //           child: BottomNavBar(),
+                              //           type: PageTransitionType.fade));
+                              // }
                             })
                       ],
                     ));

@@ -11,7 +11,7 @@ class CreateAlbumView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-              height: MediaQuery.of(context).size.height * .90,
+              height: MediaQuery.of(context).size.height * .65,
               child: Column(
                 children: [
                   Container(
@@ -24,9 +24,6 @@ class CreateAlbumView extends StatelessWidget {
                               fontSize: 22, fontWeight: FontWeight.bold))),
                   Divider(
                     thickness: 1,
-                  ),
-                  JoinAlbumButton(
-                    albumCodeController: _albumCodeController,
                   ),
                   CreateAlbumButton(title: _albumTitleController),
                 ],

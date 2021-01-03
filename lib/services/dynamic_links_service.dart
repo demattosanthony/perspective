@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
+import 'package:point_of_view/locator.dart';
+import 'package:point_of_view/services/album_service.dart';
 
 abstract class DynamicLinkService {
   Future<Uri> createDynamicLink(String id);
@@ -23,29 +25,33 @@ class DynamicLinksServiceImplemenation implements DynamicLinkService {
   }
 
   Future<void> retreieveDynamicLink(BuildContext context) async {
-    print('retrieving');
     try {
       final PendingDynamicLinkData data =
           await FirebaseDynamicLinks.instance.getInitialLink();
       final Uri deepLink = data?.link;
-      print(deepLink);
 
       if (deepLink != null) {
         if (deepLink.queryParameters.containsKey('id')) {
-          String id = deepLink.queryParameters['id'];
-          print(id);
-          print('id');
-          await FirebaseFirestore.instance
-              .collection("albums")
-              .doc(id)
-              .update({"attendeeIds": [FirebaseAuth.instance.currentUser.uid]});
-        } else {
-         
-          print(deepLink);
+          String albumId = deepLink.queryParameters['id'];
+          locator<AlbumService>().joinAlbum(albumId);
         }
       }
+
+      FirebaseDynamicLinks.instance.onLink(
+          onSuccess: (PendingDynamicLinkData dynamicLink) async {
+        final Uri deepLink = dynamicLink?.link;
+
+        if (deepLink != null) {
+          if (deepLink.queryParameters.containsKey('id')) {
+            String albumId = deepLink.queryParameters['id'];
+            locator<AlbumService>().joinAlbum(albumId);
+          }
+        }
+      }, onError: (OnLinkErrorException e) async {
+        print('onLinkError');
+        print(e.message);
+      });
     } catch (e) {
-       print('no');
       print(e.toString());
     }
   }

@@ -3,6 +3,7 @@ import 'package:point_of_view/managers/camera_manager.dart';
 import 'package:point_of_view/models/Album.dart';
 import 'package:point_of_view/locator.dart';
 import 'package:point_of_view/services/album_service.dart';
+import 'package:rxdart/streams.dart';
 
 class SelectAlbumButton extends StatelessWidget {
   const SelectAlbumButton({
@@ -33,32 +34,43 @@ class SelectAlbumButton extends StatelessWidget {
                               color: Colors.grey),
                         ),
                       ),
-                      StreamBuilder<List<Album>>(
-                        stream: locator<AlbumService>().getCreatedAlbums(),
+                      StreamBuilder(
+                        stream: CombineLatestStream.list([
+                          locator<AlbumService>().getCreatedAlbums(),
+                          locator<AlbumService>().getJoinedAlbums()
+                        ]),
                         builder: (context, snapshot) {
-                          return ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: snapshot.data.length,
-                              itemBuilder: (context, index) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    locator<CameraManager>()
-                                        .selectedAlbum(snapshot.data[index]);
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: Column(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                            snapshot.data[index].title.toUpperCase(),
-                                            style: TextStyle(fontSize: 18)),
-                                      ),
-                                      Divider()
-                                    ],
-                                  ),
-                                );
-                              });
+                          if (snapshot.hasData) {
+                            List<Album> createdAndJoinedAlbums =
+                                snapshot.data[0] + snapshot.data[1];
+                            return ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: createdAndJoinedAlbums.length,
+                                itemBuilder: (context, index) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      locator<CameraManager>().selectedAlbum(
+                                          createdAndJoinedAlbums[index]);
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Column(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                              createdAndJoinedAlbums[index]
+                                                  .title
+                                                  .toUpperCase(),
+                                              style: TextStyle(fontSize: 18)),
+                                        ),
+                                        Divider()
+                                      ],
+                                    ),
+                                  );
+                                });
+                          }
+
+                          return Container();
                         },
                       ),
                     ],

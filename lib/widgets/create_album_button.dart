@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:point_of_view/services/album_service.dart';
 import 'package:point_of_view/locator.dart';
@@ -17,23 +16,11 @@ class CreateAlbumButton extends StatelessWidget {
       child: FlatButton(
           onPressed: () async {
             await locator<AlbumService>().createAlbum(title.text);
-            
-            showPlatformDialog(
-                context: context,
-                builder: (_) => PlatformAlertDialog(
-                      title: Text('Share album:\n'),
-                      actions: [
-                        PlatformDialogAction(
-                            child: Text("OK"),
-                            onPressed: () {
-                              Navigator.pushReplacement(
-                                  context,
-                                  PageTransition(
-                                      child: BottomNavBar(),
-                                      type: PageTransitionType.fade));
-                            })
-                      ],
-                    ));
+
+            Navigator.pushReplacement(
+                context,
+                PageTransition(
+                    child: BottomNavBar(), type: PageTransitionType.fade));
           },
           child: Text(
             'Create Album',

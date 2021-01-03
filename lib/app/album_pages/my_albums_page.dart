@@ -65,9 +65,10 @@ class _MyAlbumsPageState extends State<MyAlbumsPage>
               locator<AlbumService>().getJoinedAlbums()
             ]),
             builder: (context, albums) {
-              List<Album> createdAndJoinedAlbums =
-                  albums.data[0] + albums.data[1];
+              
               if (albums.hasData) {
+                List<Album> createdAndJoinedAlbums =
+                  albums.data[0] + albums.data[1];
                 return AlbumList(
                   myAlbums: createdAndJoinedAlbums,
                 );

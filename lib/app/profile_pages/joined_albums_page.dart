@@ -18,7 +18,7 @@ class _JoinedAlbumsPageState extends State<JoinedAlbumsPage> {
         title: Text('Joined Albums'),
       ),
       body: StreamBuilder(
-          stream: locator<AlbumService>().getCreatedAlbums(),
+          stream: locator<AlbumService>().getJoinedAlbums(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               List<Album> albums = snapshot.data;
