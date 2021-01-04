@@ -22,10 +22,13 @@ class Router {
       //   return MaterialPageRoute(builder: (_) => CameraView());
       case 'albumView':
         var album = settings.arguments;
-        return MaterialPageRoute(builder: (_) => SelectedAlbumPage(album: album));
+        return MaterialPageRoute(
+            builder: (_) => SelectedAlbumPage(album: album));
       case 'imageView':
-        var imageUrl = settings.arguments;
-        return MaterialPageRoute(builder: (_) => ImageView(imageUrl));
+        List args = settings.arguments;
+        var photo = args[0];
+        var albumId = args[1];
+        return MaterialPageRoute(builder: (_) => ImageView(albumId: albumId, photo: photo,));
       case 'profileView':
         return MaterialPageRoute(builder: (_) => ProfilePage());
       case 'createdAlbumsView':
@@ -34,7 +37,10 @@ class Router {
         return MaterialPageRoute(builder: (_) => JoinedAlbumsPage());
       case 'myAccountView':
         var data = settings.arguments;
-        return MaterialPageRoute(builder: (_) => MyAccountPage(userData: data,));
+        return MaterialPageRoute(
+            builder: (_) => MyAccountPage(
+                  userData: data,
+                ));
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(

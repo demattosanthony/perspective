@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:point_of_view/app/album_pages/create_album_view.dart';
 import 'package:point_of_view/locator.dart';
 import 'package:point_of_view/models/Album.dart';
 import 'package:point_of_view/services/album_service.dart';
@@ -64,14 +66,46 @@ class _MyAlbumsPageState extends State<MyAlbumsPage>
               locator<AlbumService>().getCreatedAlbums(),
               locator<AlbumService>().getJoinedAlbums()
             ]),
+            initialData: [],
             builder: (context, albums) {
-              
-              if (albums.hasData) {
-                List<Album> createdAndJoinedAlbums =
-                  albums.data[0] + albums.data[1];
-                return AlbumList(
-                  myAlbums: createdAndJoinedAlbums,
+              if (albums.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: PlatformCircularProgressIndicator(),
                 );
+              } else if (albums.hasData) {
+                List<Album> createdAndJoinedAlbums =
+                    albums.data[0] + albums.data[1];
+                if (createdAndJoinedAlbums.isEmpty) {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('You have no created or joined any albums yet.'),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: FlatButton(
+                            onPressed: () {
+                              showModalBottomSheet(
+                                  context: context,
+                                  isScrollControlled: true,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15)),
+                                  builder: (builder) => CreateAlbumView());
+                            },
+                            child: Text(
+                              'Create Album',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            color: Colors.blueAccent,
+                          ),
+                        )
+                      ],
+                    ),
+                  );
+                } else
+                  return AlbumList(
+                    myAlbums: createdAndJoinedAlbums,
+                  );
               } else if (albums.hasError) {
                 return Text("${albums.error}");
               }

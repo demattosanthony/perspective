@@ -7,6 +7,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:point_of_view/models/Album.dart';
 import 'package:point_of_view/models/Photo.dart';
+import 'package:uuid/uuid.dart';
 
 abstract class AlbumService {
   Stream<List<Album>> getCreatedAlbums();
@@ -17,6 +18,7 @@ abstract class AlbumService {
   void deleteOrLeaveAlbum(String albumId, bool isOwner);
   Future<String> getUserProfileImg(String userId);
   Future<void> uploadImage(String imagePath, String albumId);
+  Future<void> deleteImage(String albumId, String imageId);
 }
 
 class AlbumServiceImplementation implements AlbumService {
@@ -57,27 +59,35 @@ class AlbumServiceImplementation implements AlbumService {
     String userId = FirebaseAuth.instance.currentUser.uid;
     FirebaseFirestore.instance
         .collection("albums")
-        .add({"title": albumTitle, "userId": userId}).then((value) => {
-              FirebaseFirestore.instance
-                  .collection("albums")
-                  .doc(value.id)
-                  .update({"albumId": value.id})
-            });
+        .add({"title": albumTitle, "userId": userId, 'attendeeIds': []}).then(
+            (value) => {
+                  FirebaseFirestore.instance
+                      .collection("albums")
+                      .doc(value.id)
+                      .update({"albumId": value.id})
+                });
   }
 
   Future<void> uploadImage(String imagePath, String albumId) async {
     File file = File(imagePath);
 
+    String imageId = Uuid().v1();
+
     try {
       TaskSnapshot result = await FirebaseStorage.instance
-          .ref('albumImages/$albumId/$file')
+          .ref('albumImages/$albumId/$imageId')
           .putFile(file);
       result.ref.getDownloadURL().then((value) => {
             FirebaseFirestore.instance
                 .collection("albums")
                 .doc(albumId)
                 .collection("photos")
-                .add({"imageUrl": value})
+                .doc(imageId)
+                .set({
+              "imageId": imageId,
+              "imageUrl": value,
+              "userId": FirebaseAuth.instance.currentUser.uid
+            })
           });
     } on FirebaseException catch (e) {
       print(e.code);
@@ -99,14 +109,14 @@ class AlbumServiceImplementation implements AlbumService {
 
   @override
   void deleteOrLeaveAlbum(String albumId, bool isOwner) async {
-    if(isOwner) {
+    if (isOwner) {
       FirebaseFirestore.instance.collection("albums").doc(albumId).delete();
     } else {
       FirebaseFirestore.instance.collection("albums").doc(albumId).update({
-        'attendeeIds': FieldValue.arrayRemove([FirebaseAuth.instance.currentUser.uid])
+        'attendeeIds':
+            FieldValue.arrayRemove([FirebaseAuth.instance.currentUser.uid])
       });
     }
-    
   }
 
   Future<bool> isUserInAlbum(String albumId) async {
@@ -138,5 +148,14 @@ class AlbumServiceImplementation implements AlbumService {
         "attendeeIds": [userId]
       });
     }
+  }
+
+  Future<void> deleteImage(String albumId, String imageId) async {
+    await FirebaseFirestore.instance
+        .collection("albums")
+        .doc(albumId)
+        .collection("photos")
+        .doc(imageId)
+        .delete();
   }
 }

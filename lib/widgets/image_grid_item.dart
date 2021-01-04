@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:point_of_view/locator.dart';
 import 'package:point_of_view/managers/album_manager.dart';
+import 'package:point_of_view/models/Album.dart';
 import 'package:point_of_view/models/Photo.dart';
 
 // ignore: must_be_immutable
@@ -12,17 +13,17 @@ class ImageGridItem extends StatefulWidget {
       @required this.imageUrl,
       this.isSelectingImages,
       this.isSelected,
-      this.imageId,
       this.photos,
-      this.index})
+      this.index,
+      @required this.albumId})
       : super(key: key);
 
   final String imageUrl;
   bool isSelectingImages;
   bool isSelected;
-  final int imageId;
   List<Photo> photos;
   var index;
+  final String albumId;
 
   @override
   _ImageGridItemState createState() => _ImageGridItemState();
@@ -35,12 +36,19 @@ class _ImageGridItemState extends State<ImageGridItem> {
       onTap: () {
         if (widget.isSelectingImages) {
           setState(() {
-            widget.isSelected = !widget.isSelected;
-            locator<AlbumManager>().getSelectedImages(widget.photos[widget.index]);
+            if (widget.isSelected) {
+              locator<AlbumManager>()
+                  .deleteFromSelectedPhotos(widget.photos[widget.index]);
+              widget.isSelected = false;
+            } else {
+              locator<AlbumManager>()
+                  .addToSelectedPhotos(widget.photos[widget.index]);
+              widget.isSelected = true;
+            }
           });
         } else {
-          Navigator.of(context)
-              .pushNamed('imageView', arguments: widget.imageUrl);
+          Navigator.of(context).pushNamed('imageView',
+              arguments: [widget.photos[widget.index], widget.albumId]);
         }
       },
       onLongPress: () {

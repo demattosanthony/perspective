@@ -54,14 +54,13 @@ class _SelectedAlbumPageState extends State<SelectedAlbumPage> {
                   Photo photo = snapshot.data[index];
                   String imageUrl = photo.imageUrl;
                   bool isSelected = photo.isSelected;
-                  int imageId = photo.photoId;
                   return ImageGridItem(
                     imageUrl: imageUrl,
                     isSelectingImages: isSelectingImages,
                     isSelected: isSelected,
-                    imageId: imageId,
                     photos: snapshot.data,
                     index: index,
+                    albumId: widget.album.albumId,
                   );
                 });
           } else if (snapshot.hasError) {

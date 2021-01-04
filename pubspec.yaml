@@ -50,6 +50,7 @@ dependencies:
   image_gallery_saver: '^1.6.7'
 
   share: ^0.6.4+3
+  uuid: ^2.2.2
 
 
   # The following adds the Cupertino Icons font to your application.

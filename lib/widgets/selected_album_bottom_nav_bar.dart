@@ -64,7 +64,7 @@ class SelectedAlbumBottomNavBar extends StatelessWidget {
           } else {
             //download selected images
             List<Photo> _photos =
-                locator<AlbumManager>().getSelectedImages.lastResult;
+                locator<AlbumManager>().getSelectedImages();
             try {
               for (var photo in _photos) {
                 var response = await http.get(photo.imageUrl);
