@@ -18,6 +18,7 @@ class CustomTextField extends StatelessWidget {
           ? CupertinoTextField(
               placeholder: placeholder,
               controller: controller,
+              textCapitalization: TextCapitalization.words,
               autocorrect: false,
               obscureText: isPassword ? true : false,
               style: style,
@@ -25,6 +26,7 @@ class CustomTextField extends StatelessWidget {
           : TextField(
               controller: controller,
               autocorrect: false,
+              textCapitalization: TextCapitalization.words,
               obscureText: isPassword ? true : false,
               decoration: InputDecoration(hintText: placeholder),
               style: style,

@@ -11,22 +11,20 @@ class CreateAlbumButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: FlatButton(
-          onPressed: () async {
-            await locator<AlbumService>().createAlbum(title.text);
+    return FlatButton(
+      onPressed: () async {
+        await locator<AlbumService>().createAlbum(title.text);
 
-            Navigator.pushReplacement(
-                context,
-                PageTransition(
-                    child: BottomNavBar(), type: PageTransitionType.fade));
-          },
-          child: Text(
-            'Create Album',
-            style: TextStyle(color: Colors.white, fontSize: 20),
-          ),
-          color: Colors.blue),
+        Navigator.pushReplacement(
+            context,
+            PageTransition(
+                child: BottomNavBar(), type: PageTransitionType.fade));
+      },
+      child: Text(
+        'Create Album',
+        style: TextStyle(color: Colors.white, fontSize: 20),
+      ),
+      color: Colors.blue,
     );
   }
 }

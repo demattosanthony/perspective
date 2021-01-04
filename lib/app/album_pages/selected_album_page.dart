@@ -19,6 +19,7 @@ class SelectedAlbumPage extends StatefulWidget {
 
 class _SelectedAlbumPageState extends State<SelectedAlbumPage> {
   bool isSelectingImages = false;
+  List<Photo> _photos;
 
   void setSelectingImages() {
     setState(() {
@@ -50,14 +51,17 @@ class _SelectedAlbumPageState extends State<SelectedAlbumPage> {
                     crossAxisCount:
                         (orientation == Orientation.portrait) ? 4 : 3),
                 itemBuilder: (context, index) {
-                  String imageUrl = snapshot.data[index].imageUrl;
-                  bool isSelected = snapshot.data[index].isSelected;
-                  int imageId = snapshot.data[index].photoId;
+                  Photo photo = snapshot.data[index];
+                  String imageUrl = photo.imageUrl;
+                  bool isSelected = photo.isSelected;
+                  int imageId = photo.photoId;
                   return ImageGridItem(
                     imageUrl: imageUrl,
                     isSelectingImages: isSelectingImages,
                     isSelected: isSelected,
                     imageId: imageId,
+                    photos: snapshot.data,
+                    index: index,
                   );
                 });
           } else if (snapshot.hasError) {
@@ -72,6 +76,7 @@ class _SelectedAlbumPageState extends State<SelectedAlbumPage> {
         widget: widget,
         isSelectingImages: isSelectingImages,
         album: widget.album,
+        photos: _photos,
       ),
     );
   }

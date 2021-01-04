@@ -1,6 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:point_of_view/locator.dart';
+import 'package:point_of_view/managers/album_manager.dart';
+import 'package:point_of_view/models/Photo.dart';
 
 // ignore: must_be_immutable
 class ImageGridItem extends StatefulWidget {
@@ -9,13 +12,17 @@ class ImageGridItem extends StatefulWidget {
       @required this.imageUrl,
       this.isSelectingImages,
       this.isSelected,
-      this.imageId})
+      this.imageId,
+      this.photos,
+      this.index})
       : super(key: key);
 
   final String imageUrl;
   bool isSelectingImages;
   bool isSelected;
   final int imageId;
+  List<Photo> photos;
+  var index;
 
   @override
   _ImageGridItemState createState() => _ImageGridItemState();
@@ -29,6 +36,7 @@ class _ImageGridItemState extends State<ImageGridItem> {
         if (widget.isSelectingImages) {
           setState(() {
             widget.isSelected = !widget.isSelected;
+            locator<AlbumManager>().getSelectedImages(widget.photos[widget.index]);
           });
         } else {
           Navigator.of(context)

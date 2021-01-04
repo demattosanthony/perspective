@@ -1,24 +1,26 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:point_of_view/locator.dart';
 import 'package:point_of_view/services/album_service.dart';
 
 abstract class DynamicLinkService {
-  Future<Uri> createDynamicLink(String id);
+  Future<Uri> createDynamicLink(String id, String albumTitle);
   Future<void> retreieveDynamicLink(BuildContext context);
 }
 
 class DynamicLinksServiceImplemenation implements DynamicLinkService {
-  Future<Uri> createDynamicLink(String id) async {
+  Future<Uri> createDynamicLink(String id, String albumTitle) async {
     final DynamicLinkParameters parameters = DynamicLinkParameters(
         uriPrefix: 'https://perspective.page.link',
         link: Uri.parse('https://perspective.page.link.com/?id=$id'),
         iosParameters: IosParameters(
             bundleId: 'APD-APPS.perspective',
             minimumVersion: '1',
-            appStoreId: '123456789'));
+            appStoreId: '123456789'),
+        socialMetaTagParameters: SocialMetaTagParameters(
+          title: "Join album: $albumTitle",
+        ));
     var dynamicUrl = await parameters.buildUrl();
 
     return dynamicUrl;

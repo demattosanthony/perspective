@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:page_transition/page_transition.dart';
-import 'package:point_of_view/services/album_service.dart';
-import 'package:point_of_view/locator.dart';
+
 import 'package:point_of_view/widgets/CustomTextField.dart';
-import 'package:point_of_view/widgets/ShowAlert.dart';
-import 'package:point_of_view/app/bottom_nav_bar.dart';
+
 
 class JoinAlbumButton extends StatelessWidget {
   const JoinAlbumButton({Key key, this.albumCodeController})

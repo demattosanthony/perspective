@@ -2,12 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:point_of_view/widgets/create_album_button.dart';
-import 'package:point_of_view/widgets/join_album_button.dart';
 import 'package:point_of_view/widgets/CustomTextField.dart';
 
 class CreateAlbumView extends StatelessWidget {
   final TextEditingController _albumTitleController = new TextEditingController();
-  final TextEditingController _albumCodeController = new TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -20,8 +19,9 @@ class CreateAlbumView extends StatelessWidget {
                           'Album Title',
                           _albumTitleController,
                           false,
+                          
                           TextStyle(
-                              fontSize: 22, fontWeight: FontWeight.bold))),
+                              fontSize: 22))),
                   Divider(
                     thickness: 1,
                   ),
