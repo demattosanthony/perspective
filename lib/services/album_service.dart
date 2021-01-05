@@ -17,7 +17,7 @@ abstract class AlbumService {
   Future<void> createAlbum(String albumTitle);
   void deleteOrLeaveAlbum(String albumId, bool isOwner);
   Future<String> getUserProfileImg(String userId);
-  Future<void> uploadImage(String imagePath, String albumId);
+  Future<void> uploadImage(File image, String albumId);
   Future<void> deleteImage(String albumId, String imageId);
 }
 
@@ -68,15 +68,15 @@ class AlbumServiceImplementation implements AlbumService {
                 });
   }
 
-  Future<void> uploadImage(String imagePath, String albumId) async {
-    File file = File(imagePath);
+  Future<void> uploadImage(File image, String albumId) async {
+    // File file = File(imagePath);
 
     String imageId = Uuid().v1();
 
     try {
       TaskSnapshot result = await FirebaseStorage.instance
           .ref('albumImages/$albumId/$imageId')
-          .putFile(file);
+          .putFile(image);
       result.ref.getDownloadURL().then((value) => {
             FirebaseFirestore.instance
                 .collection("albums")

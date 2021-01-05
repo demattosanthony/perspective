@@ -1,17 +1,21 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:point_of_view/app/album_pages/selected_album_page.dart';
 import 'package:point_of_view/managers/album_manager.dart';
 import 'package:point_of_view/models/Album.dart';
 import 'package:point_of_view/models/Photo.dart';
+import 'package:point_of_view/services/album_service.dart';
 import 'package:point_of_view/services/dynamic_links_service.dart';
 import 'package:point_of_view/widgets/ShowAlert.dart';
 import 'package:http/http.dart' as http;
 import 'package:share/share.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../locator.dart';
 
@@ -63,8 +67,7 @@ class SelectedAlbumBottomNavBar extends StatelessWidget {
             }
           } else {
             //download selected images
-            List<Photo> _photos =
-                locator<AlbumManager>().getSelectedImages();
+            List<Photo> _photos = locator<AlbumManager>().getSelectedImages();
             try {
               for (var photo in _photos) {
                 var response = await http.get(photo.imageUrl);
@@ -84,6 +87,20 @@ class SelectedAlbumBottomNavBar extends StatelessWidget {
           var shareUrl = await locator<DynamicLinkService>()
               .createDynamicLink(album.albumId, album.title);
           Share.share(shareUrl.toString());
+        } else if (index == 1) {
+          try {
+            List<Asset> resultList =
+                await MultiImagePicker.pickImages(maxImages: 100);
+            for (Asset image in resultList) {
+              final byteData = await image.getByteData();
+              final file = File('${(await getTemporaryDirectory()).path}/temp');
+              await file.writeAsBytes(byteData.buffer
+                  .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
+              await locator<AlbumService>().uploadImage(file, album.albumId);
+            }
+          } on Exception catch (e) {
+            print(e.toString());
+          }
         }
       },
       items: [

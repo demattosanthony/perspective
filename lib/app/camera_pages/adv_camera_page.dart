@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:adv_camera/adv_camera.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -54,7 +56,7 @@ class _AdvCameraPageState extends State<AdvCameraPage> {
           initialCameraType: CameraType.rear,
           onCameraCreated: _onCameraCreated,
           onImageCaptured: (String path) {
-            locator<AlbumService>().uploadImage(path, locator<CameraManager>().selectedAlbum.lastResult.albumId);
+            locator<AlbumService>().uploadImage(File(path), locator<CameraManager>().selectedAlbum.lastResult.albumId);
           },
           cameraPreviewRatio: CameraPreviewRatio.r16_9,
         ),
