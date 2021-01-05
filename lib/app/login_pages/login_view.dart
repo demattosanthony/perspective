@@ -66,7 +66,7 @@ class LoginView extends StatelessWidget {
                         },
                         child: PlatformText('Login',
                             style: TextStyle(color: Colors.white)),
-                        color: Colors.blue,
+                        color: Colors.blueAccent,
                       ),
                       LoginDivider(),
                       FlatButton(
@@ -76,7 +76,7 @@ class LoginView extends StatelessWidget {
                           'Register',
                           style: TextStyle(color: Colors.white),
                         ),
-                        color: Colors.blue,
+                        color: Colors.blueAccent,
                       ),
                     ],
                   ),

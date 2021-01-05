@@ -65,7 +65,7 @@ class AlbumList extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.all(5.0),
                 child: Card(
-                  elevation: 5,
+                  elevation: 3,
                   child: ListTile(
                       leading: SizedBox(
                         height: 45,

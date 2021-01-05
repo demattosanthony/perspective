@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:point_of_view/locator.dart';
 import 'package:point_of_view/managers/album_manager.dart';
-import 'package:point_of_view/models/Album.dart';
 import 'package:point_of_view/models/Photo.dart';
 
 // ignore: must_be_immutable

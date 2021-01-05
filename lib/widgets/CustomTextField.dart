@@ -8,7 +8,8 @@ class CustomTextField extends StatelessWidget {
   final bool isPassword;
   final TextStyle style;
 
-  CustomTextField(this.placeholder, this.controller, this.isPassword, [this.style = const TextStyle()]);
+  CustomTextField(this.placeholder, this.controller, this.isPassword,
+      [this.style = const TextStyle()]);
 
   @override
   Widget build(BuildContext context) {

@@ -6,7 +6,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:point_of_view/managers/camera_manager.dart';
 import 'package:point_of_view/locator.dart';
 import 'package:point_of_view/services/album_service.dart';
-import 'package:point_of_view/widgets/camera_buttons_stack.dart';
+import 'package:point_of_view/widgets/camera_widgets/camera_buttons_stack.dart';
 
 class AdvCameraPage extends StatefulWidget {
   const AdvCameraPage({Key key}) : super(key: key);

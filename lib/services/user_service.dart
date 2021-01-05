@@ -2,12 +2,14 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:point_of_view/models/User.dart';
 
 abstract class UserService {
   Stream<UserAccount> getUserInfo();
   Future<void> uploadProfileImg(String image);
+  Future<String> deleteAccount();
   // Future<bool> updateUserInfo(String name, String username, String email);
 }
 
@@ -39,6 +41,24 @@ class UserServiceImplementation implements UserService {
     } on FirebaseException catch (e) {
       print(e.code);
     }
+  }
+
+  Future<String> deleteAccount() async {
+    try {
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(FirebaseAuth.instance.currentUser.uid)
+          .delete();
+      await FirebaseAuth.instance.currentUser.delete();
+      
+    } catch (e) {
+      if (e.code == 'requires-recent-login') {
+        print(
+            'The user must reauthenticate before this operation can be executed');
+        return e.code;
+      }
+    }
+    return 'success';
   }
 
   // @override

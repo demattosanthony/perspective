@@ -85,7 +85,7 @@ class RegisterView extends StatelessWidget {
                                       height: 35,
                                       width: 35,
                                       decoration: BoxDecoration(
-                                          color: Colors.blue,
+                                          color: Colors.blueAccent,
                                           borderRadius:
                                               BorderRadius.circular(25)),
                                       child: Icon(Icons.edit,
@@ -149,7 +149,7 @@ class RegisterView extends StatelessWidget {
                         },
                         child: Text('Register',
                             style: TextStyle(color: Colors.white)),
-                        color: Colors.blue,
+                        color: Colors.blueAccent,
                       ),
                     ),
                   ],

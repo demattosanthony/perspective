@@ -17,7 +17,7 @@ class ProfileListTile extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15.0),
           ),
-          elevation: 5,
+          elevation: 3,
           child: ListTile(
             leading: Icon(icon, color: Colors.blueAccent),
             title: Text(

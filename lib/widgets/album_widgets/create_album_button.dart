@@ -24,7 +24,7 @@ class CreateAlbumButton extends StatelessWidget {
         'Create Album',
         style: TextStyle(color: Colors.white, fontSize: 20),
       ),
-      color: Colors.blue,
+      color: Colors.blueAccent,
     );
   }
 }

@@ -5,8 +5,8 @@ import 'package:point_of_view/app/login_pages/login_view.dart';
 import 'package:point_of_view/models/User.dart';
 import 'package:point_of_view/services/auth_service.dart';
 import 'package:point_of_view/services/user_service.dart';
-import 'package:point_of_view/widgets/profile_list_tile.dart';
-import 'package:point_of_view/widgets/profile_pic.dart';
+import 'package:point_of_view/widgets/profile_widgets/profile_list_tile.dart';
+import 'package:point_of_view/widgets/profile_widgets/profile_pic.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key key}) : super(key: key);
@@ -18,7 +18,6 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
-
     super.initState();
   }
 
@@ -40,15 +39,12 @@ class _ProfilePageState extends State<ProfilePage> {
           stream: locator<UserService>().getUserInfo(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              
               return Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Padding(padding: EdgeInsets.only(top: 25)),
-                  ProfilePic(
-                    user: snapshot.data
-                  ),
+                  ProfilePic(user: snapshot.data),
                   ProfileListTile(
                     icon: Icons.person,
                     title: 'My Account',
@@ -74,6 +70,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   ProfileListTile(
                     icon: Icons.settings,
                     title: 'Settings',
+                    press: () {
+                      Navigator.of(context).pushNamed('settingsPage');
+                    },
                   ),
                   ProfileListTile(
                     icon: Icons.logout,

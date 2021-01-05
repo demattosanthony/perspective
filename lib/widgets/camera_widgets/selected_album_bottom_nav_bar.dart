@@ -17,7 +17,7 @@ import 'package:http/http.dart' as http;
 import 'package:share/share.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../locator.dart';
+import '../../locator.dart';
 
 class SelectedAlbumBottomNavBar extends StatelessWidget {
   const SelectedAlbumBottomNavBar(
@@ -84,9 +84,9 @@ class SelectedAlbumBottomNavBar extends StatelessWidget {
             }
           }
         } else if (index == 0) {
-          var shareUrl = await locator<DynamicLinkService>()
+          Uri shareUrl = await locator<DynamicLinkService>()
               .createDynamicLink(album.albumId, album.title);
-          Share.share(shareUrl.toString());
+          Share.share(shareUrl.toString(), subject: album.title);
         } else if (index == 1) {
           try {
             List<Asset> resultList =

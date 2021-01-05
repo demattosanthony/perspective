@@ -52,6 +52,7 @@ dependencies:
   share: ^0.6.4+3
   uuid: ^2.2.2
   multi_image_picker: ^4.7.14
+  
 
 
   # The following adds the Cupertino Icons font to your application.
