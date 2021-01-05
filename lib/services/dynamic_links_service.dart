@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:point_of_view/locator.dart';
 import 'package:point_of_view/managers/album_manager.dart';
 import 'package:point_of_view/services/album_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class DynamicLinkService {
   Future<Uri> createDynamicLink(String id, String albumTitle);
@@ -43,17 +44,16 @@ class DynamicLinksServiceImplemenation implements DynamicLinkService {
         print('onLinkError');
         print(e.message);
       });
-
       final PendingDynamicLinkData data =
           await FirebaseDynamicLinks.instance.getInitialLink();
       final Uri deepLink = data?.link;
-
-      if (deepLink != null) {
-        if (deepLink.queryParameters.containsKey('id')) {
-          String albumId = deepLink.queryParameters['id'];
-          bool userInAlbum =
-              await locator<AlbumService>().isUserInAlbum(albumId);
-          if (!userInAlbum) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String linkHasBeenOpened = prefs.getString('dynamicLinkUrl');
+      if (linkHasBeenOpened != deepLink.toString()) {
+        if (deepLink != null) {
+          if (deepLink.queryParameters.containsKey('id')) {
+            prefs.setString('dynamicLinkUrl', deepLink.toString());
+            String albumId = deepLink.queryParameters['id'];
             locator<AlbumManager>().joinAlbum(albumId);
 
             Navigator.of(context).pushReplacementNamed('loadingPage');

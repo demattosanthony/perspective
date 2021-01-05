@@ -71,6 +71,13 @@ class _SelectedAlbumPageState extends State<SelectedAlbumPage> {
           );
         },
       ),
+      floatingActionButton: Row(
+        children: [
+          FloatingActionButton(onPressed: () {
+            locator<AlbumService>().getAttendees(widget.album.albumId);
+          })
+        ],
+      ),
       bottomNavigationBar: SelectedAlbumBottomNavBar(
         widget: widget,
         isSelectingImages: isSelectingImages,

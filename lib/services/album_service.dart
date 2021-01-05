@@ -20,6 +20,7 @@ abstract class AlbumService {
   Future<void> uploadImage(File image, String albumId);
   Future<void> deleteImage(String albumId, String imageId);
   Future<bool> isUserInAlbum(String albumId);
+  Future<void> getAttendees(String albumId);
 }
 
 class AlbumServiceImplementation implements AlbumService {
@@ -158,5 +159,16 @@ class AlbumServiceImplementation implements AlbumService {
         .collection("photos")
         .doc(imageId)
         .delete();
+  }
+
+  Future<void> getAttendees(String albumId) async {
+    var ref = await FirebaseFirestore.instance
+        .collection("albums")
+        .doc(albumId)
+        .get();
+
+    Album data = Album.fromJson(ref.data());
+
+    print(data.attendeeIds);
   }
 }
