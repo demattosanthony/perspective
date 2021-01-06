@@ -67,25 +67,11 @@ class AlbumList extends StatelessWidget {
                 child: Card(
                   elevation: 3,
                   child: ListTile(
-                      leading: SizedBox(
-                        height: 45,
-                        width: 45,
-                        child: FutureBuilder(
-                          future: locator<AlbumService>().getUserProfileImg(
-                            album.ownerId,
-                          ),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              return CircleAvatar(
-                                  backgroundColor: Colors.white,
-                                  backgroundImage: snapshot.data == ""
-                                      ? AssetImage('assets/images/profile_icon.png')
-                                      : NetworkImage(snapshot.data));
-                            }
-                            return Container();
-                          },
-                        ),
-                      ),
+                      leading: CircleAvatar(
+                          backgroundColor: Colors.white,
+                          backgroundImage: album.profileImgUrl == ""
+                              ? AssetImage('assets/images/profile_icon.png')
+                              : NetworkImage(album.profileImgUrl)),
                       title: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: FittedBox(

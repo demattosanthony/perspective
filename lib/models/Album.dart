@@ -35,7 +35,8 @@ class Album {
       albumId: data['albumId'],
       title: data['title'],
       ownerId: data['userId'],
-      attendeeIds: data['attendeeIds']
+      attendeeIds: data['attendeeIds'],
+      profileImgUrl: data['profileImgUrl']
     );
   }
 }

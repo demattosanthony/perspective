@@ -73,8 +73,18 @@ class _SelectedAlbumPageState extends State<SelectedAlbumPage> {
       ),
       floatingActionButton: Row(
         children: [
-          FloatingActionButton(onPressed: () {
-            locator<AlbumService>().getAttendees(widget.album.albumId);
+          FloatingActionButton(onPressed: () async {
+            List userIds = await locator<AlbumService>()
+                .getAttendees(widget.album.albumId);
+            StreamBuilder(
+              stream: locator<AlbumService>().getUserData(userIds),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  print(snapshot.data);
+                  return Text(snapshot.data);
+                }
+              },
+            );
           })
         ],
       ),

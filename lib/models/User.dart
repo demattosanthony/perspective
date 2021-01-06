@@ -23,11 +23,11 @@ class UserAccount {
 
   factory UserAccount.fromJson(Map<String, dynamic> json) {
     return UserAccount(
-        userId: json['user_id'],
+        userId: json['userId'],
         name: json['name'],
         username: json['username'],
         email: json['email'],
-        profileImageUrl: json['profile_img_url']);
+        profileImageUrl: json['profileImgUrl']);
   }
 
   factory UserAccount.fromSnap(DocumentSnapshot doc) {

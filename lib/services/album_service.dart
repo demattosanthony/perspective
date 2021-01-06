@@ -7,6 +7,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:point_of_view/models/Album.dart';
 import 'package:point_of_view/models/Photo.dart';
+import 'package:point_of_view/models/User.dart';
 import 'package:uuid/uuid.dart';
 
 abstract class AlbumService {
@@ -20,7 +21,8 @@ abstract class AlbumService {
   Future<void> uploadImage(File image, String albumId);
   Future<void> deleteImage(String albumId, String imageId);
   Future<bool> isUserInAlbum(String albumId);
-  Future<void> getAttendees(String albumId);
+  Future<List> getAttendees(String albumId);
+  Stream<List<UserAccount>> getUserData(List userIds);
 }
 
 class AlbumServiceImplementation implements AlbumService {
@@ -59,15 +61,20 @@ class AlbumServiceImplementation implements AlbumService {
   @override
   Future<void> createAlbum(String albumTitle) async {
     String userId = FirebaseAuth.instance.currentUser.uid;
-    FirebaseFirestore.instance
-        .collection("albums")
-        .add({"title": albumTitle, "userId": userId, 'attendeeIds': []}).then(
-            (value) => {
-                  FirebaseFirestore.instance
-                      .collection("albums")
-                      .doc(value.id)
-                      .update({"albumId": value.id})
-                });
+    var ref =
+        await FirebaseFirestore.instance.collection("users").doc(userId).get();
+    UserAccount userData = UserAccount.fromJson(ref.data());
+    await FirebaseFirestore.instance.collection("albums").add({
+      "title": albumTitle,
+      "userId": userId,
+      'attendeeIds': [],
+      'profileImgUrl': userData.profileImageUrl
+    }).then((value) => {
+          FirebaseFirestore.instance
+              .collection("albums")
+              .doc(value.id)
+              .update({"albumId": value.id})
+        });
   }
 
   Future<void> uploadImage(File image, String albumId) async {
@@ -161,7 +168,7 @@ class AlbumServiceImplementation implements AlbumService {
         .delete();
   }
 
-  Future<void> getAttendees(String albumId) async {
+  Future<List> getAttendees(String albumId) async {
     var ref = await FirebaseFirestore.instance
         .collection("albums")
         .doc(albumId)
@@ -169,6 +176,14 @@ class AlbumServiceImplementation implements AlbumService {
 
     Album data = Album.fromJson(ref.data());
 
-    print(data.attendeeIds);
+    return data.attendeeIds;
+  }
+
+  Stream<List<UserAccount>> getUserData(List userIds) {
+    var ref = FirebaseFirestore.instance.collection("users").snapshots();
+
+    return ref.map((list) {
+      return list.docs.map((doc) => UserAccount.fromSnap(doc)).toList();
+    });
   }
 }
