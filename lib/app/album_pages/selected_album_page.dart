@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:point_of_view/models/Album.dart';
 import 'package:point_of_view/locator.dart';
+import 'package:point_of_view/models/User.dart';
 import 'package:point_of_view/services/album_service.dart';
 import 'package:point_of_view/widgets/camera_widgets/selected_album_app_bar.dart';
 import 'package:point_of_view/widgets/image_grid_item.dart';
@@ -71,22 +72,46 @@ class _SelectedAlbumPageState extends State<SelectedAlbumPage> {
           );
         },
       ),
-      floatingActionButton: Row(
-        children: [
-          FloatingActionButton(onPressed: () async {
-            List userIds = await locator<AlbumService>()
-                .getAttendees(widget.album.albumId);
-            StreamBuilder(
-              stream: locator<AlbumService>().getUserData(userIds),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  print(snapshot.data);
-                  return Text(snapshot.data);
-                }
-              },
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+      floatingActionButton: StreamBuilder<List<UserAccount>>(
+        stream: locator<AlbumService>().getAttendees(widget.album.albumId),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return Container(
+              height: 70,
+              child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: snapshot.data.length,
+                  itemBuilder: (context, index) {
+                    UserAccount user = snapshot.data[index];
+                    return Container(
+                      padding: const EdgeInsets.all(3.0),
+                      child: FloatingActionButton(
+                        onPressed: () {
+                          showMenu(
+                              context: context,
+                              position: RelativeRect.fromLTRB(0, MediaQuery.of(context).size.height * .65, 0, 0),
+                              items: [
+                                PopupMenuItem(child: Text(user.name)),
+                                PopupMenuItem(child: Text(user.username)),
+                              ]);
+                        },
+                        child: FittedBox(
+                          child: CircleAvatar(
+                              radius: 28,
+                              backgroundColor: Colors.white,
+                              backgroundImage: user.profileImageUrl == ""
+                                  ? AssetImage('assets/images/profile_icon.png')
+                                  : NetworkImage(user.profileImageUrl)),
+                        ),
+                      ),
+                    );
+                  }),
             );
-          })
-        ],
+          }
+
+          return Container();
+        },
       ),
       bottomNavigationBar: SelectedAlbumBottomNavBar(
         widget: widget,

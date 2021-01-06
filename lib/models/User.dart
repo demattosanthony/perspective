@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserAccount {
-  int userId;
+  String userId;
   String name;
   String username;
   String email;
@@ -23,7 +23,7 @@ class UserAccount {
 
   factory UserAccount.fromJson(Map<String, dynamic> json) {
     return UserAccount(
-        userId: json['userId'],
+        userId: json['uid'],
         name: json['name'],
         username: json['username'],
         email: json['email'],
@@ -33,7 +33,7 @@ class UserAccount {
   factory UserAccount.fromSnap(DocumentSnapshot doc) {
     var data = doc.data();
     return UserAccount(
-        userId: data['userId'],
+        userId: data['uid'],
         name: data['name'],
         username: data['username'],
         email: data['email'],

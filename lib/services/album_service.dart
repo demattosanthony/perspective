@@ -4,10 +4,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:point_of_view/locator.dart';
 
 import 'package:point_of_view/models/Album.dart';
 import 'package:point_of_view/models/Photo.dart';
 import 'package:point_of_view/models/User.dart';
+import 'package:point_of_view/services/user_service.dart';
 import 'package:uuid/uuid.dart';
 
 abstract class AlbumService {
@@ -21,7 +23,7 @@ abstract class AlbumService {
   Future<void> uploadImage(File image, String albumId);
   Future<void> deleteImage(String albumId, String imageId);
   Future<bool> isUserInAlbum(String albumId);
-  Future<List> getAttendees(String albumId);
+  Stream<List<UserAccount>> getAttendees(String albumId);
   Stream<List<UserAccount>> getUserData(List userIds);
 }
 
@@ -125,6 +127,13 @@ class AlbumServiceImplementation implements AlbumService {
         'attendeeIds':
             FieldValue.arrayRemove([FirebaseAuth.instance.currentUser.uid])
       });
+      FirebaseFirestore.instance
+          .collection("albums")
+          .doc(albumId)
+          .collection("attendees")
+          .where("userId", isEqualTo: FirebaseAuth.instance.currentUser.uid)
+          .get()
+          .then((value) => {value.docs.first.reference.delete()});
     }
   }
 
@@ -148,13 +157,27 @@ class AlbumServiceImplementation implements AlbumService {
   Future<void> joinAlbum(String albumId) async {
     String userId = FirebaseAuth.instance.currentUser.uid;
     bool userInAlbum = await isUserInAlbum(albumId);
+    UserAccount userAccount = await locator<UserService>().getUserInfoList();
 
     if (!userInAlbum) {
       await FirebaseFirestore.instance
           .collection("albums")
           .doc(albumId)
           .update({
-        "attendeeIds": [userId]
+        "attendeeIds": [
+          userId,
+        ]
+      });
+      await FirebaseFirestore.instance
+          .collection("albums")
+          .doc(albumId)
+          .collection("attendees")
+          .add({
+        'userId': userAccount.userId,
+        'username': userAccount.username,
+        'name': userAccount.name,
+        'email': userAccount.email,
+        'profileImgUrl': userAccount.profileImageUrl
       });
     }
   }
@@ -168,15 +191,16 @@ class AlbumServiceImplementation implements AlbumService {
         .delete();
   }
 
-  Future<List> getAttendees(String albumId) async {
-    var ref = await FirebaseFirestore.instance
+  Stream<List<UserAccount>> getAttendees(String albumId) {
+    var ref = FirebaseFirestore.instance
         .collection("albums")
         .doc(albumId)
-        .get();
+        .collection("attendees")
+        .snapshots();
 
-    Album data = Album.fromJson(ref.data());
-
-    return data.attendeeIds;
+    return ref.map((list) {
+      return list.docs.map((doc) => UserAccount.fromSnap(doc)).toList();
+    });
   }
 
   Stream<List<UserAccount>> getUserData(List userIds) {

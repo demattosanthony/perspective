@@ -8,6 +8,7 @@ import 'package:point_of_view/models/User.dart';
 
 abstract class UserService {
   Stream<UserAccount> getUserInfo();
+  Future<UserAccount> getUserInfoList();
   Future<void> uploadProfileImg(String image);
   Future<String> deleteAccount();
   // Future<bool> updateUserInfo(String name, String username, String email);
@@ -21,6 +22,13 @@ class UserServiceImplementation implements UserService {
         FirebaseFirestore.instance.collection("users").doc(userId).snapshots();
 
     return ref.map((event) => UserAccount.fromSnap(event));
+  }
+
+  Future<UserAccount> getUserInfoList() async {
+    String userId = FirebaseAuth.instance.currentUser.uid;
+    DocumentSnapshot doc =
+        await FirebaseFirestore.instance.collection("users").doc(userId).get();
+    return UserAccount.fromJson(doc.data());
   }
 
   @override
@@ -50,7 +58,6 @@ class UserServiceImplementation implements UserService {
           .doc(FirebaseAuth.instance.currentUser.uid)
           .delete();
       await FirebaseAuth.instance.currentUser.delete();
-      
     } catch (e) {
       if (e.code == 'requires-recent-login') {
         print(
