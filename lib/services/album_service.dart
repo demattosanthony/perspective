@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,129 +12,101 @@ import 'package:point_of_view/models/Photo.dart';
 import 'package:point_of_view/models/User.dart';
 import 'package:point_of_view/services/user_service.dart';
 import 'package:uuid/uuid.dart';
+import 'package:http/http.dart' as http;
 
 abstract class AlbumService {
-  Stream<List<Album>> getCreatedAlbums();
-  Stream<List<Album>> getJoinedAlbums();
-  Stream<List<Photo>> getPhotos(String albumId);
+  Future<List<Album>> getAlbums();
+
+  Future<List<Photo>> getPhotos(int albumId);
   Future<void> joinAlbum(String albumId);
   Future<void> createAlbum(String albumTitle);
-  void deleteOrLeaveAlbum(String albumId, bool isOwner);
-  Future<String> getUserProfileImg(String userId);
-  Future<void> uploadImage(File image, String albumId);
-  Future<void> deleteImage(String albumId, String imageId);
+  void deleteAlbum(int albumId, bool isOwner);
+  Future<void> uploadImage(File image, int albumId);
+  Future<void> deleteImage(int albumId, int imageId);
   Future<bool> isUserInAlbum(String albumId);
-  Stream<List<UserAccount>> getAttendees(String albumId);
+  Stream<List<UserAccount>> getAttendees(int albumId);
   Stream<List<UserAccount>> getUserData(List userIds);
 }
 
 class AlbumServiceImplementation implements AlbumService {
-  var host = "https://hidden-woodland-36838.herokuapp.com/";
+  // var host = "https://hidden-woodland-36838.herokuapp.com/";
+  var host = 'http://localhost:3000/';
 
   @override
-  Stream<List<Album>> getCreatedAlbums() {
-    String userId = FirebaseAuth.instance.currentUser.uid;
-    var ref = FirebaseFirestore.instance
-        .collection("albums")
-        .where("userId", isEqualTo: userId)
-        .snapshots();
-    return ref.map((list) {
-      return list.docs.map((doc) => Album.fromSnap(doc)).toList();
-    });
-  }
+  Future<List<Album>> getAlbums() async {
+    int userId = await locator<UserService>().getUserIdFromSharedPrefs();
+    var url = host + 'getUserAlbums/$userId';
 
-  Stream<List<Album>> getJoinedAlbums() {
-    String userId = FirebaseAuth.instance.currentUser.uid;
-    var ref = FirebaseFirestore.instance
-        .collection("albums")
-        .where("attendeeIds", arrayContains: userId)
-        .snapshots();
-
-    return ref.map((list) {
-      return list.docs.map((doc) => Album.fromSnap(doc)).toList();
-    });
-  }
-
-  Future<String> getUserProfileImg(String userId) async {
-    var user =
-        await FirebaseFirestore.instance.collection("users").doc(userId).get();
-    return user['profileImgUrl'];
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      List jsonResponse = jsonDecode(response.body);
+      List<Album> myAlbums =
+          jsonResponse.map((data) => Album.fromJson(data)).toList();
+      return myAlbums;
+    } else {
+      throw Exception('Could not fetch albums: ${response.statusCode}');
+    }
   }
 
   @override
   Future<void> createAlbum(String albumTitle) async {
-    String userId = FirebaseAuth.instance.currentUser.uid;
-    var ref =
-        await FirebaseFirestore.instance.collection("users").doc(userId).get();
-    UserAccount userData = UserAccount.fromJson(ref.data());
-    await FirebaseFirestore.instance.collection("albums").add({
-      "title": albumTitle,
-      "userId": userId,
-      'attendeeIds': [],
-      'profileImgUrl': userData.profileImageUrl
-    }).then((value) => {
-          FirebaseFirestore.instance
-              .collection("albums")
-              .doc(value.id)
-              .update({"albumId": value.id})
-        });
+    var url = host + 'createAlbum';
+
+    int userId = await locator<UserService>().getUserIdFromSharedPrefs();
+
+    var response = await http
+        .post(url, body: {'title': albumTitle, 'userid': userId.toString()});
+    if (response.statusCode == 200) {
+    } else {
+      throw Exception('Could not create album');
+    }
   }
 
-  Future<void> uploadImage(File image, String albumId) async {
-    // File file = File(imagePath);
-
+  Future<void> uploadImage(File image, int albumId) async {
     String imageId = Uuid().v1();
 
     try {
       TaskSnapshot result = await FirebaseStorage.instance
           .ref('albumImages/$albumId/$imageId')
           .putFile(image);
-      result.ref.getDownloadURL().then((value) => {
-            FirebaseFirestore.instance
-                .collection("albums")
-                .doc(albumId)
-                .collection("photos")
-                .doc(imageId)
-                .set({
-              "imageId": imageId,
-              "imageUrl": value,
-              "userId": FirebaseAuth.instance.currentUser.uid
-            })
-          });
+      String downloadUrl = await result.ref.getDownloadURL();
+
+      var url = host + 'uploadImageUrl';
+
+      var response = await http.post(url,
+          body: {'photourl': downloadUrl, 'albumid': albumId.toString()});
+      print('testmg');
+      if (response.statusCode != 200)
+        throw Exception('Could not upload image url');
     } on FirebaseException catch (e) {
       print(e.code);
     }
   }
 
   @override
-  Stream<List<Photo>> getPhotos(String albumId) {
-    var ref = FirebaseFirestore.instance
-        .collection("albums")
-        .doc(albumId)
-        .collection("photos")
-        .snapshots();
+  Future<List<Photo>> getPhotos(int albumId) async {
+    var url = host + 'getImages/$albumId';
 
-    return ref.map((list) {
-      return list.docs.map((doc) => Photo.fromSnap(doc)).toList();
-    });
+    var response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      List jsonResponse = jsonDecode(response.body);
+      List<Photo> photos = jsonResponse.map((data) => Photo.fromJson(data)).toList();
+      print(photos[0].imageUrl);
+      return photos;
+    } else {
+      throw Exception('Error fetching photos: ${response.statusCode}');
+    }
   }
 
   @override
-  void deleteOrLeaveAlbum(String albumId, bool isOwner) async {
-    if (isOwner) {
-      FirebaseFirestore.instance.collection("albums").doc(albumId).delete();
+  void deleteAlbum(int albumId, bool isOwner) async {
+    var url = host + "deleteAlbum";
+    Map body = {"albumId": albumId.toString(), "isOwner": isOwner.toString()};
+    var response = await http.post(url, body: body);
+    if (response.statusCode == 200) {
     } else {
-      FirebaseFirestore.instance.collection("albums").doc(albumId).update({
-        'attendeeIds':
-            FieldValue.arrayRemove([FirebaseAuth.instance.currentUser.uid])
-      });
-      FirebaseFirestore.instance
-          .collection("albums")
-          .doc(albumId)
-          .collection("attendees")
-          .where("userId", isEqualTo: FirebaseAuth.instance.currentUser.uid)
-          .get()
-          .then((value) => {value.docs.first.reference.delete()});
+      throw Exception('Failed to delete album');
     }
   }
 
@@ -182,25 +155,25 @@ class AlbumServiceImplementation implements AlbumService {
     }
   }
 
-  Future<void> deleteImage(String albumId, String imageId) async {
-    await FirebaseFirestore.instance
-        .collection("albums")
-        .doc(albumId)
-        .collection("photos")
-        .doc(imageId)
-        .delete();
+  Future<void> deleteImage(int albumId, int imageId) async {
+    // await FirebaseFirestore.instance
+    //     .collection("albums")
+    //     .doc(albumId)
+    //     .collection("photos")
+    //     .doc(imageId)
+    //     .delete();
   }
 
-  Stream<List<UserAccount>> getAttendees(String albumId) {
-    var ref = FirebaseFirestore.instance
-        .collection("albums")
-        .doc(albumId)
-        .collection("attendees")
-        .snapshots();
+  Stream<List<UserAccount>> getAttendees(int albumId) {
+    // var ref = FirebaseFirestore.instance
+    //     .collection("albums")
+    //     .doc(albumId)
+    //     .collection("attendees")
+    //     .snapshots();
 
-    return ref.map((list) {
-      return list.docs.map((doc) => UserAccount.fromSnap(doc)).toList();
-    });
+    // return ref.map((list) {
+    //   return list.docs.map((doc) => UserAccount.fromSnap(doc)).toList();
+    // });
   }
 
   Stream<List<UserAccount>> getUserData(List userIds) {

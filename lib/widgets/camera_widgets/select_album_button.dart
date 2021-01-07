@@ -1,14 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:point_of_view/managers/album_manager.dart';
 import 'package:point_of_view/managers/camera_manager.dart';
 import 'package:point_of_view/models/Album.dart';
 import 'package:point_of_view/locator.dart';
-import 'package:point_of_view/services/album_service.dart';
-import 'package:rxdart/streams.dart';
 
-class SelectAlbumButton extends StatelessWidget {
+class SelectAlbumButton extends StatefulWidget {
   const SelectAlbumButton({
     Key key,
   }) : super(key: key);
+
+  @override
+  _SelectAlbumButtonState createState() => _SelectAlbumButtonState();
+}
+
+class _SelectAlbumButtonState extends State<SelectAlbumButton> {
+  List<Album> _myAblums;
+  @override
+  void initState() {
+    super.initState();
+    print('initstate');
+    _myAblums = locator<AlbumManager>().getAlbums.lastResult;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,45 +46,29 @@ class SelectAlbumButton extends StatelessWidget {
                               color: Colors.grey),
                         ),
                       ),
-                      StreamBuilder(
-                        stream: CombineLatestStream.list([
-                          locator<AlbumService>().getCreatedAlbums(),
-                          locator<AlbumService>().getJoinedAlbums()
-                        ]),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            List<Album> createdAndJoinedAlbums =
-                                snapshot.data[0] + snapshot.data[1];
-                            return ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: createdAndJoinedAlbums.length,
-                                itemBuilder: (context, index) {
-                                  return GestureDetector(
-                                    onTap: () {
-                                      locator<CameraManager>().selectedAlbum(
-                                          createdAndJoinedAlbums[index]);
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: Column(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text(
-                                              createdAndJoinedAlbums[index]
-                                                  .title
-                                                  .toUpperCase(),
-                                              style: TextStyle(fontSize: 18)),
-                                        ),
-                                        Divider()
-                                      ],
-                                    ),
-                                  );
-                                });
-                          }
-
-                          return Container();
-                        },
-                      ),
+                      ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: _myAblums.length,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () {
+                                locator<CameraManager>()
+                                    .selectedAlbum(_myAblums[index]);
+                                Navigator.of(context).pop();
+                              },
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                        _myAblums[index].title.toUpperCase(),
+                                        style: TextStyle(fontSize: 18)),
+                                  ),
+                                  Divider()
+                                ],
+                              ),
+                            );
+                          })
                     ],
                   );
                 });

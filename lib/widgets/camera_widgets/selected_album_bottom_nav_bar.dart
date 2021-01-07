@@ -42,66 +42,66 @@ class SelectedAlbumBottomNavBar extends StatelessWidget {
       unselectedItemColor: Colors.blueAccent,
       currentIndex: 0,
       onTap: (index) async {
-        if (index == 2) {
-          if (!isSelectingImages) {
-            //Download entire album
-            var photos = await FirebaseFirestore.instance
-                .collection("albums")
-                .doc(widget.album.albumId)
-                .collection("photos")
-                .get();
-            try {
-              for (var photo in photos.docs) {
-                var response = await http.get(photo['imageUrl']);
-                final _ = await ImageGallerySaver.saveImage(
-                    Uint8List.fromList(response.bodyBytes),
-                    quality: 60,
-                    name: "hello");
-              }
+        // if (index == 2) {
+        //   if (!isSelectingImages) {
+        //     //Download entire album
+        //     var photos = await FirebaseFirestore.instance
+        //         .collection("albums")
+        //         .doc(widget.album.albumId)
+        //         .collection("photos")
+        //         .get();
+        //     try {
+        //       for (var photo in photos.docs) {
+        //         var response = await http.get(photo['imageUrl']);
+        //         final _ = await ImageGallerySaver.saveImage(
+        //             Uint8List.fromList(response.bodyBytes),
+        //             quality: 60,
+        //             name: "hello");
+        //       }
 
-              showPlatformDialog(
-                  context: context,
-                  builder: (_) => ShowAlert("Download Complete!", "Success"));
-            } catch (e) {
-              throw Exception('Could no download album');
-            }
-          } else {
-            //download selected images
-            List<Photo> _photos = locator<AlbumManager>().getSelectedImages();
-            try {
-              for (var photo in _photos) {
-                var response = await http.get(photo.imageUrl);
-                await ImageGallerySaver.saveImage(
-                    Uint8List.fromList(response.bodyBytes),
-                    quality: 60,
-                    name: "hello");
-              }
-              showPlatformDialog(
-                  context: context,
-                  builder: (_) => ShowAlert("Download Complete!", "Success"));
-            } catch (e) {
-              throw Exception('Could no download album');
-            }
-          }
-        } else if (index == 0) {
-          Uri shareUrl = await locator<DynamicLinkService>()
-              .createDynamicLink(album.albumId, album.title);
-          Share.share(shareUrl.toString(), subject: album.title);
-        } else if (index == 1) {
-          try {
-            List<Asset> resultList =
-                await MultiImagePicker.pickImages(maxImages: 100);
-            for (Asset image in resultList) {
-              final byteData = await image.getByteData();
-              final file = File('${(await getTemporaryDirectory()).path}/temp');
-              await file.writeAsBytes(byteData.buffer
-                  .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
-              await locator<AlbumService>().uploadImage(file, album.albumId);
-            }
-          } on Exception catch (e) {
-            print(e.toString());
-          }
-        }
+        //       showPlatformDialog(
+        //           context: context,
+        //           builder: (_) => ShowAlert("Download Complete!", "Success"));
+        //     } catch (e) {
+        //       throw Exception('Could no download album');
+        //     }
+        //   } else {
+        //     //download selected images
+        //     List<Photo> _photos = locator<AlbumManager>().getSelectedImages();
+        //     try {
+        //       for (var photo in _photos) {
+        //         var response = await http.get(photo.imageUrl);
+        //         await ImageGallerySaver.saveImage(
+        //             Uint8List.fromList(response.bodyBytes),
+        //             quality: 60,
+        //             name: "hello");
+        //       }
+        //       showPlatformDialog(
+        //           context: context,
+        //           builder: (_) => ShowAlert("Download Complete!", "Success"));
+        //     } catch (e) {
+        //       throw Exception('Could no download album');
+        //     }
+        //   }
+        // } else if (index == 0) {
+        //   Uri shareUrl = await locator<DynamicLinkService>()
+        //       .createDynamicLink(album.albumId, album.title);
+        //   Share.share(shareUrl.toString(), subject: album.title);
+        // } else if (index == 1) {
+        //   try {
+        //     List<Asset> resultList =
+        //         await MultiImagePicker.pickImages(maxImages: 100);
+        //     for (Asset image in resultList) {
+        //       final byteData = await image.getByteData();
+        //       final file = File('${(await getTemporaryDirectory()).path}/temp');
+        //       await file.writeAsBytes(byteData.buffer
+        //           .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
+        //       await locator<AlbumService>().uploadImage(file, album.albumId);
+        //     }
+        //   } on Exception catch (e) {
+        //     print(e.toString());
+        //   }
+        // }
       },
       items: [
         BottomNavigationBarItem(icon: Icon(Icons.share), label: 'Share'),

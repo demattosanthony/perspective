@@ -19,6 +19,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   Widget _currentPage;
 
   final PageStorageBucket _bucket = PageStorageBucket();
+  final _pageController = PageController();
 
   void changeTab(int index) {
     setState(() {
@@ -55,7 +56,16 @@ class _BottomNavBarState extends State<BottomNavBar> {
     return PageStorage(
       bucket: _bucket,
       child: Scaffold(
-          body: _currentPage,
+          body: PageView(
+            controller: _pageController,
+            children: _pages,
+            onPageChanged: (index) {
+              setState(() {
+                changeTab(index);
+                _pageController.jumpToPage(index);
+              });
+            },
+          ),
           bottomNavigationBar: CurvedNavigationBar(
             backgroundColor: Colors.blueAccent,
             height: Platform.isAndroid
@@ -68,7 +78,12 @@ class _BottomNavBarState extends State<BottomNavBar> {
               Icon(Icons.camera_alt_rounded),
               Icon(Icons.person),
             ],
-            onTap: (index) => changeTab(index),
+            onTap: (index) {
+              setState(() {
+                changeTab(index);
+                _pageController.jumpToPage(index);
+              });
+            },
           )),
     );
   }

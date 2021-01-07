@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:point_of_view/managers/album_manager.dart';
 import 'package:point_of_view/models/Album.dart';
 import 'package:point_of_view/locator.dart';
 import 'package:point_of_view/models/User.dart';
@@ -29,6 +30,13 @@ class _SelectedAlbumPageState extends State<SelectedAlbumPage> {
   }
 
   @override
+  void initState() {
+    locator<AlbumManager>().getAlbumImages(widget.album.albumId);
+    super.initState();
+    
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
@@ -40,7 +48,8 @@ class _SelectedAlbumPageState extends State<SelectedAlbumPage> {
         ),
       ),
       body: StreamBuilder<List<Photo>>(
-        stream: locator<AlbumService>().getPhotos(widget.album.albumId),
+        stream: locator<AlbumManager>().getAlbumImages,
+        initialData: [],
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final orientation = MediaQuery.of(context).orientation;
@@ -90,7 +99,11 @@ class _SelectedAlbumPageState extends State<SelectedAlbumPage> {
                         onPressed: () {
                           showMenu(
                               context: context,
-                              position: RelativeRect.fromLTRB(0, MediaQuery.of(context).size.height * .65, 0, 0),
+                              position: RelativeRect.fromLTRB(
+                                  0,
+                                  MediaQuery.of(context).size.height * .65,
+                                  0,
+                                  0),
                               items: [
                                 PopupMenuItem(child: Text(user.name)),
                                 PopupMenuItem(child: Text(user.username)),

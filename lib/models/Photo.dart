@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Photo {
-  final String imageId;
+  final int imageId;
   final String imageUrl;
   final int albumId;
   bool isSelected;
@@ -16,17 +16,17 @@ class Photo {
 
   factory Photo.fromJson(Map<String, dynamic> json) {
     return Photo(
-        imageId: json['imageId'],
-        imageUrl: json['image_url'],
+        imageId: json['photo_id'],
+        imageUrl: json['photo_url'],
         albumId: json['album_id']);
   }
 
   factory Photo.fromSnap(DocumentSnapshot doc) {
     Map data = doc.data();
     return Photo(
-        imageId: data['imageId'],
-        userId: data['userId'],
-        imageUrl: data['imageUrl'],
+        imageId: data['photoid'],
+        albumId: data['albumid'],
+        imageUrl: data['photourl'],
         isSelected: false);
   }
 

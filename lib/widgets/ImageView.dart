@@ -7,7 +7,7 @@ import 'package:point_of_view/services/album_service.dart';
 
 class ImageView extends StatefulWidget {
   final Photo photo;
-  final String albumId;
+  final int albumId;
 
   ImageView({@required this.photo, @required this.albumId});
 

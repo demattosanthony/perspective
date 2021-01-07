@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:point_of_view/locator.dart';
 import 'package:point_of_view/app/login_pages/login_view.dart';
+import 'package:point_of_view/managers/user_manager.dart';
 import 'package:point_of_view/models/User.dart';
 import 'package:point_of_view/services/auth_service.dart';
 import 'package:point_of_view/services/user_service.dart';
@@ -19,6 +20,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
+    locator<UserManager>().getUserInfo();
   }
 
   @override
@@ -36,7 +38,7 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       body: SingleChildScrollView(
         child: StreamBuilder<UserAccount>(
-          stream: locator<UserService>().getUserInfo(),
+          stream: locator<UserManager>().getUserInfo,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return Column(

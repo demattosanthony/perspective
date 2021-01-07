@@ -10,6 +10,7 @@ import 'dart:io';
 import 'package:point_of_view/app/bottom_nav_bar.dart';
 import 'package:point_of_view/widgets/CustomTextField.dart';
 import 'package:point_of_view/widgets/ShowAlert.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: must_be_immutable
 class RegisterView extends StatelessWidget {
@@ -115,16 +116,6 @@ class RegisterView extends StatelessWidget {
                                   _nameController.text,
                                   "");
 
-                          FirebaseAuth.instance
-                              .authStateChanges()
-                              .listen((User user) {
-                            if (user != null) {
-                              Navigator.of(context).pushReplacement(PageTransition(
-                                  child: BottomNavBar(),
-                                  type: PageTransitionType.fade));
-                            }
-                          });
-
                           if (responseCode == 'email-already-in-use') {
                             showPlatformDialog(
                                 context: context,
@@ -145,6 +136,14 @@ class RegisterView extends StatelessWidget {
                                 context: context,
                                 builder: (_) =>
                                     ShowAlert('Invalid Email.', 'Try again'));
+                          } else if (responseCode == 'success') {
+                            SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
+                            prefs.setBool('isLoggedIn', true);
+                            Navigator.of(context).pushReplacement(
+                                PageTransition(
+                                    child: BottomNavBar(),
+                                    type: PageTransitionType.fade));
                           }
                         },
                         child: Text('Register',

@@ -23,7 +23,7 @@ class UserManagerImplementation implements UserManager {
         (image) => locator<UserService>().uploadProfileImg(image));
 
     getUserInfo = RxCommand.createAsyncNoParam(
-        () => locator<UserService>().getUserInfoList());
+        () => locator<UserService>().getUserInfo());
   }
 
   @override

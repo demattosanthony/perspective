@@ -32,7 +32,7 @@ class ProfilePic extends StatelessWidget {
               } else {
                 return CircleAvatar(
                     backgroundColor: Colors.white,
-                    backgroundImage: user.profileImageUrl == ''
+                    backgroundImage: user.profileImageUrl == null
                         ? AssetImage('assets/images/profile_icon.png')
                         : NetworkImage(user.profileImageUrl));
               }

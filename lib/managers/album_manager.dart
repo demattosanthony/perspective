@@ -1,9 +1,12 @@
 import 'package:point_of_view/locator.dart';
+import 'package:point_of_view/models/Album.dart';
 import 'package:point_of_view/models/Photo.dart';
 import 'package:point_of_view/services/album_service.dart';
 import 'package:rx_command/rx_command.dart';
 
 abstract class AlbumManager {
+  RxCommand<void, List<Album>> getAlbums;
+  RxCommand<int, List<Photo>> getAlbumImages;
   void addToSelectedPhotos(Photo photo);
   void deleteFromSelectedPhotos(Photo photo);
   List<Photo> getSelectedImages();
@@ -35,8 +38,20 @@ class AlbumManagerImplmenetation implements AlbumManager {
   AlbumManagerImplmenetation() {
     joinAlbum = RxCommand.createAsyncNoResult(
         (albumId) => locator<AlbumService>().joinAlbum(albumId));
+
+    getAlbums = RxCommand.createAsyncNoParam<List<Album>>(
+        locator.get<AlbumService>().getAlbums);
+
+    getAlbumImages = RxCommand.createAsync(
+        (albumId) => locator<AlbumService>().getPhotos(albumId));
   }
 
   @override
   RxCommand<String, void> joinAlbum;
+
+  @override
+  RxCommand<void, List<Album>> getAlbums;
+
+  @override
+  RxCommand<int, List<Photo>> getAlbumImages;
 }

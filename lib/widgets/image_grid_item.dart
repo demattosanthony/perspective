@@ -22,7 +22,7 @@ class ImageGridItem extends StatefulWidget {
   bool isSelected;
   List<Photo> photos;
   var index;
-  final String albumId;
+  final int albumId;
 
   @override
   _ImageGridItemState createState() => _ImageGridItemState();

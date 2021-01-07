@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:point_of_view/managers/album_manager.dart';
 import 'package:point_of_view/models/Album.dart';
 import 'package:point_of_view/locator.dart';
 import 'package:point_of_view/services/album_service.dart';
+import 'package:point_of_view/services/user_service.dart';
 
 class AlbumList extends StatelessWidget {
   AlbumList({this.myAlbums});
@@ -18,8 +20,10 @@ class AlbumList extends StatelessWidget {
         return Dismissible(
           key: ObjectKey(album),
           confirmDismiss: (DismissDirection direction) async {
-            var userId = FirebaseAuth.instance.currentUser.uid;
-            var isOwner = userId == album.ownerId ? true : false;
+            print(album.ownerId);
+            int userId =
+                await locator<UserService>().getUserIdFromSharedPrefs();
+            bool isOwner = userId == album.ownerId ? true : false;
             return showPlatformDialog(
                 context: context,
                 builder: (_) => PlatformAlertDialog(
@@ -41,8 +45,9 @@ class AlbumList extends StatelessWidget {
                                 : Text('Leave',
                                     style: TextStyle(color: Colors.red)),
                             onPressed: () async {
-                              locator<AlbumService>()
-                                  .deleteOrLeaveAlbum(album.albumId, isOwner);
+                              await locator<AlbumService>()
+                                  .deleteAlbum(album.albumId, isOwner);
+                              locator<AlbumManager>().getAlbums();
                               Navigator.of(context).pop();
                             })
                       ],

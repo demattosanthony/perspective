@@ -8,10 +8,11 @@ import 'package:point_of_view/app/bottom_nav_bar.dart';
 import 'package:point_of_view/widgets/CustomTextField.dart';
 import 'package:point_of_view/widgets/ShowAlert.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginView extends StatelessWidget {
   final _formkey = GlobalKey<FormState>();
-  final _emailController = TextEditingController();
+  final _usernameController = TextEditingController();
   final _passwordcontroller = TextEditingController();
 
   @override
@@ -33,7 +34,7 @@ class LoginView extends StatelessWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      CustomTextField('Email', _emailController, false),
+                      CustomTextField('Username', _usernameController, false),
                       CustomTextField('Password', _passwordcontroller, true),
                       SizedBox(
                         height: 20,
@@ -41,27 +42,23 @@ class LoginView extends StatelessWidget {
                       FlatButton(
                         onPressed: () async {
                           var response = await locator<AuthService>().login(
-                              _emailController.text, _passwordcontroller.text);
-
-                          if (response == 'user-not-found') {
+                              _usernameController.text,
+                              _passwordcontroller.text);
+                          if (response == 200) {
+                            SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
+                            prefs.setBool('isLoggedIn', true);
+                            Navigator.pushReplacement(
+                                context,
+                                PageTransition(
+                                    child: BottomNavBar(),
+                                    type: PageTransitionType.fade));
+                          } else {
                             showPlatformDialog(
                                 context: context,
-                                builder: (_) => ShowAlert('User not found.',
-                                    'No user with that email.'));
-                          } else if (response == 'wrong-password') {
-                            showPlatformDialog(
-                                context: context,
-                                builder: (_) =>
-                                    ShowAlert('Wrong password!', 'Try again.'));
-                          } else if (response == 'invalid-email') {
-                            showPlatformDialog(
-                                context: context,
-                                builder: (_) =>
-                                    ShowAlert('Invalid Email.', 'Try again.'));
-                          } else if (response == 'success') {
-                            Navigator.of(context).pushReplacement(PageTransition(
-                                child: BottomNavBar(),
-                                type: PageTransitionType.fade));
+                                builder: (_) => ShowAlert(
+                                    'Invalid Username or Password!',
+                                    'Try again.'));
                           }
                         },
                         child: PlatformText('Login',
@@ -88,9 +85,6 @@ class LoginView extends StatelessWidget {
   }
 }
 
-
-
-
 class LoginDivider extends StatelessWidget {
   const LoginDivider({
     Key key,
@@ -101,8 +95,7 @@ class LoginDivider extends StatelessWidget {
     return Row(children: <Widget>[
       Expanded(
         child: new Container(
-            margin: const EdgeInsets.only(
-                left: 10.0, right: 20.0),
+            margin: const EdgeInsets.only(left: 10.0, right: 20.0),
             child: Divider(
               color: Colors.black,
               height: 36,
@@ -111,8 +104,7 @@ class LoginDivider extends StatelessWidget {
       PlatformText("OR"),
       Expanded(
         child: new Container(
-            margin: const EdgeInsets.only(
-                left: 20.0, right: 10.0),
+            margin: const EdgeInsets.only(left: 20.0, right: 10.0),
             child: Divider(
               color: Colors.black,
               height: 36,

@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:point_of_view/managers/album_manager.dart';
 import 'package:point_of_view/models/Album.dart';
 import 'package:point_of_view/locator.dart';
 import 'package:point_of_view/services/album_service.dart';
@@ -11,6 +12,11 @@ class CreatedAlbumsPage extends StatefulWidget {
 }
 
 class _CreatedAlbumsPageState extends State<CreatedAlbumsPage> {
+  @override
+  void initState() {
+    super.initState();
+    locator<AlbumManager>().getAlbums();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +25,7 @@ class _CreatedAlbumsPageState extends State<CreatedAlbumsPage> {
           title: Text('Created Albums'),
         ),
         body: StreamBuilder(
-            stream: locator<AlbumService>().getCreatedAlbums(),
+            stream: locator<AlbumManager>().getAlbums,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 List<Album> albums = snapshot.data;

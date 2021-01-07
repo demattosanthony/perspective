@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -5,23 +6,39 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:point_of_view/models/User.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 abstract class UserService {
-  Stream<UserAccount> getUserInfo();
+  Future<UserAccount> getUserInfo();
   Future<UserAccount> getUserInfoList();
-  Future<void> uploadProfileImg(String image);
+  Future<String> uploadProfileImg(String image);
   Future<String> deleteAccount();
+  Future<int> getUserIdFromSharedPrefs();
   // Future<bool> updateUserInfo(String name, String username, String email);
 }
 
 class UserServiceImplementation implements UserService {
+  var host = 'http://localhost:3000/';
+  // var host = "https://hidden-woodland-36838.herokuapp.com/";
   @override
-  Stream<UserAccount> getUserInfo() {
-    String userId = FirebaseAuth.instance.currentUser.uid;
-    var ref =
-        FirebaseFirestore.instance.collection("users").doc(userId).snapshots();
+  Future<UserAccount> getUserInfo() async {
 
-    return ref.map((event) => UserAccount.fromSnap(event));
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int userId = prefs.getInt('userId');
+
+    var url = host + 'getUserInfo/$userId';
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      List jsonResponse = jsonDecode(response.body);
+      print(jsonResponse);
+      List<UserAccount> userInfo =
+          jsonResponse.map((data) => UserAccount.fromJson(data)).toList();
+      // print(userInfo[0].userId);
+      return userInfo[0];
+    } else {
+      throw Exception('Faield to fetch user info');
+    }
   }
 
   Future<UserAccount> getUserInfoList() async {
@@ -32,23 +49,20 @@ class UserServiceImplementation implements UserService {
   }
 
   @override
-  Future<void> uploadProfileImg(String imagePath) async {
+  Future<String> uploadProfileImg(String imagePath) async {
     File file = File(imagePath);
     String userId = FirebaseAuth.instance.currentUser.uid;
-
+    String photoUrl = '';
     try {
       TaskSnapshot result = await FirebaseStorage.instance
           .ref('user_profile_images/$userId/profile_img')
           .putFile(file);
-      result.ref.getDownloadURL().then((value) => {
-            FirebaseFirestore.instance
-                .collection("users")
-                .doc(userId)
-                .update({"profileImgUrl": value})
-          });
+      //result.ref.getDownloadURL().then((value) => {photoUrl = value});
+      photoUrl = await result.ref.getDownloadURL();
     } on FirebaseException catch (e) {
       print(e.code);
     }
+    return photoUrl;
   }
 
   Future<String> deleteAccount() async {
@@ -66,6 +80,12 @@ class UserServiceImplementation implements UserService {
       }
     }
     return 'success';
+  }
+
+  @override
+  Future<int> getUserIdFromSharedPrefs() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getInt('userId');
   }
 
   // @override

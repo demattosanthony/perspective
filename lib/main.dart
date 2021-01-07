@@ -16,11 +16,13 @@ void main() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.setString('dynamicLinkUrl', '');
 
+  bool isLoggedIn = prefs.getBool('isLoggedIn');
+
   Widget _defautHome = new LoginView();
 
   // ignore: await_only_futures
   await FirebaseAuth.instance.authStateChanges().listen((User user) {
-    if (user == null) {
+    if (!isLoggedIn) {
       _defautHome = LoginView();
     } else {
       _defautHome = BottomNavBar();

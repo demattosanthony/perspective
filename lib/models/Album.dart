@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Album {
-  final String albumId;
+  final int albumId;
   final String title;
-  final String ownerId;
+  final int ownerId;
   final String shareString;
   final String profileImgUrl;
   final List attendeeIds;
@@ -22,10 +22,11 @@ class Album {
 
   factory Album.fromJson(Map<String, dynamic> json) {
     return Album(
-        albumId: json['albumId'],
+        albumId: json['album_id'],
         title: json['title'],
-        ownerId: json['userId'],
-        attendeeIds: json['attendeeIds']);
+        ownerId: json['ownerid'],
+        profileImgUrl: json['profile_img_url'],
+        );
   }
 
   factory Album.fromSnap(DocumentSnapshot doc) {
