@@ -8,7 +8,7 @@ import 'package:point_of_view/services/album_service.dart';
 import 'package:point_of_view/widgets/camera_widgets/selected_album_app_bar.dart';
 import 'package:point_of_view/widgets/image_grid_item.dart';
 import 'package:point_of_view/models/Photo.dart';
-import 'package:point_of_view/widgets/camera_widgets/selected_album_bottom_nav_bar.dart';
+import 'package:point_of_view/widgets/selected_album_bottom_nav_bar.dart';
 
 class SelectedAlbumPage extends StatefulWidget {
   const SelectedAlbumPage({this.album});
@@ -32,8 +32,8 @@ class _SelectedAlbumPageState extends State<SelectedAlbumPage> {
   @override
   void initState() {
     locator<AlbumManager>().getAlbumImages(widget.album.albumId);
+    locator<AlbumManager>().getAttendees(widget.album.albumId);
     super.initState();
-    
   }
 
   @override
@@ -83,7 +83,7 @@ class _SelectedAlbumPageState extends State<SelectedAlbumPage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       floatingActionButton: StreamBuilder<List<UserAccount>>(
-        stream: locator<AlbumService>().getAttendees(widget.album.albumId),
+        stream: locator<AlbumManager>().getAttendees,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return Container(

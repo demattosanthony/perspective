@@ -35,9 +35,9 @@ class DynamicLinksServiceImplemenation implements DynamicLinkService {
         if (deepLink != null) {
           if (deepLink.queryParameters.containsKey('id')) {
             String albumId = deepLink.queryParameters['id'];
-            locator<AlbumManager>().joinAlbum(albumId);
+            //locator<AlbumManager>().joinAlbum(int.parse(albumId));
 
-            Navigator.of(context).pushReplacementNamed('loadingPage');
+            Navigator.of(context).pushReplacementNamed('loadingPage', arguments: albumId);
           }
         }
       }, onError: (OnLinkErrorException e) async {
@@ -54,9 +54,9 @@ class DynamicLinksServiceImplemenation implements DynamicLinkService {
           if (deepLink.queryParameters.containsKey('id')) {
             prefs.setString('dynamicLinkUrl', deepLink.toString());
             String albumId = deepLink.queryParameters['id'];
-            locator<AlbumManager>().joinAlbum(albumId);
+            //locator<AlbumManager>().joinAlbum(int.parse(albumId));
 
-            Navigator.of(context).pushReplacementNamed('loadingPage');
+            Navigator.of(context).pushReplacementNamed('loadingPage', arguments: albumId);
           }
         }
       }

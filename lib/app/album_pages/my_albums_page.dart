@@ -8,7 +8,7 @@ import 'package:point_of_view/managers/album_manager.dart';
 import 'package:point_of_view/models/Album.dart';
 import 'package:point_of_view/services/album_service.dart';
 import 'package:point_of_view/services/dynamic_links_service.dart';
-import 'package:point_of_view/widgets/camera_widgets/my_albums_app_bar.dart';
+import 'package:point_of_view/widgets/album_widgets/my_albums_app_bar.dart';
 import 'package:point_of_view/widgets/album_widgets/album_list.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -29,8 +29,9 @@ class _MyAlbumsPageState extends State<MyAlbumsPage>
   @override
   void initState() {
     super.initState();
-    locator<AlbumManager>().getAlbums();
     WidgetsBinding.instance.addObserver(this);
+    locator<AlbumManager>().getAlbums();
+    
   }
 
   @override

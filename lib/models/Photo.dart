@@ -5,7 +5,7 @@ class Photo {
   final String imageUrl;
   final int albumId;
   bool isSelected;
-  final String userId;
+  final int userId;
 
   Photo(
       {this.imageId,
@@ -27,6 +27,7 @@ class Photo {
         imageId: data['photoid'],
         albumId: data['albumid'],
         imageUrl: data['photourl'],
+        userId: data['user_id'],
         isSelected: false);
   }
 

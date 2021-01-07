@@ -3,6 +3,7 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:point_of_view/locator.dart';
 import 'package:point_of_view/services/user_service.dart';
 import 'package:point_of_view/widgets/ShowAlert.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsPage extends StatelessWidget {
   @override
@@ -31,9 +32,9 @@ class SettingsPage extends StatelessWidget {
                                   'Delete',
                                   style: TextStyle(color: Colors.red),
                                 ),
-                                onPressed: ()  async {
-                                  String resCode = await
-                                      locator<UserService>().deleteAccount();
+                                onPressed: () async {
+                                  String resCode = await locator<UserService>()
+                                      .deleteAccount();
                                   if (resCode == 'requires-recent-login') {
                                     showPlatformDialog(
                                         context: context,
@@ -42,7 +43,7 @@ class SettingsPage extends StatelessWidget {
                                             'Log out and log back in, then you will be able to delete account'));
                                   } else {
                                     Navigator.of(context)
-                                        .pushNamed('loginView');
+                                        .pushReplacementNamed('loginView');
                                   }
                                 })
                           ],

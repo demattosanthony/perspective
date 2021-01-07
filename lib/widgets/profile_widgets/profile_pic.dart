@@ -32,7 +32,7 @@ class ProfilePic extends StatelessWidget {
               } else {
                 return CircleAvatar(
                     backgroundColor: Colors.white,
-                    backgroundImage: user.profileImageUrl == null
+                    backgroundImage: user.profileImageUrl == ''
                         ? AssetImage('assets/images/profile_icon.png')
                         : NetworkImage(user.profileImageUrl));
               }
@@ -49,7 +49,8 @@ class ProfilePic extends StatelessWidget {
                     onPressed: () async {
                       String imgPath =
                           await locator<UserManager>().selectImage();
-                      locator<UserManager>().updateProfileImg(imgPath);
+                      await locator<UserManager>().updateProfileImg(imgPath);
+                      
                     },
                     color: Color(0xFFF5F6F9),
                     child: Icon(Icons.person),

@@ -3,6 +3,10 @@ import 'package:point_of_view/locator.dart';
 import 'package:point_of_view/managers/album_manager.dart';
 
 class LoadingPage extends StatefulWidget {
+  final String albumId;
+
+  LoadingPage({this.albumId});
+
   @override
   _LoadingPageState createState() => _LoadingPageState();
 }
@@ -14,6 +18,7 @@ class _LoadingPageState extends State<LoadingPage> {
       if (isExecuting) {
         print('is executing');
       } else {
+        print('not executing');
         n += 1;
         if (n == 2) Navigator.of(context).pushReplacementNamed('/');
       }
@@ -23,7 +28,7 @@ class _LoadingPageState extends State<LoadingPage> {
   @override
   void initState() {
     super.initState();
-
+    locator<AlbumManager>().joinAlbum(int.parse(widget.albumId));
     checkIfExecuting();
   }
 
@@ -35,9 +40,9 @@ class _LoadingPageState extends State<LoadingPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-                'Joining Album',
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-              ),
+              'Joining Album',
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            ),
             Padding(padding: EdgeInsets.symmetric(vertical: 35)),
             CircularProgressIndicator()
           ],

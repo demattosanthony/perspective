@@ -50,7 +50,8 @@ class Router {
       case 'settingsPage':
         return MaterialPageRoute(builder: (_) => SettingsPage());
       case 'loadingPage':
-        return MaterialPageRoute(builder: (_) => LoadingPage());
+        var albumId = settings.arguments;
+        return MaterialPageRoute(builder: (_) => LoadingPage(albumId: albumId,));
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(

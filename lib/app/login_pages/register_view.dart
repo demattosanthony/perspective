@@ -114,7 +114,7 @@ class RegisterView extends StatelessWidget {
                                   _passwordcontroller.text,
                                   _emailController.text,
                                   _nameController.text,
-                                  "");
+                                  locator<AuthManager>().getImage.lastResult);
 
                           if (responseCode == 'email-already-in-use') {
                             showPlatformDialog(

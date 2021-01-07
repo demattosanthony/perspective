@@ -14,7 +14,6 @@ void main() async {
   await Firebase.initializeApp();
 
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  prefs.setString('dynamicLinkUrl', '');
 
   bool isLoggedIn = prefs.getBool('isLoggedIn');
 

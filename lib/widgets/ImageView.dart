@@ -2,8 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:point_of_view/locator.dart';
+import 'package:point_of_view/managers/album_manager.dart';
 import 'package:point_of_view/models/Photo.dart';
 import 'package:point_of_view/services/album_service.dart';
+import 'package:point_of_view/services/user_service.dart';
 
 class ImageView extends StatefulWidget {
   final Photo photo;
@@ -17,6 +19,17 @@ class ImageView extends StatefulWidget {
 
 class _ImageViewState extends State<ImageView> {
   bool showAppBarAndBottomNavBar = true;
+  int userId;
+
+  void getUserId() async {
+    userId = await locator<UserService>().getUserIdFromSharedPrefs();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getUserId();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +62,7 @@ class _ImageViewState extends State<ImageView> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            widget.photo.userId == FirebaseAuth.instance.currentUser.uid
+            widget.photo.userId == userId
                 ? GestureDetector(
                     onTap: () {
                       showPlatformDialog(
@@ -64,10 +77,15 @@ class _ImageViewState extends State<ImageView> {
                                         Navigator.of(context).pop(),
                                   ),
                                   PlatformDialogAction(
-                                    child: Text('Delete', style: TextStyle(color: Colors.red),),
+                                    child: Text(
+                                      'Delete',
+                                      style: TextStyle(color: Colors.red),
+                                    ),
                                     onPressed: () async {
                                       await locator<AlbumService>().deleteImage(
                                           widget.albumId, widget.photo.imageId);
+                                      await locator<AlbumManager>()
+                                          .getAlbumImages(widget.albumId);
                                       Navigator.of(context).pop();
                                       Navigator.of(context).pop();
                                     },
