@@ -4,7 +4,6 @@ import 'package:point_of_view/managers/album_manager.dart';
 import 'package:point_of_view/models/Album.dart';
 import 'package:point_of_view/locator.dart';
 import 'package:point_of_view/models/User.dart';
-import 'package:point_of_view/services/album_service.dart';
 import 'package:point_of_view/widgets/camera_widgets/selected_album_app_bar.dart';
 import 'package:point_of_view/widgets/image_grid_item.dart';
 import 'package:point_of_view/models/Photo.dart';

@@ -3,7 +3,6 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:point_of_view/locator.dart';
 import 'package:point_of_view/services/user_service.dart';
 import 'package:point_of_view/widgets/ShowAlert.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsPage extends StatelessWidget {
   @override

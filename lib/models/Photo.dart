@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Photo {
   final int imageId;
@@ -21,22 +20,5 @@ class Photo {
         albumId: json['album_id']);
   }
 
-  factory Photo.fromSnap(DocumentSnapshot doc) {
-    Map data = doc.data();
-    return Photo(
-        imageId: data['photoid'],
-        albumId: data['albumid'],
-        imageUrl: data['photourl'],
-        userId: data['user_id'],
-        isSelected: false);
-  }
-
-  factory Photo.fromQuerySnap(QueryDocumentSnapshot doc) {
-    Map data = doc.data();
-    return Photo(
-        imageId: data['imageId'],
-        userId: data['userId'],
-        imageUrl: data['imageUrl'],
-        isSelected: false);
-  }
+  
 }

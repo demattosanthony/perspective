@@ -15,18 +15,15 @@ void main() async {
 
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
-  bool isLoggedIn = prefs.getBool('isLoggedIn');
+  bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
 
   Widget _defautHome = new LoginView();
 
-  // ignore: await_only_futures
-  await FirebaseAuth.instance.authStateChanges().listen((User user) {
-    if (!isLoggedIn) {
-      _defautHome = LoginView();
-    } else {
-      _defautHome = BottomNavBar();
-    }
-  });
+  if (!isLoggedIn) {
+    _defautHome = LoginView();
+  } else {
+    _defautHome = BottomNavBar();
+  }
 
   runApp(
     MaterialApp(

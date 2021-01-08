@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Album {
   final int albumId;
@@ -29,15 +28,5 @@ class Album {
         );
   }
 
-  factory Album.fromSnap(DocumentSnapshot doc) {
-    Map data = doc.data();
-
-    return Album(
-      albumId: data['albumId'],
-      title: data['title'],
-      ownerId: data['userId'],
-      attendeeIds: data['attendeeIds'],
-      profileImgUrl: data['profileImgUrl']
-    );
-  }
+ 
 }

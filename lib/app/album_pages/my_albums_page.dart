@@ -1,16 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:point_of_view/app/album_pages/create_album_view.dart';
 import 'package:point_of_view/locator.dart';
 import 'package:point_of_view/managers/album_manager.dart';
 import 'package:point_of_view/models/Album.dart';
-import 'package:point_of_view/services/album_service.dart';
 import 'package:point_of_view/services/dynamic_links_service.dart';
 import 'package:point_of_view/widgets/album_widgets/my_albums_app_bar.dart';
 import 'package:point_of_view/widgets/album_widgets/album_list.dart';
-import 'package:rxdart/rxdart.dart';
 
 class MyAlbumsPage extends StatefulWidget {
   const MyAlbumsPage({Key key}) : super(key: key);

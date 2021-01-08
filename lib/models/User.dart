@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserAccount {
   int userId;
@@ -30,13 +29,4 @@ class UserAccount {
         profileImageUrl: json['profile_img_url']);
   }
 
-  factory UserAccount.fromSnap(DocumentSnapshot doc) {
-    var data = doc.data();
-    return UserAccount(
-        userId: data['uid'],
-        name: data['name'],
-        username: data['username'],
-        email: data['email'],
-        profileImageUrl: data['profileImgUrl']);
-  }
 }

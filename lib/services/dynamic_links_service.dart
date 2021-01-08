@@ -1,8 +1,5 @@
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
-import 'package:point_of_view/locator.dart';
-import 'package:point_of_view/managers/album_manager.dart';
-import 'package:point_of_view/services/album_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class DynamicLinkService {
@@ -31,13 +28,14 @@ class DynamicLinksServiceImplemenation implements DynamicLinkService {
       FirebaseDynamicLinks.instance.onLink(
           onSuccess: (PendingDynamicLinkData dynamicLink) async {
         final Uri deepLink = dynamicLink?.link;
-
+        print(deepLink.toString() + 'hello');
         if (deepLink != null) {
           if (deepLink.queryParameters.containsKey('id')) {
             String albumId = deepLink.queryParameters['id'];
             //locator<AlbumManager>().joinAlbum(int.parse(albumId));
 
-            Navigator.of(context).pushReplacementNamed('loadingPage', arguments: albumId);
+            Navigator.of(context)
+                .pushReplacementNamed('loadingPage', arguments: albumId);
           }
         }
       }, onError: (OnLinkErrorException e) async {
@@ -56,7 +54,8 @@ class DynamicLinksServiceImplemenation implements DynamicLinkService {
             String albumId = deepLink.queryParameters['id'];
             //locator<AlbumManager>().joinAlbum(int.parse(albumId));
 
-            Navigator.of(context).pushReplacementNamed('loadingPage', arguments: albumId);
+            Navigator.of(context)
+                .pushReplacementNamed('loadingPage', arguments: albumId);
           }
         }
       }

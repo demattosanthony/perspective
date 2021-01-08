@@ -5,7 +5,6 @@ import 'package:point_of_view/app/login_pages/login_view.dart';
 import 'package:point_of_view/managers/user_manager.dart';
 import 'package:point_of_view/models/User.dart';
 import 'package:point_of_view/services/auth_service.dart';
-import 'package:point_of_view/services/user_service.dart';
 import 'package:point_of_view/widgets/profile_widgets/profile_list_tile.dart';
 import 'package:point_of_view/widgets/profile_widgets/profile_pic.dart';
 

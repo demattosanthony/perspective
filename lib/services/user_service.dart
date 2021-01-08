@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -55,7 +54,7 @@ class UserServiceImplementation implements UserService {
       var url = host + 'updateProfileImg';
       var response = await http.put(url,
           body: {'profileImageUrl': photoUrl, 'userId': userId.toString()});
-      await locator<UserManager>().getUserInfo();
+      locator<UserManager>().getUserInfo();
       if (response.statusCode != 200) {
         throw Exception('Could not upload profile img');
       }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:point_of_view/app/camera_pages/better_camera.dart';
 import 'package:point_of_view/app/profile_pages/profile_page.dart';
 import 'dart:io' show Platform;
 import 'album_pages/my_albums_page.dart';
@@ -16,7 +17,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   int _currentIndex = 0;
 
-  Widget _currentPage;
 
   final PageStorageBucket _bucket = PageStorageBucket();
   final _pageController = PageController();
@@ -24,7 +24,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
   void changeTab(int index) {
     setState(() {
       _currentIndex = index;
-      _currentPage = _pages[_currentIndex];
     });
   }
 
@@ -34,14 +33,13 @@ class _BottomNavBarState extends State<BottomNavBar> {
         MyAlbumsPage(
           key: PageStorageKey('AlbumView'),
         ),
-        AdvCameraPage(
-          key: PageStorageKey('CameraView'),
+        BetterCamera(
+          // key: PageStorageKey('CameraView'),
         ),
         ProfilePage(key: PageStorageKey('ProfileView'))
       ];
 
       _currentIndex = 0;
-      _currentPage = _pages[_currentIndex];
     });
   }
 
