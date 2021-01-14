@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:point_of_view/locator.dart';
@@ -7,10 +9,12 @@ import 'package:point_of_view/services/album_service.dart';
 import 'package:point_of_view/services/user_service.dart';
 
 class ImageView extends StatefulWidget {
+  final List<Photo> photos;
   final Photo photo;
   final int albumId;
 
-  ImageView({@required this.photo, @required this.albumId});
+  ImageView(
+      {@required this.photo, @required this.albumId, @required this.photos});
 
   @override
   _ImageViewState createState() => _ImageViewState();
@@ -19,42 +23,65 @@ class ImageView extends StatefulWidget {
 class _ImageViewState extends State<ImageView> {
   bool showAppBarAndBottomNavBar = true;
   int userId;
+  final _controller = PageController();
 
   void getUserId() async {
-    userId = await locator<UserService>().getUserIdFromSharedPrefs();
+    var temp = await locator<UserService>().getUserIdFromSharedPrefs();
+    setState(() {
+      userId = temp;
+    });
   }
 
   @override
   void initState() {
-    super.initState();
     getUserId();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(50),
-        child: Visibility(
-          visible: showAppBarAndBottomNavBar,
-          child: PlatformAppBar(
-            backgroundColor: Colors.black,
-          ),
-        ),
+      body: Stack(
+        children: [
+          GestureDetector(
+              onTap: () {
+                setState(() {
+                  showAppBarAndBottomNavBar = !showAppBarAndBottomNavBar;
+                });
+              },
+              child: PageView.builder(
+                  itemCount: widget.photos.length,
+                  controller: _controller,
+                  itemBuilder: (context, index) {
+                    Photo _photo = widget.photos[index];
+                    return CachedNetworkImage(
+                      imageUrl: _photo.imageUrl,
+                      placeholder: (context, url) =>
+                          Center(child: PlatformCircularProgressIndicator()),
+                    );
+                  })),
+          Positioned(
+              top: 45,
+              left: 20,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+                child: Visibility(
+                  visible: showAppBarAndBottomNavBar,
+                  child: Container(
+                    height: 45,
+                    width: 45,
+                    child: Icon(Icons.arrow_back),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(25)),
+                  ),
+                ),
+              )),
+        ],
       ),
-      body: GestureDetector(
-          onTap: () {
-            setState(() {
-              print(widget.photo.userId);
-              showAppBarAndBottomNavBar = !showAppBarAndBottomNavBar;
-            });
-          },
-          child: showAppBarAndBottomNavBar
-              ? Image.network(widget.photo.imageUrl)
-              : Center(
-                  child: Image.network(widget.photo.imageUrl),
-                )),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Visibility(
         visible: showAppBarAndBottomNavBar,

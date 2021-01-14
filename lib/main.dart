@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart' hide Router;
 import 'package:point_of_view/app/theme.dart';
@@ -14,7 +13,6 @@ void main() async {
   await Firebase.initializeApp();
 
   SharedPreferences prefs = await SharedPreferences.getInstance();
-
   bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
 
   Widget _defautHome = new LoginView();

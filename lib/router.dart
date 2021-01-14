@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:point_of_view/app/loading_page.dart';
 import 'package:point_of_view/app/profile_pages/settings_page.dart';
+import 'package:point_of_view/models/Photo.dart';
 import 'package:point_of_view/widgets/ImageView.dart';
 import 'package:point_of_view/app/album_pages/selected_album_page.dart';
 import 'package:point_of_view/app/login_pages/login_view.dart';
@@ -28,12 +29,14 @@ class Router {
             builder: (_) => SelectedAlbumPage(album: album));
       case 'imageView':
         List args = settings.arguments;
-        var photo = args[0];
-        var albumId = args[1];
+        Photo photo = args[0];
+        int albumId = args[1];
+        List<Photo> photos = args[2];
         return MaterialPageRoute(
             builder: (_) => ImageView(
                   albumId: albumId,
                   photo: photo,
+                  photos: photos,
                 ));
       case 'profileView':
         return MaterialPageRoute(builder: (_) => ProfilePage());
@@ -51,7 +54,10 @@ class Router {
         return MaterialPageRoute(builder: (_) => SettingsPage());
       case 'loadingPage':
         var albumId = settings.arguments;
-        return MaterialPageRoute(builder: (_) => LoadingPage(albumId: albumId,));
+        return MaterialPageRoute(
+            builder: (_) => LoadingPage(
+                  albumId: albumId,
+                ));
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(

@@ -8,7 +8,10 @@ class BetterCamera extends StatefulWidget {
 }
 
 class _BetterCameraState extends State<BetterCamera>
-    with WidgetsBindingObserver {
+    with WidgetsBindingObserver, AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
   CameraController controller;
   List<CameraDescription> cameras;
   bool flashIsOn = false;
@@ -81,19 +84,26 @@ class _BetterCameraState extends State<BetterCamera>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final size = MediaQuery.of(context).size;
     final deviceRatio = size.width / size.height;
+    final xScale = controller.value.aspectRatio / deviceRatio;
+// Modify the yScale if you are in Landscape
+    final yScale = 1.0;
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+      backgroundColor: Colors.black,
+      resizeToAvoidBottomInset: false,
       body: controller == null
           ? Container()
-          : Transform.scale(
-              scale: controller.value.aspectRatio / deviceRatio,
-              child: AspectRatio(
-                  aspectRatio: controller.value.aspectRatio,
+          : AspectRatio(
+              aspectRatio: deviceRatio,
+              child: Transform(
+                  alignment: Alignment.center,
+                  transform: Matrix4.diagonal3Values(xScale, yScale, 1),
                   child: GestureDetector(
                       onDoubleTap: toggleCameraDirection,
-                      child: CameraPreview(controller)))),
+                      child: CameraPreview(controller))),
+            ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: CameraButtons(
           controller: controller,

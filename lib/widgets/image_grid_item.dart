@@ -47,7 +47,7 @@ class _ImageGridItemState extends State<ImageGridItem> {
           });
         } else {
           Navigator.of(context).pushNamed('imageView',
-              arguments: [widget.photos[widget.index], widget.albumId]);
+              arguments: [widget.photos[widget.index], widget.albumId, widget.photos]);
         }
       },
       onLongPress: () {

@@ -46,7 +46,9 @@ class AlbumList extends StatelessWidget {
                             onPressed: () async {
                               locator<AlbumService>()
                                   .deleteAlbum(album.albumId, isOwner);
+
                               locator<AlbumManager>().getAlbums();
+                              Future.delayed(Duration(seconds: 1));
                               Navigator.of(context).pop();
                             })
                       ],

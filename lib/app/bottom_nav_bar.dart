@@ -5,7 +5,6 @@ import 'package:point_of_view/app/camera_pages/better_camera.dart';
 import 'package:point_of_view/app/profile_pages/profile_page.dart';
 import 'dart:io' show Platform;
 import 'album_pages/my_albums_page.dart';
-import 'camera_pages/adv_camera_page.dart';
 
 class BottomNavBar extends StatefulWidget {
   @override
@@ -64,24 +63,25 @@ class _BottomNavBarState extends State<BottomNavBar> {
               });
             },
           ),
-          bottomNavigationBar: CurvedNavigationBar(
-            backgroundColor: Colors.blueAccent,
-            height: Platform.isAndroid
-                ? MediaQuery.of(context).size.height * .10
-                : 75,
-            animationDuration: Duration(milliseconds: 250),
-            index: _currentIndex,
-            items: [
-              Icon(Icons.home_rounded),
-              Icon(Icons.camera_alt_rounded),
-              Icon(Icons.person),
-            ],
-            onTap: (index) {
-              setState(() {
-                changeTab(index);
-                _pageController.jumpToPage(index);
-              });
-            },
+          bottomNavigationBar: SizedBox(
+            height: 75,
+                      child: CurvedNavigationBar(
+              backgroundColor: Colors.blueAccent,
+              
+              animationDuration: Duration(milliseconds: 250),
+              index: _currentIndex,
+              items: [
+                Icon(Icons.home_rounded),
+                Icon(Icons.camera_alt_rounded),
+                Icon(Icons.person),
+              ],
+              onTap: (index) {
+                setState(() {
+                  changeTab(index);
+                  _pageController.jumpToPage(index);
+                });
+              },
+            ),
           )),
     );
   }

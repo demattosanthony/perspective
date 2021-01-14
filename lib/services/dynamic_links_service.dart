@@ -10,14 +10,13 @@ abstract class DynamicLinkService {
 class DynamicLinksServiceImplemenation implements DynamicLinkService {
   Future<Uri> createDynamicLink(String id, String albumTitle) async {
     final DynamicLinkParameters parameters = DynamicLinkParameters(
-        uriPrefix: 'https://perspective.page.link',
-        link: Uri.parse('https://perspective.page.link.com/?id=$id'),
-        iosParameters: IosParameters(
-            bundleId: 'APD-APPS.perspective',
-            minimumVersion: '1',
-            appStoreId: '123456789'),
-        socialMetaTagParameters:
-            SocialMetaTagParameters(title: 'Join Album: $albumTitle'));
+      uriPrefix: 'https://perspective.page.link',
+      link: Uri.parse('https://perspective.page.link.com/?id=$id'),
+      iosParameters: IosParameters(
+          bundleId: 'APD-APPS.perspective',
+          minimumVersion: '1',
+          appStoreId: '123456789'),
+    );
     var dynamicUrl = await parameters.buildUrl();
 
     return dynamicUrl;
@@ -28,7 +27,7 @@ class DynamicLinksServiceImplemenation implements DynamicLinkService {
       FirebaseDynamicLinks.instance.onLink(
           onSuccess: (PendingDynamicLinkData dynamicLink) async {
         final Uri deepLink = dynamicLink?.link;
-        print(deepLink.toString() + 'hello');
+
         if (deepLink != null) {
           if (deepLink.queryParameters.containsKey('id')) {
             String albumId = deepLink.queryParameters['id'];
@@ -48,15 +47,15 @@ class DynamicLinksServiceImplemenation implements DynamicLinkService {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String linkHasBeenOpened = prefs.getString('dynamicLinkUrl');
       if (linkHasBeenOpened != deepLink.toString()) {
-        if (deepLink != null) {
-          if (deepLink.queryParameters.containsKey('id')) {
-            prefs.setString('dynamicLinkUrl', deepLink.toString());
-            String albumId = deepLink.queryParameters['id'];
-            //locator<AlbumManager>().joinAlbum(int.parse(albumId));
+      if (deepLink != null) {
+        if (deepLink.queryParameters.containsKey('id')) {
+          prefs.setString('dynamicLinkUrl', deepLink.toString());
+          String albumId = deepLink.queryParameters['id'];
+          //locator<AlbumManager>().joinAlbum(int.parse(albumId));
 
-            Navigator.of(context)
-                .pushReplacementNamed('loadingPage', arguments: albumId);
-          }
+          Navigator.of(context)
+              .pushReplacementNamed('loadingPage', arguments: albumId);
+        }
         }
       }
     } catch (e) {

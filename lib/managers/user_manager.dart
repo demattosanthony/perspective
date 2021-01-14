@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:image_picker/image_picker.dart';
 import 'package:point_of_view/locator.dart';
 import 'package:point_of_view/models/User.dart';
@@ -7,7 +9,7 @@ import 'package:rx_command/rx_command.dart';
 abstract class UserManager {
   RxCommand<void, UserAccount> getUserInfo;
   Future<String> selectImage();
-  RxCommand<String, void> updateProfileImg;
+  RxCommand<File, void> updateProfileImg;
 }
 
 class UserManagerImplementation implements UserManager {
@@ -27,7 +29,7 @@ class UserManagerImplementation implements UserManager {
   }
 
   @override
-  RxCommand<String, void> updateProfileImg;
+  RxCommand<File, void> updateProfileImg;
 
   @override
   RxCommand<void, UserAccount> getUserInfo;

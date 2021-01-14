@@ -17,7 +17,8 @@ class Photo {
     return Photo(
         imageId: json['photo_id'],
         imageUrl: json['photo_url'],
-        albumId: json['album_id']);
+        albumId: json['album_id'],
+        userId: json['user_id']);
   }
 
   

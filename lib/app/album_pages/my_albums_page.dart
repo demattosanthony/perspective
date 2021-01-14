@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:point_of_view/app/album_pages/create_album_view.dart';
 import 'package:point_of_view/locator.dart';
 import 'package:point_of_view/managers/album_manager.dart';
@@ -28,7 +29,6 @@ class _MyAlbumsPageState extends State<MyAlbumsPage>
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     locator<AlbumManager>().getAlbums();
-    
   }
 
   @override
@@ -62,16 +62,9 @@ class _MyAlbumsPageState extends State<MyAlbumsPage>
             locator<AlbumManager>().getAlbums();
           },
           child: StreamBuilder<List<Album>>(
-            // stream: CombineLatestStream.list([
-            //   locator<AlbumService>().getCreatedAlbums(),
-            //   locator<AlbumService>().getJoinedAlbums()
-            // ]),
             stream: locator<AlbumManager>().getAlbums,
-            initialData: [],
             builder: (context, albums) {
               if (albums.hasData) {
-                // List<Album> createdAndJoinedAlbums =
-                //     albums.data[0] + albums.data[1];
                 if (albums.data.isEmpty) {
                   return Center(
                     child: Column(
@@ -100,11 +93,11 @@ class _MyAlbumsPageState extends State<MyAlbumsPage>
                     ),
                   );
                 } else
-                  return AlbumList(
-                    myAlbums: albums.data
-                  );
+                  return AlbumList(myAlbums: albums.data);
               } else if (albums.hasError) {
                 return Text("${albums.error}");
+              } else if (albums.connectionState == ConnectionState.waiting) {
+                return Center(child: PlatformCircularProgressIndicator());
               }
 
               return Container();

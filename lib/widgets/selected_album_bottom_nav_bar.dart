@@ -44,8 +44,7 @@ class SelectedAlbumBottomNavBar extends StatelessWidget {
         if (index == 2) {
           if (!isSelectingImages) {
             // Download entire album
-            var photos =
-               locator<AlbumManager>().getAlbumImages.lastResult;
+            var photos = locator<AlbumManager>().getAlbumImages.lastResult;
             try {
               for (var photo in photos) {
                 var response = await http.get(photo.imageUrl);
@@ -100,7 +99,7 @@ class SelectedAlbumBottomNavBar extends StatelessWidget {
         }
       },
       items: [
-        BottomNavigationBarItem(icon: Icon(Icons.share), label: 'Share'),
+        BottomNavigationBarItem(icon: Icon(Icons.share), label: 'Invite'),
         BottomNavigationBarItem(
             icon: Icon(Icons.add_a_photo_rounded), label: 'Upload Images'),
         BottomNavigationBarItem(

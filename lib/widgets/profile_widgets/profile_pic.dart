@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:point_of_view/managers/user_manager.dart';
 import 'package:point_of_view/locator.dart';
 import 'package:point_of_view/models/User.dart';
@@ -49,8 +52,40 @@ class ProfilePic extends StatelessWidget {
                     onPressed: () async {
                       String imgPath =
                           await locator<UserManager>().selectImage();
-                      await locator<UserManager>().updateProfileImg(imgPath);
-                      
+
+                      File croppedImage = await ImageCropper.cropImage(
+                          sourcePath: imgPath,
+                          aspectRatioPresets: Platform.isAndroid
+                              ? [
+                                  CropAspectRatioPreset.square,
+                                  CropAspectRatioPreset.ratio3x2,
+                                  CropAspectRatioPreset.original,
+                                  CropAspectRatioPreset.ratio4x3,
+                                  CropAspectRatioPreset.ratio16x9
+                                ]
+                              : [
+                                  CropAspectRatioPreset.original,
+                                  CropAspectRatioPreset.square,
+                                  CropAspectRatioPreset.ratio3x2,
+                                  CropAspectRatioPreset.ratio4x3,
+                                  CropAspectRatioPreset.ratio5x3,
+                                  CropAspectRatioPreset.ratio5x4,
+                                  CropAspectRatioPreset.ratio7x5,
+                                  CropAspectRatioPreset.ratio16x9
+                                ],
+                                cropStyle: CropStyle.circle,
+                              
+                          androidUiSettings: AndroidUiSettings(
+                              toolbarTitle: 'Cropper',
+                              toolbarColor: Colors.deepOrange,
+                              toolbarWidgetColor: Colors.white,
+                              initAspectRatio: CropAspectRatioPreset.original,
+                              lockAspectRatio: false),
+                          iosUiSettings: IOSUiSettings(
+                            title: 'Cropper',
+                          ));
+
+                      await locator<UserManager>().updateProfileImg(croppedImage);
                     },
                     color: Color(0xFFF5F6F9),
                     child: Icon(Icons.person),

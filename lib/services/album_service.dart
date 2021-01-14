@@ -94,7 +94,6 @@ class AlbumServiceImplementation implements AlbumService {
       List jsonResponse = jsonDecode(response.body);
       List<Photo> photos =
           jsonResponse.map((data) => Photo.fromJson(data)).toList();
-      print(photos[0].imageUrl);
       return photos;
     } else {
       throw Exception('Error fetching photos: ${response.statusCode}');

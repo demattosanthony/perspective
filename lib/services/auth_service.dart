@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:point_of_view/constants.dart';
 import 'package:point_of_view/managers/auth_manager.dart';
 import 'package:point_of_view/services/user_service.dart';
@@ -64,7 +66,7 @@ class AuthServiceImplementation implements AuthService {
             email: email, password: password);
         if (imagePath != null)
           profileImgUrl = await locator<UserService>()
-              .uploadProfileImg(locator<AuthManager>().getImage.lastResult);
+              .uploadProfileImg(File(locator<AuthManager>().getImage.lastResult));
 
         var response = await http.post(url, body: {
           'username': username.toLowerCase(),

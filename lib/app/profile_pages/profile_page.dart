@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:point_of_view/locator.dart';
 import 'package:point_of_view/app/login_pages/login_view.dart';
@@ -15,7 +16,11 @@ class ProfilePage extends StatefulWidget {
   _ProfilePageState createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ProfilePageState extends State<ProfilePage>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   void initState() {
     super.initState();
@@ -24,6 +29,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -91,6 +97,10 @@ class _ProfilePageState extends State<ProfilePage> {
               );
             } else if (snapshot.hasError) {
               return Text("${snapshot.error}");
+            } else if (snapshot.connectionState == ConnectionState.waiting) {
+              return Container(
+                  alignment: Alignment.center,
+                  child: PlatformCircularProgressIndicator());
             }
 
             return Container();
