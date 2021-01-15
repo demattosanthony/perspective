@@ -64,7 +64,7 @@ class RegisterView extends StatelessWidget {
                                         return CircleAvatar(
                                             radius: 60,
                                             backgroundImage: FileImage(
-                                              File(snapshot.data),
+                                              snapshot.data,
                                             ));
                                       } else {
                                         return CircleAvatar(

@@ -42,46 +42,61 @@ class _ImageViewState extends State<ImageView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: Stack(
-        children: [
-          GestureDetector(
-              onTap: () {
-                setState(() {
-                  showAppBarAndBottomNavBar = !showAppBarAndBottomNavBar;
-                });
-              },
-              child: PageView.builder(
-                  itemCount: widget.photos.length,
-                  controller: _controller,
-                  itemBuilder: (context, index) {
-                    Photo _photo = widget.photos[index];
-                    return CachedNetworkImage(
+      body: PageView.builder(
+          itemCount: widget.photos.length,
+          controller: _controller,
+          itemBuilder: (context, index) {
+            Photo _photo = widget.photos[index];
+            return Stack(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      showAppBarAndBottomNavBar = !showAppBarAndBottomNavBar;
+                    });
+                  },
+                  child: Center(
+                    child: CachedNetworkImage(
                       imageUrl: _photo.imageUrl,
                       placeholder: (context, url) =>
                           Center(child: PlatformCircularProgressIndicator()),
-                    );
-                  })),
-          Positioned(
-              top: 45,
-              left: 20,
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pop();
-                },
-                child: Visibility(
-                  visible: showAppBarAndBottomNavBar,
-                  child: Container(
-                    height: 45,
-                    width: 45,
-                    child: Icon(Icons.arrow_back),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(25)),
+                    ),
                   ),
                 ),
-              )),
-        ],
-      ),
+                Positioned(
+                    top: 45,
+                    left: 20,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Visibility(
+                        visible: showAppBarAndBottomNavBar,
+                        child: Container(
+                          height: 45,
+                          width: 45,
+                          child: Icon(Icons.arrow_back),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(25)),
+                        ),
+                      ),
+                    )),
+                Positioned(
+                    top: 45,
+                    right: 20,
+                    child: Visibility(
+                      visible: showAppBarAndBottomNavBar,
+                      child: CircleAvatar(
+                        radius: 30,
+                        backgroundImage: _photo.userProfImg == null
+                            ? AssetImage('assets/images/profile_icon.png')
+                            : NetworkImage(_photo.userProfImg),
+                      ),
+                    ))
+              ],
+            );
+          }),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Visibility(
         visible: showAppBarAndBottomNavBar,

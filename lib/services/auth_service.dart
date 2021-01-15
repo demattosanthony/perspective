@@ -12,7 +12,7 @@ import 'dart:convert';
 abstract class AuthService {
   Future<bool> validateUsername(String username);
   Future<String> register(String username, String password, String email,
-      String name, String imagePath);
+      String name, File image);
   Future<void> signOut();
   Future<int> login(String username, String password);
 }
@@ -54,7 +54,7 @@ class AuthServiceImplementation implements AuthService {
 
   // ignore: missing_return
   Future<String> register(String username, String password, String email,
-      String name, String imagePath) async {
+      String name, File image) async {
     var url = host + 'addUser';
     bool usernameIsValid = await validateUsername(username);
     String profileImgUrl = '';
@@ -64,9 +64,9 @@ class AuthServiceImplementation implements AuthService {
       try {
         await auth.createUserWithEmailAndPassword(
             email: email, password: password);
-        if (imagePath != null)
+        if (image != null)
           profileImgUrl = await locator<UserService>()
-              .uploadProfileImg(File(locator<AuthManager>().getImage.lastResult));
+              .uploadProfileImg(locator<AuthManager>().getImage.lastResult);
 
         var response = await http.post(url, body: {
           'username': username.toLowerCase(),
