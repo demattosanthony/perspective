@@ -79,8 +79,8 @@ class SelectedAlbumBottomNavBar extends StatelessWidget {
             }
           }
         } else if (index == 0) {
-          Uri shareUrl = await locator<DynamicLinkService>()
-              .createDynamicLink(album.albumId.toString(), album.title);
+          Uri shareUrl = await locator<DynamicLinkService>().createDynamicLink(
+              album.albumId.toString(), album.title, album.ownerId);
           Share.share(shareUrl.toString(), subject: album.title);
         } else if (index == 1) {
           try {

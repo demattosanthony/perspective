@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_better_camera/camera.dart';
 import 'package:point_of_view/widgets/camera_widgets/camera_buttons_stack.dart';
+import 'package:point_of_view/widgets/camera_widgets/zoomable_widget.dart';
 
 class BetterCamera extends StatefulWidget {
   @override
@@ -87,9 +90,12 @@ class _BetterCameraState extends State<BetterCamera>
     super.build(context);
     final size = MediaQuery.of(context).size;
     final deviceRatio = size.width / size.height;
-    final xScale = controller.value.aspectRatio / deviceRatio;
+    final xScale =
+        controller == null ? 0 : controller.value.aspectRatio / deviceRatio;
 // Modify the yScale if you are in Landscape
-    final yScale = 1.0;
+    double yScale = 1.0;
+    double zoom = 1;
+    double prevZoom = 1;
     return Scaffold(
       backgroundColor: Colors.black,
       resizeToAvoidBottomInset: false,
@@ -102,7 +108,13 @@ class _BetterCameraState extends State<BetterCamera>
                   transform: Matrix4.diagonal3Values(xScale, yScale, 1),
                   child: GestureDetector(
                       onDoubleTap: toggleCameraDirection,
-                      child: CameraPreview(controller))),
+                      child: ZoomableWidget(
+                          onZoom: (zoom) {
+                            if (zoom < 11) {
+                              controller.zoom(zoom);
+                            }
+                          },
+                          child: CameraPreview(controller)))),
             ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: CameraButtons(
@@ -113,3 +125,4 @@ class _BetterCameraState extends State<BetterCamera>
     );
   }
 }
+

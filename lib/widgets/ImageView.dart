@@ -12,9 +12,13 @@ class ImageView extends StatefulWidget {
   final List<Photo> photos;
   final Photo photo;
   final int albumId;
+  final int currentIndex;
 
   ImageView(
-      {@required this.photo, @required this.albumId, @required this.photos});
+      {@required this.photo,
+      @required this.albumId,
+      @required this.photos,
+      @required this.currentIndex});
 
   @override
   _ImageViewState createState() => _ImageViewState();
@@ -23,7 +27,7 @@ class ImageView extends StatefulWidget {
 class _ImageViewState extends State<ImageView> {
   bool showAppBarAndBottomNavBar = true;
   int userId;
-  final _controller = PageController();
+  // final _controller = PageController(initialPage: widget.currentIndex);
 
   void getUserId() async {
     var temp = await locator<UserService>().getUserIdFromSharedPrefs();
@@ -44,7 +48,7 @@ class _ImageViewState extends State<ImageView> {
       backgroundColor: Colors.black,
       body: PageView.builder(
           itemCount: widget.photos.length,
-          controller: _controller,
+          controller: PageController(initialPage: widget.currentIndex),
           itemBuilder: (context, index) {
             Photo _photo = widget.photos[index];
             return Stack(

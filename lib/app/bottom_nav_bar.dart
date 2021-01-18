@@ -54,6 +54,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
       bucket: _bucket,
       child: Scaffold(
           body: PageView(
+            
             controller: _pageController,
             children: _pages,
             onPageChanged: (index) {

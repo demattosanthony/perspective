@@ -32,11 +32,13 @@ class Router {
         Photo photo = args[0];
         int albumId = args[1];
         List<Photo> photos = args[2];
+        int index = args[3];
         return MaterialPageRoute(
             builder: (_) => ImageView(
                   albumId: albumId,
                   photo: photo,
                   photos: photos,
+                  currentIndex: index,
                 ));
       case 'profileView':
         return MaterialPageRoute(builder: (_) => ProfilePage());

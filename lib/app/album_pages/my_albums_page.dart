@@ -70,7 +70,7 @@ class _MyAlbumsPageState extends State<MyAlbumsPage>
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('You have no created or joined any albums yet.'),
+                        Text('You have not created or joined any albums yet.'),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: FlatButton(

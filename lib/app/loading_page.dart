@@ -16,9 +16,7 @@ class _LoadingPageState extends State<LoadingPage> {
     int n = 0;
     locator<AlbumManager>().joinAlbum.isExecuting.listen((isExecuting) async {
       if (isExecuting) {
-        print('is executing');
       } else {
-        print('not executing');
         n += 1;
         if (n == 2) Navigator.of(context).pushReplacementNamed('/');
       }

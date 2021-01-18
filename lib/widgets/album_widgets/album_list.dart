@@ -44,11 +44,9 @@ class AlbumList extends StatelessWidget {
                                 : Text('Leave',
                                     style: TextStyle(color: Colors.red)),
                             onPressed: () async {
-                              locator<AlbumService>()
+                              await locator<AlbumService>()
                                   .deleteAlbum(album.albumId, isOwner);
-
-                              locator<AlbumManager>().getAlbums();
-                              Future.delayed(Duration(seconds: 1));
+                              await locator<AlbumManager>().getAlbums();
                               Navigator.of(context).pop();
                             })
                       ],

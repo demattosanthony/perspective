@@ -1,17 +1,21 @@
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
+import 'package:point_of_view/locator.dart';
+import 'package:point_of_view/services/user_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class DynamicLinkService {
-  Future<Uri> createDynamicLink(String id, String albumTitle);
+  Future<Uri> createDynamicLink(String id, String albumTitle, int ownerId);
   Future<void> retreieveDynamicLink(BuildContext context);
 }
 
 class DynamicLinksServiceImplemenation implements DynamicLinkService {
-  Future<Uri> createDynamicLink(String id, String albumTitle) async {
+  Future<Uri> createDynamicLink(
+      String id, String albumTitle, int ownerId) async {
     final DynamicLinkParameters parameters = DynamicLinkParameters(
       uriPrefix: 'https://perspective.page.link',
-      link: Uri.parse('https://perspective.page.link.com/?id=$id'),
+      link: Uri.parse(
+          'https://perspective.page.link.com/?albumId=$id&ownerId=$ownerId'),
       iosParameters: IosParameters(
           bundleId: 'APD-APPS.perspective',
           minimumVersion: '1',
@@ -29,12 +33,17 @@ class DynamicLinksServiceImplemenation implements DynamicLinkService {
         final Uri deepLink = dynamicLink?.link;
 
         if (deepLink != null) {
-          if (deepLink.queryParameters.containsKey('id')) {
-            String albumId = deepLink.queryParameters['id'];
+          if (deepLink.queryParameters.containsKey('albumId')) {
+
+            String albumId = deepLink.queryParameters['albumId'];
+            String ownerId = deepLink.queryParameters['ownerId'];
             //locator<AlbumManager>().joinAlbum(int.parse(albumId));
 
-            Navigator.of(context)
-                .pushReplacementNamed('loadingPage', arguments: albumId);
+            int userId =
+                await locator<UserService>().getUserIdFromSharedPrefs();
+            if (userId != int.parse(ownerId))
+              Navigator.of(context)
+                  .pushReplacementNamed('loadingPage', arguments: albumId);
           }
         }
       }, onError: (OnLinkErrorException e) async {
@@ -48,13 +57,18 @@ class DynamicLinksServiceImplemenation implements DynamicLinkService {
       String linkHasBeenOpened = prefs.getString('dynamicLinkUrl');
       if (linkHasBeenOpened != deepLink.toString()) {
       if (deepLink != null) {
-        if (deepLink.queryParameters.containsKey('id')) {
+        if (deepLink.queryParameters.containsKey('albumId')) {
+
           prefs.setString('dynamicLinkUrl', deepLink.toString());
-          String albumId = deepLink.queryParameters['id'];
+          String albumId = deepLink.queryParameters['albumId'];
+          String ownerId = deepLink.queryParameters['ownerId'];
+          int userId = await locator<UserService>().getUserIdFromSharedPrefs();
+
+          if (userId != int.parse(ownerId))
+            Navigator.of(context)
+                .pushReplacementNamed('loadingPage', arguments: albumId);
           //locator<AlbumManager>().joinAlbum(int.parse(albumId));
 
-          Navigator.of(context)
-              .pushReplacementNamed('loadingPage', arguments: albumId);
         }
         }
       }
