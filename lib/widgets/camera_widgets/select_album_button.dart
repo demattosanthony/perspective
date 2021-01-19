@@ -18,7 +18,10 @@ class _SelectAlbumButtonState extends State<SelectAlbumButton> {
   @override
   void initState() {
     super.initState();
-    _myAblums = locator<AlbumManager>().getAlbums.lastResult;
+   
+    locator<AlbumManager>().getAlbums.isExecuting.listen((event) {
+       _myAblums = locator<AlbumManager>().getAlbums.lastResult;
+    });
   }
 
   @override

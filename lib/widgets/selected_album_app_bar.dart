@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:point_of_view/models/Album.dart';
+import 'package:point_of_view/models/Photo.dart';
 
 class SelectedAlbumAppBar extends StatefulWidget {
   SelectedAlbumAppBar(
       {Key key,
       @required this.album,
       this.isSelecting,
-      this.setSelectingImages})
+      this.setSelectingImages,
+      this.photos})
       : super(key: key);
 
   final Album album;
-  final  isSelecting;
+  final isSelecting;
   final SetSelctingImagesCallBack setSelectingImages;
+  final List<Photo> photos;
 
   @override
   _SelectedAlbumAppBarState createState() => _SelectedAlbumAppBarState();
@@ -27,8 +30,19 @@ class _SelectedAlbumAppBarState extends State<SelectedAlbumAppBar> {
       ),
       elevation: 0,
       backgroundColor: Colors.white,
-
+      centerTitle: true,
       actions: [
+        Container(
+            padding: EdgeInsets.all(10),
+            child: InkWell(
+                onTap: () {
+                  Navigator.of(context)
+                      .pushNamed('slideshow', arguments: widget.album);
+                },
+                child: Icon(
+                  Icons.slideshow,
+                  size: 30,
+                ))),
         Padding(
           padding: const EdgeInsets.all(5.0),
           child: FittedBox(
@@ -54,19 +68,6 @@ class _SelectedAlbumAppBarState extends State<SelectedAlbumAppBar> {
           ),
         )
       ],
-      // trailingActions: [
-      //   PlatformButton(
-      //     child: Text('Share'),
-      //     onPressed: () {
-      //       showPlatformDialog(
-      //           context: context,
-      //           builder: (_) =>
-      //               ShowAlert("Share string:", album.shareString));
-      //     },
-      //     padding: EdgeInsets.all(0),
-      //   ),
-
-      // ],
     );
   }
 }

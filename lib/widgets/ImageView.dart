@@ -38,6 +38,7 @@ class _ImageViewState extends State<ImageView> {
 
   @override
   void initState() {
+    print(widget.photo);
     getUserId();
     super.initState();
   }
@@ -91,7 +92,9 @@ class _ImageViewState extends State<ImageView> {
                     right: 20,
                     child: Visibility(
                       visible: showAppBarAndBottomNavBar,
+                    
                       child: CircleAvatar(
+                        
                         radius: 30,
                         backgroundImage: _photo.userProfImg == null
                             ? AssetImage('assets/images/profile_icon.png')
@@ -109,6 +112,7 @@ class _ImageViewState extends State<ImageView> {
           children: [
             widget.photo.userId == userId
                 ? GestureDetector(
+                  
                     onTap: () {
                       showPlatformDialog(
                           context: context,
@@ -122,6 +126,7 @@ class _ImageViewState extends State<ImageView> {
                                         Navigator.of(context).pop(),
                                   ),
                                   PlatformDialogAction(
+                                    
                                     child: Text(
                                       'Delete',
                                       style: TextStyle(color: Colors.red),
@@ -139,6 +144,7 @@ class _ImageViewState extends State<ImageView> {
                               ));
                     },
                     child: Container(
+                      
                         height: 50,
                         width: 50,
                         decoration: BoxDecoration(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:point_of_view/app/album_pages/slideshow_page.dart';
 import 'package:point_of_view/app/loading_page.dart';
 import 'package:point_of_view/app/profile_pages/settings_page.dart';
 import 'package:point_of_view/models/Photo.dart';
@@ -60,6 +61,9 @@ class Router {
             builder: (_) => LoadingPage(
                   albumId: albumId,
                 ));
+      case 'slideshow':
+        var album = settings.arguments;
+        return MaterialPageRoute(builder: (_) => SlideshowPage(album));
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(

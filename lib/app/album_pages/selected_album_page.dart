@@ -4,7 +4,7 @@ import 'package:point_of_view/managers/album_manager.dart';
 import 'package:point_of_view/models/Album.dart';
 import 'package:point_of_view/locator.dart';
 import 'package:point_of_view/models/User.dart';
-import 'package:point_of_view/widgets/camera_widgets/selected_album_app_bar.dart';
+import 'package:point_of_view/widgets/selected_album_app_bar.dart';
 import 'package:point_of_view/widgets/image_grid_item.dart';
 import 'package:point_of_view/models/Photo.dart';
 import 'package:point_of_view/widgets/selected_album_bottom_nav_bar.dart';
@@ -44,6 +44,7 @@ class _SelectedAlbumPageState extends State<SelectedAlbumPage> {
           album: widget.album,
           isSelecting: isSelectingImages,
           setSelectingImages: setSelectingImages,
+          photos: _photos,
         ),
       ),
       body: StreamBuilder<List<Photo>>(
@@ -95,6 +96,7 @@ class _SelectedAlbumPageState extends State<SelectedAlbumPage> {
                     return Container(
                       padding: const EdgeInsets.all(3.0),
                       child: FloatingActionButton(
+                        heroTag: '${user.userId}',
                         onPressed: () {
                           showMenu(
                               context: context,
@@ -129,7 +131,7 @@ class _SelectedAlbumPageState extends State<SelectedAlbumPage> {
         widget: widget,
         isSelectingImages: isSelectingImages,
         album: widget.album,
-        photos: _photos,
+  
       ),
     );
   }

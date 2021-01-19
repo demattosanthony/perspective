@@ -50,19 +50,16 @@ class _ZoomableWidgetState extends State<ZoomableWidget> {
   Widget build(BuildContext context) {
     return GestureDetector(
         onScaleStart: (scaleDetails) {
-          print('scalStart');
           setState(() => prevZoom = zoom);
           //print(scaleDetails);
         },
         onScaleUpdate: (ScaleUpdateDetails scaleDetails) {
           var newZoom = (prevZoom * scaleDetails.scale);
-          print(newZoom);
+;
 
           handleZoom(newZoom);
         },
         onScaleEnd: (scaleDetails) {
-          print('end');
-          //print(scaleDetails);
         },
         onTapUp: (TapUpDetails det) {
           final RenderBox box = context.findRenderObject();
