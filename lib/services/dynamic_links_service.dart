@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:point_of_view/locator.dart';
@@ -5,13 +6,13 @@ import 'package:point_of_view/services/user_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class DynamicLinkService {
-  Future<Uri> createDynamicLink(String id, String albumTitle, int ownerId);
+  Future<Uri> createDynamicLink(String id, String albumTitle, String ownerId);
   Future<void> retreieveDynamicLink(BuildContext context);
 }
 
 class DynamicLinksServiceImplemenation implements DynamicLinkService {
   Future<Uri> createDynamicLink(
-      String id, String albumTitle, int ownerId) async {
+      String id, String albumTitle, String ownerId) async {
     final DynamicLinkParameters parameters = DynamicLinkParameters(
       uriPrefix: 'https://perspective.page.link',
       link: Uri.parse(
@@ -39,9 +40,10 @@ class DynamicLinksServiceImplemenation implements DynamicLinkService {
             String ownerId = deepLink.queryParameters['ownerId'];
             //locator<AlbumManager>().joinAlbum(int.parse(albumId));
 
-            int userId =
-                await locator<UserService>().getUserIdFromSharedPrefs();
-            if (userId != int.parse(ownerId))
+            // int userId =
+            //     await locator<UserService>().getUserIdFromSharedPrefs();
+             String userId = FirebaseAuth.instance.currentUser.uid;
+            if (userId != ownerId)
               Navigator.of(context)
                   .pushReplacementNamed('loadingPage', arguments: albumId);
           }
@@ -62,9 +64,8 @@ class DynamicLinksServiceImplemenation implements DynamicLinkService {
           prefs.setString('dynamicLinkUrl', deepLink.toString());
           String albumId = deepLink.queryParameters['albumId'];
           String ownerId = deepLink.queryParameters['ownerId'];
-          int userId = await locator<UserService>().getUserIdFromSharedPrefs();
-
-          if (userId != int.parse(ownerId))
+          String userId = FirebaseAuth.instance.currentUser.uid;
+            if (userId != ownerId)
             Navigator.of(context)
                 .pushReplacementNamed('loadingPage', arguments: albumId);
           //locator<AlbumManager>().joinAlbum(int.parse(albumId));

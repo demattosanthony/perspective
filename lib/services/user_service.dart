@@ -25,8 +25,9 @@ class UserServiceImplementation implements UserService {
   // var host = "https://hidden-woodland-36838.herokuapp.com/";
   @override
   Future<UserAccount> getUserInfo() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    int userId = prefs.getInt('userId');
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+    // int userId = prefs.getInt('userId');
+    String userId = FirebaseAuth.instance.currentUser.uid;
 
     var url = host + 'getUserInfo/$userId';
     var response = await http.get(url);
@@ -43,7 +44,9 @@ class UserServiceImplementation implements UserService {
   @override
   Future<String> uploadProfileImg(File img) async {
     //File file = File(imagePath);
-    int userId = await locator<UserService>().getUserIdFromSharedPrefs();
+    // int userId = await locator<UserService>().getUserIdFromSharedPrefs();
+    String userId = FirebaseAuth.instance.currentUser.uid;
+
     String photoUrl = '';
     try {
       TaskSnapshot result = await FirebaseStorage.instance
@@ -52,7 +55,7 @@ class UserServiceImplementation implements UserService {
       photoUrl = await result.ref.getDownloadURL();
       var url = host + 'updateProfileImg';
       var response = await http.put(url,
-          body: {'profileImageUrl': photoUrl, 'userId': userId.toString()});
+          body: {'profileImageUrl': photoUrl, 'userId': userId});
       locator<UserManager>().getUserInfo();
       if (response.statusCode != 200) {
         throw Exception('Could not upload profile img');
@@ -65,8 +68,9 @@ class UserServiceImplementation implements UserService {
 
   Future<String> deleteAccount() async {
     try {
-      int userId = await locator<UserService>().getUserIdFromSharedPrefs();
-      var url = host + 'deleteAccount/${userId.toString()}';
+      // int userId = await locator<UserService>().getUserIdFromSharedPrefs();
+      String userId = FirebaseAuth.instance.currentUser.uid;
+      var url = host + 'deleteAccount/$userId';
       var response = await http.delete(url);
       if (response.statusCode != 200)
         throw Exception('Could not delete user');
@@ -96,7 +100,8 @@ class UserServiceImplementation implements UserService {
   @override
   Future<String> updateUserInfo(
       String name, String username, String email) async {
-    int userId = await locator<UserService>().getUserIdFromSharedPrefs();
+    // int userId = await locator<UserService>().getUserIdFromSharedPrefs();
+    String userId = FirebaseAuth.instance.currentUser.uid;
     UserAccount _userInfo = await getUserInfo();
     bool usernameTaken = false;
     if (username != '') {
@@ -108,7 +113,7 @@ class UserServiceImplementation implements UserService {
     var url = host + 'updateUserInfo';
     Map body = {
       'name': name == '' ? _userInfo.name : name,
-      'userId': userId.toString(),
+      'userId': userId,
       'username': username == '' ? _userInfo.username : username,
       'email': email == '' ? _userInfo.email : email
     };

@@ -20,7 +20,7 @@ class ToggleCameraButton extends StatelessWidget {
           toggleCameraDirection();
         },
         child: Icon(
-          Icons.switch_camera,
+          Icons.flip_camera_ios,
           size: 35,
           color: Colors.white,
         ),

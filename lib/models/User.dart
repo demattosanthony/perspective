@@ -1,6 +1,6 @@
 
 class UserAccount {
-  int userId;
+  String userId;
   String name;
   String username;
   String email;

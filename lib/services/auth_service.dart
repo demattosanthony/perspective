@@ -1,27 +1,27 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:point_of_view/constants.dart';
 import 'package:point_of_view/managers/auth_manager.dart';
 import 'package:point_of_view/services/user_service.dart';
 import 'package:point_of_view/locator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
+import 'package:point_of_view/widgets/ShowAlert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 abstract class AuthService {
   Future<bool> validateUsername(String username);
-  Future<String> register(String username, String password, String email,
-      String name, File image);
+  Future<String> register(
+      String username, String password, String email, String name, File image);
   Future<void> signOut();
-  Future<int> login(String username, String password);
+  Future<void> login(String email, String password, BuildContext ctx);
 }
 
 class AuthServiceImplementation implements AuthService {
-  // var host = 'http://localhost:3000/';
-  // var host = "https://hidden-woodland-36838.herokuapp.com/";
   FirebaseAuth auth = FirebaseAuth.instance;
-
 
   // Function to fetch all usernames in database
   // returns true is username is already taken
@@ -60,26 +60,21 @@ class AuthServiceImplementation implements AuthService {
     String profileImgUrl = '';
 
     if (usernameIsValid) {
-      print('valid username');
       try {
-        await auth.createUserWithEmailAndPassword(
+        var user = await auth.createUserWithEmailAndPassword(
             email: email, password: password);
         if (image != null)
           profileImgUrl = await locator<UserService>()
               .uploadProfileImg(locator<AuthManager>().getImage.lastResult);
 
         var response = await http.post(url, body: {
+          'userId': user.user.uid,
           'username': username.toLowerCase(),
           'name': name,
           'email': email,
-          'password': password,
           'profileImgUrl': profileImgUrl
         });
         if (response.statusCode == 200) {
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          prefs.setString('username', username);
-          int userId = await getUserId(username);
-          prefs.setInt('userId', userId);
           return 'success';
         } else
           throw Exception('Failed adding User');
@@ -103,34 +98,18 @@ class AuthServiceImplementation implements AuthService {
   }
 
   Future<void> signOut() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool('isLoggedIn', false);
     await auth.signOut();
   }
 
-  Future<int> login(String username, String password) async {
-    var client = http.Client();
+  Future<void> login(String email, String password, BuildContext ctx) async {
     try {
-      var url = host + 'login/${username.toLowerCase()}/$password';
-      var response = await client.get(url);
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-
-      if (response.statusCode == 200) {
-        var jsonResponse = jsonDecode(response.body);
-        if (jsonResponse.length == 0) return 400;
-        // print(jsonResponse[0]['username']);
-        String username = jsonResponse[0]['username'];
-        int userId = jsonResponse[0]['user_id'];
-        prefs.setString('username', username);
-        prefs.setBool('isLoggedIn', true);
-        prefs.setInt('userId', userId);
-        return 200;
-      } else {
-        print('Request failed with status: ${response.statusCode}.');
-        return 400;
-      }
-    } finally {
-      client.close();
+      await auth.signInWithEmailAndPassword(email: email, password: password);
+    } catch (e) {
+      showPlatformDialog(
+          context: ctx,
+          builder: (_) =>
+              ShowAlert('Invalid Username or Password!', 'Try again.'));
+      throw Exception(e.code);
     }
   }
 }

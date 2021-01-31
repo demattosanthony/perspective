@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:point_of_view/services/auth_service.dart';
@@ -12,7 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginView extends StatelessWidget {
   final _formkey = GlobalKey<FormState>();
-  final _usernameController = TextEditingController();
+  final _emailController = TextEditingController();
   final _passwordcontroller = TextEditingController();
 
   @override
@@ -34,32 +35,44 @@ class LoginView extends StatelessWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      CustomTextField('Username', _usernameController, false),
+                      CustomTextField('Email', _emailController, false),
                       CustomTextField('Password', _passwordcontroller, true),
                       SizedBox(
                         height: 20,
                       ),
                       FlatButton(
                         onPressed: () async {
-                          var response = await locator<AuthService>().login(
-                              _usernameController.text,
-                              _passwordcontroller.text);
-                          if (response == 200) {
-                            SharedPreferences prefs =
-                                await SharedPreferences.getInstance();
-                            prefs.setBool('isLoggedIn', true);
-                            Navigator.pushReplacement(
-                                context,
-                                PageTransition(
-                                    child: BottomNavBar(),
-                                    type: PageTransitionType.fade));
-                          } else {
-                            showPlatformDialog(
-                                context: context,
-                                builder: (_) => ShowAlert(
-                                    'Invalid Username or Password!',
-                                    'Try again.'));
-                          }
+                          await locator<AuthService>().login(
+                              _emailController.text, _passwordcontroller.text, context);
+
+                          FirebaseAuth.instance
+                              .authStateChanges()
+                              .listen((user) {
+                            if (user != null) {
+                              Navigator.pushReplacement(
+                                  context,
+                                  PageTransition(
+                                      child: BottomNavBar(),
+                                      type: PageTransitionType.fade));
+                            }
+                          });
+
+                          // if (response == 200) {
+                          //   SharedPreferences prefs =
+                          //       await SharedPreferences.getInstance();
+                          //   prefs.setBool('isLoggedIn', true);
+                          //   Navigator.pushReplacement(
+                          //       context,
+                          //       PageTransition(
+                          //           child: BottomNavBar(),
+                          //           type: PageTransitionType.fade));
+                          // } else {
+                          //   showPlatformDialog(
+                          //       context: context,
+                          //       builder: (_) => ShowAlert(
+                          //           'Invalid Username or Password!',
+                          //           'Try again.'));
+                          // }
                         },
                         child: PlatformText('Login',
                             style: TextStyle(color: Colors.white)),

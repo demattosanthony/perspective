@@ -27,12 +27,10 @@ abstract class AlbumService {
 }
 
 class AlbumServiceImplementation implements AlbumService {
-  // var host = "https://hidden-woodland-36838.herokuapp.com/";
-  // var host = 'http://localhost:3000/';
-
   @override
   Future<List<Album>> getAlbums() async {
-    int userId = await locator<UserService>().getUserIdFromSharedPrefs();
+    // int userId = await locator<UserService>().getUserIdFromSharedPrefs();
+    String userId = FirebaseAuth.instance.currentUser.uid;
     var url = host + 'getUserAlbums/$userId';
 
     var response = await http.get(url);
@@ -50,7 +48,8 @@ class AlbumServiceImplementation implements AlbumService {
   Future<void> createAlbum(String albumTitle) async {
     var url = host + 'createAlbum';
 
-    int userId = await locator<UserService>().getUserIdFromSharedPrefs();
+    // int userId = await locator<UserService>().getUserIdFromSharedPrefs();
+    String userId = FirebaseAuth.instance.currentUser.uid;
 
     var response = await http
         .post(url, body: {'title': albumTitle, 'userid': userId.toString()});
@@ -70,12 +69,13 @@ class AlbumServiceImplementation implements AlbumService {
       String downloadUrl = await result.ref.getDownloadURL();
 
       var url = host + 'uploadImageUrl';
-      int userId = await locator<UserService>().getUserIdFromSharedPrefs();
+      // int userId = await locator<UserService>().getUserIdFromSharedPrefs();
+      String userId = FirebaseAuth.instance.currentUser.uid;
 
       var response = await http.post(url, body: {
         'photourl': downloadUrl,
         'albumid': albumId.toString(),
-        'userId': userId.toString()
+        'userId': userId
       });
       if (response.statusCode != 200)
         throw Exception('Could not upload image url');
@@ -113,10 +113,11 @@ class AlbumServiceImplementation implements AlbumService {
 
   @override
   Future<int> joinAlbum(int albumId) async {
-    int userId = await locator<UserService>().getUserIdFromSharedPrefs();
+    // int userId = await locator<UserService>().getUserIdFromSharedPrefs();
+    String userId = FirebaseAuth.instance.currentUser.uid;
     var url = host + 'joinAlbum';
-    var response = await http.post(url,
-        body: {'albumId': albumId.toString(), 'userId': userId.toString()});
+    var response = await http
+        .post(url, body: {'albumId': albumId.toString(), 'userId': userId});
     if (response.statusCode == 200)
       return 200;
     else if (response.statusCode == 450)

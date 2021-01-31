@@ -39,15 +39,6 @@ class CameraButtons extends StatelessWidget {
         ),
         SelectAlbumButton(),
         TakePictureButton(controller: controller),
-        // StreamBuilder(
-        //     stream: locator<CameraManager>().uploadImage.isExecuting,
-        //     builder: (context, snapshot) {
-        //       if (snapshot.data == true) {
-        //         return Center(child: CircularProgressIndicator());
-        //       }
-
-        //       return Container();
-        //     })
       ],
     );
   }

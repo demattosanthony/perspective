@@ -94,8 +94,6 @@ class _BetterCameraState extends State<BetterCamera>
         controller == null ? 0 : controller.value.aspectRatio / deviceRatio;
 // Modify the yScale if you are in Landscape
     double yScale = 1.0;
-    double zoom = 1;
-    double prevZoom = 1;
     return Scaffold(
       backgroundColor: Colors.black,
       resizeToAvoidBottomInset: false,

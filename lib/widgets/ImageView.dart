@@ -1,12 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:point_of_view/locator.dart';
-import 'package:point_of_view/managers/album_manager.dart';
 import 'package:point_of_view/models/Photo.dart';
-import 'package:point_of_view/services/album_service.dart';
 import 'package:point_of_view/services/user_service.dart';
+
+import 'delete_image_button.dart';
 
 class ImageView extends StatefulWidget {
   final List<Photo> photos;
@@ -26,22 +27,7 @@ class ImageView extends StatefulWidget {
 
 class _ImageViewState extends State<ImageView> {
   bool showAppBarAndBottomNavBar = true;
-  int userId;
   // final _controller = PageController(initialPage: widget.currentIndex);
-
-  void getUserId() async {
-    var temp = await locator<UserService>().getUserIdFromSharedPrefs();
-    setState(() {
-      userId = temp;
-    });
-  }
-
-  @override
-  void initState() {
-    print(widget.photo);
-    getUserId();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -92,70 +78,25 @@ class _ImageViewState extends State<ImageView> {
                     right: 20,
                     child: Visibility(
                       visible: showAppBarAndBottomNavBar,
-                    
                       child: CircleAvatar(
-                        
                         radius: 30,
                         backgroundImage: _photo.userProfImg == null
                             ? AssetImage('assets/images/profile_icon.png')
                             : NetworkImage(_photo.userProfImg),
                       ),
-                    ))
+                    )),
+                Positioned(
+                  bottom: 25,
+                  left: 0,
+                  right: 0,
+                  child: Visibility(
+                      visible: _photo.userId == FirebaseAuth.instance.currentUser.uid,
+                      child: DeleteImageButton(widget: widget)),
+                )
               ],
             );
           }),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Visibility(
-        visible: showAppBarAndBottomNavBar,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            widget.photo.userId == userId
-                ? GestureDetector(
-                  
-                    onTap: () {
-                      showPlatformDialog(
-                          context: context,
-                          builder: (_) => PlatformAlertDialog(
-                                title: Text(
-                                    "Are you sure you want to delete this image?"),
-                                actions: [
-                                  PlatformDialogAction(
-                                    child: Text('Cancel'),
-                                    onPressed: () =>
-                                        Navigator.of(context).pop(),
-                                  ),
-                                  PlatformDialogAction(
-                                    
-                                    child: Text(
-                                      'Delete',
-                                      style: TextStyle(color: Colors.red),
-                                    ),
-                                    onPressed: () async {
-                                      await locator<AlbumService>().deleteImage(
-                                          widget.albumId, widget.photo.imageId);
-                                      await locator<AlbumManager>()
-                                          .getAlbumImages(widget.albumId);
-                                      Navigator.of(context).pop();
-                                      Navigator.of(context).pop();
-                                    },
-                                  )
-                                ],
-                              ));
-                    },
-                    child: Container(
-                      
-                        height: 50,
-                        width: 50,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(25)),
-                        child: Icon(Icons.delete, color: Colors.red)),
-                  )
-                : Container(),
-          ],
-        ),
-      ),
     );
   }
 }
+

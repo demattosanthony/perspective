@@ -18,6 +18,7 @@ class SlideshowPage extends StatefulWidget {
 class _SlideshowPageState extends State<SlideshowPage> {
   Photo selectedPhoto;
   List<Photo> photos;
+  bool endSlideshow = false;
 
   void getPhotos() {
     photos = locator<AlbumManager>().getAlbumImages.lastResult;
@@ -30,28 +31,31 @@ class _SlideshowPageState extends State<SlideshowPage> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   void startSlideshow() async {
     for (var photo in photos) {
-      setState(() {
-        selectedPhoto = photo;
-      });
-      print(selectedPhoto.imageUrl);
-     await new Future.delayed(const Duration(seconds : 5));
+      if (this.mounted)
+        setState(() {
+          selectedPhoto = photo;
+        });
+      await new Future.delayed(const Duration(seconds: 5));
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
+        backgroundColor: Colors.transparent,
         body: Container(
           alignment: Alignment.center,
-      child: FadeInImage.memoryNetwork(
-        placeholder: kTransparentImage,
-        image: selectedPhoto.imageUrl,
-       
-      
-      ),
-    ));
+          child: FadeInImage.memoryNetwork(
+            placeholder: kTransparentImage,
+            image: selectedPhoto.imageUrl,
+          ),
+        ));
   }
 }

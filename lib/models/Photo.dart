@@ -3,7 +3,7 @@ class Photo {
   final String imageUrl;
   final int albumId;
   bool isSelected;
-  final int userId;
+  final String userId;
   final String userProfImg;
 
   Photo(

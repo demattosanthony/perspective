@@ -22,7 +22,7 @@ class TakePictureButton extends StatefulWidget {
 }
 
 class _TakePictureButtonState extends State<TakePictureButton> {
-  bool isUploading=false;
+  bool isUploading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -30,15 +30,15 @@ class _TakePictureButtonState extends State<TakePictureButton> {
       alignment: FractionalOffset.bottomCenter,
       child: GestureDetector(
         onTap: () async {
-          setState(() {
-            isUploading = true;
-          });
           if (locator<CameraManager>().selectedAlbum.lastResult == null) {
             showPlatformDialog(
                 context: context,
                 builder: (_) =>
                     ShowAlert("Please select a Album", 'Try again.'));
           } else {
+            setState(() {
+              isUploading = true;
+            });
             // await controller.captureImage();
             final Directory extDir = await getApplicationDocumentsDirectory();
             final String dirPath = '${extDir.path}/Pictures/flutter_test';

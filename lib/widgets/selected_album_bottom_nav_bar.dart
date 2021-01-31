@@ -20,18 +20,16 @@ import 'package:path_provider/path_provider.dart';
 import '../locator.dart';
 
 class SelectedAlbumBottomNavBar extends StatefulWidget {
-  SelectedAlbumBottomNavBar(
-      {Key key,
-      @required this.widget,
-      @required this.isSelectingImages,
-      @required this.album,
-})
-      : super(key: key);
+  SelectedAlbumBottomNavBar({
+    Key key,
+    @required this.widget,
+    @required this.isSelectingImages,
+    @required this.album,
+  }) : super(key: key);
 
   final SelectedAlbumPage widget;
   final bool isSelectingImages;
   final Album album;
-
 
   @override
   _SelectedAlbumBottomNavBarState createState() =>
@@ -45,11 +43,7 @@ class _SelectedAlbumBottomNavBarState extends State<SelectedAlbumBottomNavBar> {
 
   void getUserId() async {
     var id = await locator<UserService>().getUserIdFromSharedPrefs();
-
-    print(userId);
-    print(widget.album.ownerId);
     if (id == widget.album.ownerId) {
-      print('equal');
       setState(() {
         showDelete = true;
       });
@@ -109,8 +103,8 @@ class _SelectedAlbumBottomNavBarState extends State<SelectedAlbumBottomNavBar> {
                       locator<AlbumManager>().getSelectedImages();
                   try {
                     for (var photo in _photos) {
-                      await locator<AlbumService>().deleteImage(
-                          widget.album.albumId, photo.imageId);
+                      await locator<AlbumService>()
+                          .deleteImage(widget.album.albumId, photo.imageId);
                       await locator<AlbumManager>()
                           .getAlbumImages(widget.album.albumId);
                     }
@@ -138,25 +132,23 @@ class _SelectedAlbumBottomNavBarState extends State<SelectedAlbumBottomNavBar> {
         currentIndex: 0,
         onTap: (index) async {
           if (index == 2) {
-
-              // Download entire album
-              var photos = locator<AlbumManager>().getAlbumImages.lastResult;
-              try {
-                for (var photo in photos) {
-                  var response = await http.get(photo.imageUrl);
-                  final _ = await ImageGallerySaver.saveImage(
-                      Uint8List.fromList(response.bodyBytes),
-                      quality: 60,
-                      name: "hello");
-                }
-
-                showPlatformDialog(
-                    context: context,
-                    builder: (_) => ShowAlert("Download Complete!", "Success"));
-              } catch (e) {
-                throw Exception('Could no download album');
+            // Download entire album
+            var photos = locator<AlbumManager>().getAlbumImages.lastResult;
+            try {
+              for (var photo in photos) {
+                var response = await http.get(photo.imageUrl);
+                final _ = await ImageGallerySaver.saveImage(
+                    Uint8List.fromList(response.bodyBytes),
+                    quality: 60,
+                    name: "hello");
               }
-            
+
+              showPlatformDialog(
+                  context: context,
+                  builder: (_) => ShowAlert("Download Complete!", "Success"));
+            } catch (e) {
+              throw Exception('Could no download album');
+            }
           } else if (index == 0) {
             Uri shareUrl = await locator<DynamicLinkService>()
                 .createDynamicLink(widget.album.albumId.toString(),
@@ -174,6 +166,8 @@ class _SelectedAlbumBottomNavBarState extends State<SelectedAlbumBottomNavBar> {
                     byteData.offsetInBytes, byteData.lengthInBytes));
                 await locator<AlbumService>()
                     .uploadImage(file, widget.album.albumId);
+                await locator<AlbumManager>()
+                    .getAlbumImages(widget.album.albumId);
               }
             } on Exception catch (e) {
               print(e.toString());
@@ -189,7 +183,6 @@ class _SelectedAlbumBottomNavBarState extends State<SelectedAlbumBottomNavBar> {
               label: widget.isSelectingImages
                   ? 'Download Images'
                   : 'Download Album'),
-
         ],
       );
     }

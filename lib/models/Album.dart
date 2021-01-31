@@ -2,7 +2,7 @@
 class Album {
   final int albumId;
   final String title;
-  final int ownerId;
+  final String ownerId;
   final String shareString;
   final String profileImgUrl;
   final List attendeeIds;
@@ -17,7 +17,6 @@ class Album {
 
   Map<String, dynamic> toJson() =>
       {'albumId': albumId, 'title': title, 'shareString': shareString};
-
 
   factory Album.fromJson(Map<String, dynamic> json) {
     return Album(
