@@ -1,10 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:point_of_view/managers/album_manager.dart';
 import 'package:point_of_view/models/Album.dart';
 import 'package:point_of_view/locator.dart';
 import 'package:point_of_view/services/album_service.dart';
-import 'package:point_of_view/services/user_service.dart';
 
 class AlbumList extends StatelessWidget {
   AlbumList({this.myAlbums});
@@ -20,8 +21,7 @@ class AlbumList extends StatelessWidget {
           key: ObjectKey(album),
           confirmDismiss: (DismissDirection direction) async {
             print(album.ownerId);
-            int userId =
-                await locator<UserService>().getUserIdFromSharedPrefs();
+            String userId = FirebaseAuth.instance.currentUser.uid;
             bool isOwner = userId == album.ownerId ? true : false;
             return showPlatformDialog(
                 context: context,
@@ -71,11 +71,24 @@ class AlbumList extends StatelessWidget {
                 child: Card(
                   elevation: 3,
                   child: ListTile(
-                      leading: CircleAvatar(
-                          backgroundColor: Colors.white,
-                          backgroundImage: album.profileImgUrl == ""
-                              ? AssetImage('assets/images/profile_icon.png')
-                              : NetworkImage(album.profileImgUrl)),
+                      leading: Container(
+                        height: 45,
+                        width: 50,
+                        child: album.profileImgUrl == ''
+                            ? Image.asset('assets/images/profile_icon.png')
+                            : CachedNetworkImage(
+                                imageUrl: album.profileImgUrl,
+                                imageBuilder: (context, imageProvider) =>
+                                    Container(
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      image: DecorationImage(
+                                          image: imageProvider)),
+                                ),
+                                placeholder: (context, url) => Center(
+                                    child: PlatformCircularProgressIndicator()),
+                              ),
+                      ),
                       title: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: FittedBox(

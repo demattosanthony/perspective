@@ -62,7 +62,7 @@ class _SelectedAlbumBottomNavBarState extends State<SelectedAlbumBottomNavBar> {
       return Container(
         height: 85,
         padding: EdgeInsets.only(bottom: 15),
-        color: Colors.black,
+        color: Colors.white,
         child: Row(
           mainAxisAlignment: !showDelete
               ? MainAxisAlignment.center

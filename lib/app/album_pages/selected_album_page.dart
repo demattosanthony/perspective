@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:point_of_view/managers/album_manager.dart';
 import 'package:point_of_view/models/Album.dart';
 import 'package:point_of_view/locator.dart';
@@ -110,14 +112,25 @@ class _SelectedAlbumPageState extends State<SelectedAlbumPage> {
                                 PopupMenuItem(child: Text(user.username)),
                               ]);
                         },
-                        child: FittedBox(
-                          child: CircleAvatar(
-                              radius: 28,
-                              backgroundColor: Colors.white,
-                              backgroundImage: user.profileImageUrl == ""
-                                  ? AssetImage('assets/images/profile_icon.png')
-                                  : NetworkImage(user.profileImageUrl)),
-                        ),
+                        child: Container(
+                            height: 52,
+                            width: 52,
+                            child: user.profileImageUrl == ''
+                                ? Image.asset('assets/images/profile_icon.png')
+                                : CachedNetworkImage(
+                                    imageUrl: user.profileImageUrl,
+                                    imageBuilder: (context, imageProvider) =>
+                                        Container(
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          image: DecorationImage(
+                                              image: imageProvider)),
+                                    ),
+                                    placeholder: (context, url) => Center(
+                                        child:
+                                            PlatformCircularProgressIndicator()),
+                                  )),
+                        backgroundColor: Colors.white,
                       ),
                     );
                   }),
@@ -131,7 +144,6 @@ class _SelectedAlbumPageState extends State<SelectedAlbumPage> {
         widget: widget,
         isSelectingImages: isSelectingImages,
         album: widget.album,
-  
       ),
     );
   }

@@ -68,7 +68,6 @@ class UserServiceImplementation implements UserService {
 
   Future<String> deleteAccount() async {
     try {
-      // int userId = await locator<UserService>().getUserIdFromSharedPrefs();
       String userId = FirebaseAuth.instance.currentUser.uid;
       var url = host + 'deleteAccount/$userId';
       var response = await http.delete(url);
@@ -76,9 +75,6 @@ class UserServiceImplementation implements UserService {
         throw Exception('Could not delete user');
       else {
         await FirebaseAuth.instance.currentUser.delete();
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.setBool('isLoggedIn', false);
-
         return 'sucess';
       }
     } catch (e) {

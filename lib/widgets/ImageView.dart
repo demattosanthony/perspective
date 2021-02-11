@@ -78,12 +78,22 @@ class _ImageViewState extends State<ImageView> {
                     right: 20,
                     child: Visibility(
                       visible: showAppBarAndBottomNavBar,
-                      child: CircleAvatar(
-                        radius: 30,
-                        backgroundImage: _photo.userProfImg == null
-                            ? AssetImage('assets/images/profile_icon.png')
-                            : NetworkImage(_photo.userProfImg),
-                      ),
+                      child: Container(
+                            height: 52,
+                            width: 52,
+                            child: CachedNetworkImage(
+                              imageUrl: _photo.userProfImg,
+                              imageBuilder: (context, imageProvider) =>
+                                  Container(
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image:
+                                        DecorationImage(image: imageProvider)),
+                              ),
+                              placeholder: (context, url) => Center(
+                                  child: PlatformCircularProgressIndicator()),
+                            )
+                            ),
                     )),
                 Positioned(
                   bottom: 25,

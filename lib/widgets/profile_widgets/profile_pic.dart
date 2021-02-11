@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -33,11 +34,24 @@ class ProfilePic extends StatelessWidget {
                   child: PlatformCircularProgressIndicator(),
                 );
               } else {
-                return CircleAvatar(
-                    backgroundColor: Colors.white,
-                    backgroundImage: user.profileImageUrl == ''
-                        ? AssetImage('assets/images/profile_icon.png')
-                        : NetworkImage(user.profileImageUrl));
+                return user.profileImageUrl == ''
+                    ? Image.asset('assets/images/profile_icon.png')
+                    : CachedNetworkImage(
+                        imageUrl: user.profileImageUrl,
+                        imageBuilder: (context, imageProvider) => Container(
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(image: imageProvider)),
+                        ),
+                        placeholder: (context, url) =>
+                            Center(child: PlatformCircularProgressIndicator()),
+                      );
+
+                // CircleAvatar(
+                //     backgroundColor: Colors.white,
+                //     backgroundImage: user.profileImageUrl == ''
+                //         ? AssetImage('assets/images/profile_icon.png')
+                //         : NetworkImage(user.profileImageUrl));
               }
             },
           ),
@@ -73,8 +87,7 @@ class ProfilePic extends StatelessWidget {
                                   CropAspectRatioPreset.ratio7x5,
                                   CropAspectRatioPreset.ratio16x9
                                 ],
-                                cropStyle: CropStyle.circle,
-                              
+                          cropStyle: CropStyle.circle,
                           androidUiSettings: AndroidUiSettings(
                               toolbarTitle: 'Cropper',
                               toolbarColor: Colors.deepOrange,
@@ -85,7 +98,8 @@ class ProfilePic extends StatelessWidget {
                             title: 'Cropper',
                           ));
 
-                      await locator<UserManager>().updateProfileImg(croppedImage);
+                      await locator<UserManager>()
+                          .updateProfileImg(croppedImage);
                     },
                     color: Color(0xFFF5F6F9),
                     child: Icon(Icons.person),

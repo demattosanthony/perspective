@@ -62,11 +62,11 @@ class MyAccountPage extends StatelessWidget {
               userData: userData.username,
               title: 'Username',
             ),
-            AccountDetailRow(
-              controller: _emailController,
-              userData: userData.email,
-              title: 'Email',
-            ),
+            // AccountDetailRow(
+            //   controller: _emailController,
+            //   userData: userData.email,
+            //   title: 'Email',
+            // ),
           ],
         ));
   }
