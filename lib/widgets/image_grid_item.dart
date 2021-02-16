@@ -80,6 +80,10 @@ class _ImageGridItemState extends State<ImageGridItem> {
                   Center(child: PlatformCircularProgressIndicator()),
               imageUrl: widget.imageUrl,
               fit: BoxFit.cover,
+              height: 100,
+              width: 100,
+  cacheKey: widget.imageUrl,
+  
             ),
           ),
           widget.isSelected

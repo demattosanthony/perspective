@@ -87,6 +87,8 @@ class AlbumList extends StatelessWidget {
                                 ),
                                 placeholder: (context, url) => Center(
                                     child: PlatformCircularProgressIndicator()),
+                                height: 100,
+                                width: 100,
                               ),
                       ),
                       title: Padding(

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:point_of_view/services/album_service.dart';
 import 'package:point_of_view/locator.dart';
 import 'package:point_of_view/app/bottom_nav_bar.dart';
+import 'package:point_of_view/widgets/ShowAlert.dart';
 
 class CreateAlbumButton extends StatelessWidget {
   const CreateAlbumButton({Key key, @required this.title}) : super(key: key);
@@ -13,12 +15,33 @@ class CreateAlbumButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FlatButton(
       onPressed: () async {
-        await locator<AlbumService>().createAlbum(title.text);
+        if (title.text != '') {
+          await locator<AlbumService>().createAlbum(title.text);
 
-        Navigator.pushReplacement(
-            context,
-            PageTransition(
-                child: BottomNavBar(), type: PageTransitionType.fade));
+          Navigator.pushReplacement(
+              context,
+              PageTransition(
+                  child: BottomNavBar(), type: PageTransitionType.fade));
+        } else {
+          print('show alert');
+          // ShowAlert('Empty Album Name', "Please enter a valid album title.");
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text('Empty Album Title!'),
+                  content: Text('Please enter a valid album title.'),
+                  actions: [
+                    PlatformButton(
+                      child: Text('OK'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    )
+                  ],
+                );
+              });
+        }
       },
       child: Text(
         'Create Album',

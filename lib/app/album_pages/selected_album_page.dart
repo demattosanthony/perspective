@@ -129,6 +129,8 @@ class _SelectedAlbumPageState extends State<SelectedAlbumPage> {
                                     placeholder: (context, url) => Center(
                                         child:
                                             PlatformCircularProgressIndicator()),
+                                    height: 100,
+                                    width: 100,
                                   )),
                         backgroundColor: Colors.white,
                       ),

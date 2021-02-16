@@ -3,10 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:point_of_view/locator.dart';
 import 'package:point_of_view/models/Photo.dart';
-import 'package:point_of_view/services/user_service.dart';
-
 import 'delete_image_button.dart';
 
 class ImageView extends StatefulWidget {
@@ -46,13 +43,21 @@ class _ImageViewState extends State<ImageView> {
                       showAppBarAndBottomNavBar = !showAppBarAndBottomNavBar;
                     });
                   },
-                  child: Center(
-                    child: CachedNetworkImage(
-                      imageUrl: _photo.imageUrl,
-                      placeholder: (context, url) =>
-                          Center(child: PlatformCircularProgressIndicator()),
-                    ),
-                  ),
+                  child: _photo.imageUrl.isNotEmpty
+                      ? Center(
+                          child: Container(
+                          width: double.infinity,
+                          height: double.infinity,
+                          child: CachedNetworkImage(
+                            imageUrl: _photo.imageUrl,
+                            placeholder: (context, url) => Center(
+                                child: PlatformCircularProgressIndicator()),
+                            height: 100,
+                            width: 100,
+                          ),
+                        ))
+                      // child: Image.network(_photo.imageUrl))
+                      : Container(),
                 ),
                 Positioned(
                     top: 45,
@@ -79,28 +84,26 @@ class _ImageViewState extends State<ImageView> {
                     child: Visibility(
                       visible: showAppBarAndBottomNavBar,
                       child: Container(
-                            height: 52,
-                            width: 52,
-                            child: CachedNetworkImage(
-                              imageUrl: _photo.userProfImg,
-                              imageBuilder: (context, imageProvider) =>
-                                  Container(
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    image:
-                                        DecorationImage(image: imageProvider)),
-                              ),
-                              placeholder: (context, url) => Center(
-                                  child: PlatformCircularProgressIndicator()),
-                            )
+                          height: 52,
+                          width: 52,
+                          child: CachedNetworkImage(
+                            imageUrl: _photo.userProfImg,
+                            imageBuilder: (context, imageProvider) => Container(
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(image: imageProvider)),
                             ),
+                            placeholder: (context, url) => Center(
+                                child: PlatformCircularProgressIndicator()),
+                          )),
                     )),
                 Positioned(
                   bottom: 25,
                   left: 0,
                   right: 0,
                   child: Visibility(
-                      visible: _photo.userId == FirebaseAuth.instance.currentUser.uid,
+                      visible: _photo.userId ==
+                          FirebaseAuth.instance.currentUser.uid,
                       child: DeleteImageButton(widget: widget)),
                 )
               ],
@@ -109,4 +112,3 @@ class _ImageViewState extends State<ImageView> {
     );
   }
 }
-
