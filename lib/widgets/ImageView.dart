@@ -1,8 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:optimized_cached_image/widgets.dart';
 import 'package:point_of_view/models/Photo.dart';
 import 'delete_image_button.dart';
 
@@ -46,15 +46,18 @@ class _ImageViewState extends State<ImageView> {
                   child: _photo.imageUrl.isNotEmpty
                       ? Center(
                           child: Container(
-                          width: double.infinity,
-                          height: double.infinity,
-                          child: CachedNetworkImage(
+                          child: OptimizedCacheImage(
                             imageUrl: _photo.imageUrl,
                             placeholder: (context, url) => Center(
                                 child: PlatformCircularProgressIndicator()),
-                            height: 100,
-                            width: 100,
+                            width: MediaQuery.of(context).size.width,
+                            height: double.infinity,
                           ),
+                          //       child: Image.network(
+                          //   _photo.imageUrl,
+                          //   height: double.infinity,
+                          //   width: double.infinity,
+                          // )
                         ))
                       // child: Image.network(_photo.imageUrl))
                       : Container(),
@@ -86,7 +89,7 @@ class _ImageViewState extends State<ImageView> {
                       child: Container(
                           height: 52,
                           width: 52,
-                          child: CachedNetworkImage(
+                          child: OptimizedCacheImage(
                             imageUrl: _photo.userProfImg,
                             imageBuilder: (context, imageProvider) => Container(
                               decoration: BoxDecoration(

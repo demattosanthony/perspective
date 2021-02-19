@@ -43,7 +43,7 @@ class _TakePictureButtonState extends State<TakePictureButton> {
             final Directory extDir = await getApplicationDocumentsDirectory();
             final String dirPath = '${extDir.path}/Pictures/flutter_test';
             await Directory(dirPath).create(recursive: true);
-            final String filePath = '$dirPath/${timestamp()}.jpg';
+            final String filePath = '$dirPath/${timestamp()}.png';
             await widget.controller.takePicture(filePath);
             locator<AlbumService>().uploadImage(File(filePath),
                 locator<CameraManager>().selectedAlbum.lastResult.albumId);

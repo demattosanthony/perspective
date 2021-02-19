@@ -1,7 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:optimized_cached_image/widgets.dart';
 import 'package:point_of_view/managers/album_manager.dart';
 import 'package:point_of_view/models/Album.dart';
 import 'package:point_of_view/locator.dart';
@@ -10,6 +10,7 @@ import 'package:point_of_view/widgets/selected_album_app_bar.dart';
 import 'package:point_of_view/widgets/image_grid_item.dart';
 import 'package:point_of_view/models/Photo.dart';
 import 'package:point_of_view/widgets/selected_album_bottom_nav_bar.dart';
+import 'package:flutter/services.dart';
 
 class SelectedAlbumPage extends StatefulWidget {
   const SelectedAlbumPage({this.album});
@@ -37,6 +38,8 @@ class _SelectedAlbumPageState extends State<SelectedAlbumPage> {
     super.initState();
   }
 
+ 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,12 +59,13 @@ class _SelectedAlbumPageState extends State<SelectedAlbumPage> {
           if (snapshot.hasData) {
             final orientation = MediaQuery.of(context).orientation;
             return GridView.builder(
+                addAutomaticKeepAlives: false,
                 itemCount: snapshot.data.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     mainAxisSpacing: 1,
                     crossAxisSpacing: 1,
                     crossAxisCount:
-                        (orientation == Orientation.portrait) ? 4 : 3),
+                        (orientation == Orientation.portrait) ? 4 : 6),
                 itemBuilder: (context, index) {
                   Photo photo = snapshot.data[index];
                   String imageUrl = photo.imageUrl;
@@ -117,7 +121,7 @@ class _SelectedAlbumPageState extends State<SelectedAlbumPage> {
                             width: 52,
                             child: user.profileImageUrl == ''
                                 ? Image.asset('assets/images/profile_icon.png')
-                                : CachedNetworkImage(
+                                : OptimizedCacheImage(
                                     imageUrl: user.profileImageUrl,
                                     imageBuilder: (context, imageProvider) =>
                                         Container(

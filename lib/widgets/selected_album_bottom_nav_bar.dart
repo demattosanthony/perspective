@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
@@ -42,8 +43,7 @@ class _SelectedAlbumBottomNavBarState extends State<SelectedAlbumBottomNavBar> {
   bool showDelete = false;
 
   void getUserId() async {
-    var id = await locator<UserService>().getUserIdFromSharedPrefs();
-    if (id == widget.album.ownerId) {
+    if (FirebaseAuth.instance.currentUser.uid == widget.album.ownerId) {
       setState(() {
         showDelete = true;
       });
@@ -166,8 +166,8 @@ class _SelectedAlbumBottomNavBarState extends State<SelectedAlbumBottomNavBar> {
                     byteData.offsetInBytes, byteData.lengthInBytes));
                 await locator<AlbumService>()
                     .uploadImage(file, widget.album.albumId);
-                await locator<AlbumManager>()
-                    .getAlbumImages(widget.album.albumId);
+                // await locator<AlbumManager>()
+                //     .getAlbumImages(widget.album.albumId);
               }
             } on Exception catch (e) {
               print(e.toString());

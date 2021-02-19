@@ -1,7 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:optimized_cached_image/widgets.dart';
 import 'package:point_of_view/managers/album_manager.dart';
 import 'package:point_of_view/models/Album.dart';
 import 'package:point_of_view/locator.dart';
@@ -76,7 +76,7 @@ class AlbumList extends StatelessWidget {
                         width: 50,
                         child: album.profileImgUrl == ''
                             ? Image.asset('assets/images/profile_icon.png')
-                            : CachedNetworkImage(
+                            : OptimizedCacheImage(
                                 imageUrl: album.profileImgUrl,
                                 imageBuilder: (context, imageProvider) =>
                                     Container(
@@ -87,8 +87,7 @@ class AlbumList extends StatelessWidget {
                                 ),
                                 placeholder: (context, url) => Center(
                                     child: PlatformCircularProgressIndicator()),
-                                height: 100,
-                                width: 100,
+                               
                               ),
                       ),
                       title: Padding(
