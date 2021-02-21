@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:point_of_view/locator.dart';
 import 'package:point_of_view/managers/album_manager.dart';
+import 'package:point_of_view/models/Photo.dart';
 import 'package:point_of_view/services/album_service.dart';
 
 import 'ImageView.dart';
 
 class DeleteImageButton extends StatelessWidget {
-  const DeleteImageButton({
-    Key key,
-    @required this.widget,
-  }) : super(key: key);
+  const DeleteImageButton(
+      {Key key, @required this.widget, @required this.photo})
+      : super(key: key);
 
   final ImageView widget;
+  final Photo photo;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +35,7 @@ class DeleteImageButton extends StatelessWidget {
                       ),
                       onPressed: () async {
                         await locator<AlbumService>()
-                            .deleteImage(widget.albumId, widget.photo.imageId);
+                            .deleteImage(widget.albumId, photo.imageId);
                         await locator<AlbumManager>()
                             .getAlbumImages(widget.albumId);
                         Navigator.of(context).pop();

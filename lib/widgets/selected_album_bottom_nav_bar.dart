@@ -157,6 +157,26 @@ class _SelectedAlbumBottomNavBarState extends State<SelectedAlbumBottomNavBar> {
             try {
               List<Asset> resultList =
                   await MultiImagePicker.pickImages(maxImages: 100);
+
+              BuildContext dialogcontext;
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    dialogcontext = context;
+                    return Dialog(
+                      child: Container(
+                          height: MediaQuery.of(context).size.height * .25,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              CircularProgressIndicator(),
+                              Padding(padding: EdgeInsets.all(5)),
+                              Text('Uploading Images')
+                            ],
+                          )),
+                    );
+                  });
+
               for (Asset image in resultList) {
                 final byteData = await image.getByteData();
                 final file =
@@ -165,9 +185,11 @@ class _SelectedAlbumBottomNavBarState extends State<SelectedAlbumBottomNavBar> {
                     byteData.offsetInBytes, byteData.lengthInBytes));
                 await locator<AlbumService>()
                     .uploadImage(file, widget.album.albumId);
-                // await locator<AlbumManager>()
-                //     .getAlbumImages(widget.album.albumId);
+                await locator<AlbumManager>()
+                    .getAlbumImages(widget.album.albumId);
               }
+
+              Navigator.pop(dialogcontext);
             } on Exception catch (e) {
               print(e.toString());
             }

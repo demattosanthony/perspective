@@ -52,13 +52,7 @@ class _ImageViewState extends State<ImageView> {
                                 child: PlatformCircularProgressIndicator()),
                             fadeInDuration: Duration(seconds: 0),
                           ),
-                          //       child: Image.network(
-                          //   _photo.imageUrl,
-                          //   height: double.infinity,
-                          //   width: double.infinity,
-                          // )
                         ))
-                      // child: Image.network(_photo.imageUrl))
                       : Container(),
                 ),
                 Positioned(
@@ -106,7 +100,10 @@ class _ImageViewState extends State<ImageView> {
                   child: Visibility(
                       visible: _photo.userId ==
                           FirebaseAuth.instance.currentUser.uid,
-                      child: DeleteImageButton(widget: widget)),
+                      child: DeleteImageButton(
+                        widget: widget,
+                        photo: _photo,
+                      )),
                 )
               ],
             );
