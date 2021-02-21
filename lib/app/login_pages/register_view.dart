@@ -4,7 +4,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:point_of_view/managers/auth_manager.dart';
 import 'package:point_of_view/services/auth_service.dart';
 import 'package:point_of_view/locator.dart';
-import 'dart:io';
+
 
 import 'package:point_of_view/app/bottom_nav_bar.dart';
 import 'package:point_of_view/widgets/CustomTextField.dart';

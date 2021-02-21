@@ -9,8 +9,9 @@ import 'package:point_of_view/locator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 import 'package:point_of_view/widgets/ShowAlert.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
+
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 abstract class AuthService {
   Future<bool> validateUsername(String username);
@@ -18,6 +19,8 @@ abstract class AuthService {
       String username, String password, String email, String name, File image);
   Future<void> signOut();
   Future<void> login(String email, String password, BuildContext ctx);
+
+  Future<void> signInWithApple();
 }
 
 class AuthServiceImplementation implements AuthService {
@@ -26,13 +29,17 @@ class AuthServiceImplementation implements AuthService {
   // Function to fetch all usernames in database
   // returns true is username is already taken
   Future<bool> validateUsername(String username) async {
+    bool isTaken = false;
     var url = host + 'getUsernames';
     var response = await http.get(url);
     if (response.statusCode == 200) {
-      if (response.body.contains(username.toLowerCase()))
-        return false;
-      else
-        return true;
+      var json = jsonDecode(response.body);
+      for (var user in json) {
+        print(user['username']);
+        if (user['username'] == username) isTaken = true;
+      }
+      print(isTaken);
+      return isTaken;
     } else {
       throw Exception("Failed to get usernames");
     }
@@ -110,6 +117,41 @@ class AuthServiceImplementation implements AuthService {
           builder: (_) =>
               ShowAlert('Invalid Username or Password!', 'Try again.'));
       throw Exception(e.code);
+    }
+  }
+
+  Future<void> signInWithApple() async {
+    try {
+      final credential = await SignInWithApple.getAppleIDCredential(scopes: [
+        AppleIDAuthorizationScopes.email,
+        AppleIDAuthorizationScopes.fullName,
+      ]);
+
+      OAuthProvider oAuthProvider = OAuthProvider("apple.com");
+      final AuthCredential authCredential = oAuthProvider.credential(
+          idToken: credential.identityToken,
+          accessToken: credential.authorizationCode);
+
+      var url = host + 'addUser';
+
+      var user = await auth.signInWithCredential(authCredential);
+      if (credential.email != null) {
+        var response = await http.post(url, body: {
+          'userId': user.user.uid,
+          'username': user.user.uid.toString(),
+          'name': credential.givenName + credential.familyName,
+          'email': credential.email,
+          'profileImgUrl': ''
+        });
+
+        if (response.statusCode == 200) {
+          print('success');
+        } else {
+          throw Exception('Could not sign in with apple');
+        }
+      }
+    } catch (e) {
+      throw Exception('Error with apple sign in: $e');
     }
   }
 }

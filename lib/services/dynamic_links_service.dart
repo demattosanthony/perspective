@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:point_of_view/locator.dart';
-import 'package:point_of_view/services/user_service.dart';
+import 'package:point_of_view/managers/album_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class DynamicLinkService {
@@ -35,17 +35,27 @@ class DynamicLinksServiceImplemenation implements DynamicLinkService {
 
         if (deepLink != null) {
           if (deepLink.queryParameters.containsKey('albumId')) {
-
             String albumId = deepLink.queryParameters['albumId'];
             String ownerId = deepLink.queryParameters['ownerId'];
             //locator<AlbumManager>().joinAlbum(int.parse(albumId));
 
             // int userId =
             //     await locator<UserService>().getUserIdFromSharedPrefs();
-             String userId = FirebaseAuth.instance.currentUser.uid;
-            if (userId != ownerId)
+            String userId = FirebaseAuth.instance.currentUser.uid;
+            if (userId != ownerId) {
               Navigator.of(context)
                   .pushReplacementNamed('loadingPage', arguments: albumId);
+              locator<AlbumManager>().joinAlbum(int.parse(albumId));
+              // locator<AlbumManager>().joinAlbum(int.parse(albumId));
+              // locator<AlbumService>().getAlbums();
+
+              // Navigator.pushReplacement(
+              //     context,
+              //     PageTransition(
+              //         child: BottomNavBar(), type: PageTransitionType.fade));
+            }
+            // Navigator.of(context)
+            //     .pushReplacementNamed('loadingPage', arguments: albumId);
           }
         }
       }, onError: (OnLinkErrorException e) async {
@@ -58,19 +68,25 @@ class DynamicLinksServiceImplemenation implements DynamicLinkService {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String linkHasBeenOpened = prefs.getString('dynamicLinkUrl');
       if (linkHasBeenOpened != deepLink.toString()) {
-      if (deepLink != null) {
-        if (deepLink.queryParameters.containsKey('albumId')) {
+        if (deepLink != null) {
+          if (deepLink.queryParameters.containsKey('albumId')) {
+            prefs.setString('dynamicLinkUrl', deepLink.toString());
+            String albumId = deepLink.queryParameters['albumId'];
+            String ownerId = deepLink.queryParameters['ownerId'];
+            String userId = FirebaseAuth.instance.currentUser.uid;
+            if (userId != ownerId) {
+              Navigator.of(context)
+                  .pushReplacementNamed('loadingPage', arguments: albumId);
+              locator<AlbumManager>().joinAlbum(int.parse(albumId));
+              // await locator<AlbumManager>().joinAlbum(int.parse(albumId));
+              // await locator<AlbumService>().getAlbums();
 
-          prefs.setString('dynamicLinkUrl', deepLink.toString());
-          String albumId = deepLink.queryParameters['albumId'];
-          String ownerId = deepLink.queryParameters['ownerId'];
-          String userId = FirebaseAuth.instance.currentUser.uid;
-            if (userId != ownerId)
-            Navigator.of(context)
-                .pushReplacementNamed('loadingPage', arguments: albumId);
-          //locator<AlbumManager>().joinAlbum(int.parse(albumId));
-
-        }
+              // Navigator.pushReplacement(
+              //     context,
+              //     PageTransition(
+              //         child: BottomNavBar(), type: PageTransitionType.fade));
+            }
+          }
         }
       }
     } catch (e) {

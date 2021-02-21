@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:point_of_view/app/camera_pages/better_camera.dart';
 import 'package:point_of_view/app/profile_pages/profile_page.dart';
-import 'dart:io' show Platform;
 import 'album_pages/my_albums_page.dart';
 
 class BottomNavBar extends StatefulWidget {

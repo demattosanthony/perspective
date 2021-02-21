@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,14 +9,30 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:point_of_view/locator.dart';
 import 'package:point_of_view/app/bottom_nav_bar.dart';
 import 'package:point_of_view/widgets/CustomTextField.dart';
-import 'package:point_of_view/widgets/ShowAlert.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
-class LoginView extends StatelessWidget {
+class LoginView extends StatefulWidget {
+  @override
+  _LoginViewState createState() => _LoginViewState();
+}
+
+class _LoginViewState extends State<LoginView> {
   final _formkey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordcontroller = TextEditingController();
+  bool supportsAppleSignIn = false;
+
+  void checkAppleSignIn() async {
+    if (Platform.isIOS)
+      supportsAppleSignIn = await SignInWithApple.isAvailable();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    checkAppleSignIn();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +61,9 @@ class LoginView extends StatelessWidget {
                       FlatButton(
                         onPressed: () async {
                           await locator<AuthService>().login(
-                              _emailController.text, _passwordcontroller.text, context);
+                              _emailController.text,
+                              _passwordcontroller.text,
+                              context);
 
                           FirebaseAuth.instance
                               .authStateChanges()
@@ -56,23 +76,6 @@ class LoginView extends StatelessWidget {
                                       type: PageTransitionType.fade));
                             }
                           });
-
-                          // if (response == 200) {
-                          //   SharedPreferences prefs =
-                          //       await SharedPreferences.getInstance();
-                          //   prefs.setBool('isLoggedIn', true);
-                          //   Navigator.pushReplacement(
-                          //       context,
-                          //       PageTransition(
-                          //           child: BottomNavBar(),
-                          //           type: PageTransitionType.fade));
-                          // } else {
-                          //   showPlatformDialog(
-                          //       context: context,
-                          //       builder: (_) => ShowAlert(
-                          //           'Invalid Username or Password!',
-                          //           'Try again.'));
-                          // }
                         },
                         child: PlatformText('Login',
                             style: TextStyle(color: Colors.white)),
@@ -87,6 +90,28 @@ class LoginView extends StatelessWidget {
                           style: TextStyle(color: Colors.white),
                         ),
                         color: Colors.blueAccent,
+                      ),
+                      Padding(padding: EdgeInsets.all(10)),
+                      Container(
+                        height: 35,
+                        width: MediaQuery.of(context).size.width / 1.5,
+                        child: SignInWithAppleButton(
+                          onPressed: () {
+                            locator<AuthService>().signInWithApple();
+
+                            FirebaseAuth.instance
+                                .authStateChanges()
+                                .listen((user) {
+                              if (user != null) {
+                                Navigator.pushReplacement(
+                                    context,
+                                    PageTransition(
+                                        child: BottomNavBar(),
+                                        type: PageTransitionType.fade));
+                              }
+                            });
+                          },
+                        ),
                       ),
                     ],
                   ),

@@ -54,8 +54,8 @@ class UserServiceImplementation implements UserService {
           .putFile(img);
       photoUrl = await result.ref.getDownloadURL();
       var url = host + 'updateProfileImg';
-      var response = await http.put(url,
-          body: {'profileImageUrl': photoUrl, 'userId': userId});
+      var response = await http
+          .put(url, body: {'profileImageUrl': photoUrl, 'userId': userId});
       locator<UserManager>().getUserInfo();
       if (response.statusCode != 200) {
         throw Exception('Could not upload profile img');
@@ -99,12 +99,13 @@ class UserServiceImplementation implements UserService {
     // int userId = await locator<UserService>().getUserIdFromSharedPrefs();
     String userId = FirebaseAuth.instance.currentUser.uid;
     UserAccount _userInfo = await getUserInfo();
-    bool usernameTaken = false;
+
     if (username != '') {
       bool isUsernameTaken =
           await locator<AuthService>().validateUsername(username);
-      if (isUsernameTaken) usernameTaken = true;
-      return 'username-taken';
+      if (isUsernameTaken) {
+        return 'username-taken';
+      }
     }
     var url = host + 'updateUserInfo';
     Map body = {

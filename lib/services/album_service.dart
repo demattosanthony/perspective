@@ -4,14 +4,11 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/widgets.dart';
 import 'package:point_of_view/constants.dart';
-import 'package:point_of_view/locator.dart';
 
 import 'package:point_of_view/models/Album.dart';
 import 'package:point_of_view/models/Photo.dart';
 import 'package:point_of_view/models/User.dart';
-import 'package:point_of_view/services/user_service.dart';
 import 'package:uuid/uuid.dart';
 import 'package:http/http.dart' as http;
 
@@ -101,11 +98,14 @@ class AlbumServiceImplementation implements AlbumService {
     }
   }
 
-
   @override
   void deleteAlbum(int albumId, bool isOwner) async {
     var url = host + "deleteAlbum";
-    Map body = {"albumId": albumId.toString(), "isOwner": isOwner.toString()};
+    Map body = {
+      "albumId": albumId.toString(),
+      "isOwner": isOwner.toString(),
+      "userId": FirebaseAuth.instance.currentUser.uid
+    };
     var response = await http.post(url, body: body);
     if (response.statusCode == 200) {
     } else {

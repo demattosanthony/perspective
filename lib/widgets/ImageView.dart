@@ -50,8 +50,7 @@ class _ImageViewState extends State<ImageView> {
                             imageUrl: _photo.imageUrl,
                             placeholder: (context, url) => Center(
                                 child: PlatformCircularProgressIndicator()),
-                            width: MediaQuery.of(context).size.width,
-                            height: double.infinity,
+                            fadeInDuration: Duration(seconds: 0),
                           ),
                           //       child: Image.network(
                           //   _photo.imageUrl,

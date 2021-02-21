@@ -12,7 +12,6 @@ import 'package:point_of_view/models/Album.dart';
 import 'package:point_of_view/models/Photo.dart';
 import 'package:point_of_view/services/album_service.dart';
 import 'package:point_of_view/services/dynamic_links_service.dart';
-import 'package:point_of_view/services/user_service.dart';
 import 'package:point_of_view/widgets/ShowAlert.dart';
 import 'package:http/http.dart' as http;
 import 'package:share/share.dart';

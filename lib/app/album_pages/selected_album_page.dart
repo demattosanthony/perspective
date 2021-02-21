@@ -10,7 +10,6 @@ import 'package:point_of_view/widgets/selected_album_app_bar.dart';
 import 'package:point_of_view/widgets/image_grid_item.dart';
 import 'package:point_of_view/models/Photo.dart';
 import 'package:point_of_view/widgets/selected_album_bottom_nav_bar.dart';
-import 'package:flutter/services.dart';
 
 class SelectedAlbumPage extends StatefulWidget {
   const SelectedAlbumPage({this.album});
