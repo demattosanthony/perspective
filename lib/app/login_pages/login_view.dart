@@ -102,6 +102,7 @@ class _LoginViewState extends State<LoginView> {
                             FirebaseAuth.instance
                                 .authStateChanges()
                                 .listen((user) {
+                              print(user);
                               if (user != null) {
                                 Navigator.pushReplacement(
                                     context,

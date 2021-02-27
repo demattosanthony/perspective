@@ -189,7 +189,7 @@ packages:
     source: hosted
     version: "1.4.2"
   flutter_image_compress:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: flutter_image_compress
       url: "https://pub.dartlang.org"

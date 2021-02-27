@@ -54,6 +54,7 @@ dependencies:
   transparent_image: ^1.0.0
   optimized_cached_image: ^1.0.0
   sign_in_with_apple: ^2.5.4
+  flutter_image_compress: ^0.7.0
 
 
 

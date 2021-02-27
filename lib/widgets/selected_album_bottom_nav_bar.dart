@@ -3,9 +3,11 @@ import 'dart:typed_data';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
+import 'package:optimized_cached_image/widgets.dart';
 import 'package:point_of_view/app/album_pages/selected_album_page.dart';
 import 'package:point_of_view/managers/album_manager.dart';
 import 'package:point_of_view/models/Album.dart';
@@ -138,7 +140,7 @@ class _SelectedAlbumBottomNavBarState extends State<SelectedAlbumBottomNavBar> {
                 var response = await http.get(photo.imageUrl);
                 final _ = await ImageGallerySaver.saveImage(
                     Uint8List.fromList(response.bodyBytes),
-                    quality: 60,
+                    quality: 25,
                     name: "hello");
               }
 
@@ -180,11 +182,26 @@ class _SelectedAlbumBottomNavBarState extends State<SelectedAlbumBottomNavBar> {
               for (Asset image in resultList) {
                 final byteData = await image.getByteData();
                 final file =
-                    File('${(await getTemporaryDirectory()).path}/temp');
+                    File('${(await getTemporaryDirectory()).path}/temp.jpg');
                 await file.writeAsBytes(byteData.buffer.asUint8List(
                     byteData.offsetInBytes, byteData.lengthInBytes));
+                var filePath = file.absolute.path;
+
+                final lastIndex = filePath.lastIndexOf(new RegExp(r'.jp'));
+                final splitted = filePath.substring(0, (lastIndex));
+                print('here');
+                final outPath =
+                    "${splitted}_out${filePath.substring(lastIndex)}";
+
+                var result = await FlutterImageCompress.compressAndGetFile(
+                  filePath,
+                  outPath,
+                  quality: 25,
+                );
+                print('here');
+
                 await locator<AlbumService>()
-                    .uploadImage(file, widget.album.albumId);
+                    .uploadImage(result, widget.album.albumId);
                 await locator<AlbumManager>()
                     .getAlbumImages(widget.album.albumId);
               }

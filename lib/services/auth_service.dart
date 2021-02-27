@@ -38,7 +38,7 @@ class AuthServiceImplementation implements AuthService {
         print(user['username']);
         if (user['username'] == username) isTaken = true;
       }
-      print(isTaken);
+      // print(isTaken);
       return isTaken;
     } else {
       throw Exception("Failed to get usernames");
@@ -52,7 +52,7 @@ class AuthServiceImplementation implements AuthService {
     );
     if (response.statusCode == 200) {
       var jsonResponse = jsonDecode(response.body);
-      print(jsonResponse);
+      // print(jsonResponse);
       return jsonResponse[0]['user_id'];
     } else {
       throw Exception('Could not get userId');
@@ -66,7 +66,7 @@ class AuthServiceImplementation implements AuthService {
     bool usernameIsValid = await validateUsername(username);
     String profileImgUrl = '';
 
-    if (usernameIsValid) {
+    if (!usernameIsValid) {
       try {
         var user = await auth.createUserWithEmailAndPassword(
             email: email, password: password);

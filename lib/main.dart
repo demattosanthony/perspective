@@ -12,7 +12,6 @@ void main() async {
   setupLocator();
   await Firebase.initializeApp();
 
-  // SharedPreferences prefs = await SharedPreferences.getInstance();
   bool isLoggedIn = false;
 
   if (FirebaseAuth.instance.currentUser != null) isLoggedIn = true;

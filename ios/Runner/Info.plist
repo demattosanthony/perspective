@@ -44,7 +44,7 @@
 	<key>NSCalendarsUsageDescription</key>
 	<string>please deny</string>
 	<key>NSCameraUsageDescription</key>
-	<string>camera</string>
+	<string>Allow camera access to take pictures to upload to your albums</string>
 	<key>NSContactsUsageDescription</key>
 	<string>please deny</string>
 	<key>NSLocationWhenInUseUsageDescription</key>

@@ -8,6 +8,7 @@ import 'package:point_of_view/managers/camera_manager.dart';
 import 'package:point_of_view/locator.dart';
 import 'package:point_of_view/services/album_service.dart';
 import 'package:point_of_view/widgets/ShowAlert.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 
 class TakePictureButton extends StatefulWidget {
   TakePictureButton({
@@ -43,9 +44,21 @@ class _TakePictureButtonState extends State<TakePictureButton> {
             final Directory extDir = await getApplicationDocumentsDirectory();
             final String dirPath = '${extDir.path}/Pictures/flutter_test';
             await Directory(dirPath).create(recursive: true);
-            final String filePath = '$dirPath/${timestamp()}.png';
+            final filePath = '$dirPath/${timestamp()}.jpg';
+
             await widget.controller.takePicture(filePath);
-            locator<AlbumService>().uploadImage(File(filePath),
+            Uri myUri = Uri.parse(filePath);
+            File imgFile = File.fromUri(myUri);
+            final lastIndex = filePath.lastIndexOf(new RegExp(r'.jp'));
+            final splitted = filePath.substring(0, (lastIndex));
+            final outPath = "${splitted}_out${filePath.substring(lastIndex)}";
+            var result = await FlutterImageCompress.compressAndGetFile(
+              imgFile.absolute.path,
+              outPath,
+              quality: 25,
+            );
+
+            locator<AlbumService>().uploadImage(result,
                 locator<CameraManager>().selectedAlbum.lastResult.albumId);
             setState(() {
               isUploading = false;

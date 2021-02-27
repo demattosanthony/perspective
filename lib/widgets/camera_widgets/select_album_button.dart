@@ -18,9 +18,9 @@ class _SelectAlbumButtonState extends State<SelectAlbumButton> {
   @override
   void initState() {
     super.initState();
-   
+
     locator<AlbumManager>().getAlbums.isExecuting.listen((event) {
-       _myAblums = locator<AlbumManager>().getAlbums.lastResult;
+      _myAblums = locator<AlbumManager>().getAlbums.lastResult;
     });
   }
 
@@ -36,42 +36,44 @@ class _SelectAlbumButtonState extends State<SelectAlbumButton> {
                     borderRadius: BorderRadius.circular(10)),
                 context: context,
                 builder: (builder) {
-                  return Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          width: MediaQuery.of(context).size.width * .10,
-                          height: 5,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(25),
-                              color: Colors.grey),
+                  return SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * .10,
+                            height: 5,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(25),
+                                color: Colors.grey),
+                          ),
                         ),
-                      ),
-                      ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: _myAblums.length,
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: () {
-                                locator<CameraManager>()
-                                    .selectedAlbum(_myAblums[index]);
-                                Navigator.of(context).pop();
-                              },
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                        _myAblums[index].title.toUpperCase(),
-                                        style: TextStyle(fontSize: 18)),
-                                  ),
-                                  Divider()
-                                ],
-                              ),
-                            );
-                          })
-                    ],
+                        ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: _myAblums.length,
+                            itemBuilder: (context, index) {
+                              return GestureDetector(
+                                onTap: () {
+                                  locator<CameraManager>()
+                                      .selectedAlbum(_myAblums[index]);
+                                  Navigator.of(context).pop();
+                                },
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                          _myAblums[index].title.toUpperCase(),
+                                          style: TextStyle(fontSize: 18)),
+                                    ),
+                                    Divider()
+                                  ],
+                                ),
+                              );
+                            })
+                      ],
+                    ),
                   );
                 });
           },
