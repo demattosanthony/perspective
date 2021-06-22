@@ -15,10 +15,10 @@ class _BetterCameraState extends State<BetterCamera>
   @override
   bool get wantKeepAlive => true;
 
-  CameraController controller;
-  List<CameraDescription> cameras;
+  late CameraController controller;
+  late List<CameraDescription> cameras;
   bool flashIsOn = false;
-  CameraDescription camera;
+  late CameraDescription camera;
   bool cameraAccess = true;
 
   void initController() async {
@@ -52,7 +52,7 @@ class _BetterCameraState extends State<BetterCamera>
   }
 
   void toggleFlash() async {
-    FlashMode flashMode = controller.value.flashMode;
+    FlashMode? flashMode = controller.value.flashMode;
 
     if (flashMode == FlashMode.off) {
       setState(() {
@@ -94,7 +94,7 @@ class _BetterCameraState extends State<BetterCamera>
     super.build(context);
     final size = MediaQuery.of(context).size;
     final deviceRatio = size.width / size.height;
-    final xScale =
+    final double xScale =
         controller == null ? 0 : controller.value.aspectRatio / deviceRatio;
 // Modify the yScale if you are in Landscape
     double yScale = 1.0;

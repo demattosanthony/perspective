@@ -6,16 +6,16 @@ import 'package:point_of_view/locator.dart';
 import 'package:point_of_view/app/bottom_nav_bar.dart';
 
 class CreateAlbumButton extends StatelessWidget {
-  const CreateAlbumButton({Key key, @required this.title}) : super(key: key);
+  const CreateAlbumButton({Key? key, @required this.title}) : super(key: key);
 
-  final TextEditingController title;
+  final TextEditingController? title;
 
   @override
   Widget build(BuildContext context) {
     return FlatButton(
       onPressed: () async {
-        if (title.text != '') {
-          await locator<AlbumService>().createAlbum(title.text);
+        if (title!.text != '') {
+          await locator<AlbumService>().createAlbum(title!.text);
 
           Navigator.pushReplacement(
               context,

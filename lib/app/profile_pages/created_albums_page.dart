@@ -23,16 +23,16 @@ class _CreatedAlbumsPageState extends State<CreatedAlbumsPage> {
         appBar: AppBar(
           title: Text('Created Albums'),
         ),
-        body: StreamBuilder(
+        body: StreamBuilder<List<Album>>(
             stream: locator<AlbumManager>().getAlbums,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                List<Album> albums = snapshot.data;
+                List<Album> albums = snapshot.data!;
 
                 List<Album> createdAlbums = albums
                     .where((element) =>
                         element.ownerId ==
-                        FirebaseAuth.instance.currentUser.uid)
+                        FirebaseAuth.instance.currentUser!.uid)
                     .toList();
                 return AlbumList(
                   myAlbums: createdAlbums,

@@ -9,7 +9,7 @@ import 'package:point_of_view/widgets/account_detail_row.dart';
 
 class MyAccountPage extends StatelessWidget {
   MyAccountPage({this.userData});
-  final UserAccount userData;
+  final UserAccount? userData;
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
@@ -54,12 +54,12 @@ class MyAccountPage extends StatelessWidget {
           children: [
             AccountDetailRow(
               controller: _nameController,
-              userData: userData.name,
+              userData: userData!.name,
               title: 'Name',
             ),
             AccountDetailRow(
               controller: _usernameController,
-              userData: userData.username,
+              userData: userData!.username,
               title: 'Username',
             ),
             // AccountDetailRow(

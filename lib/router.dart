@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:point_of_view/app/album_pages/slideshow_page.dart';
 import 'package:point_of_view/app/loading_page.dart';
 import 'package:point_of_view/app/profile_pages/settings_page.dart';
+import 'package:point_of_view/models/Album.dart';
 import 'package:point_of_view/models/Photo.dart';
+import 'package:point_of_view/models/User.dart';
 import 'package:point_of_view/widgets/ImageView.dart';
 import 'package:point_of_view/app/album_pages/selected_album_page.dart';
 import 'package:point_of_view/app/login_pages/login_view.dart';
@@ -22,14 +24,12 @@ class Router {
         return MaterialPageRoute(builder: (_) => LoginView());
       case 'register':
         return MaterialPageRoute(builder: (_) => RegisterView());
-      // case 'camera':
-      //   return MaterialPageRoute(builder: (_) => CameraView());
       case 'albumView':
-        var album = settings.arguments;
+        Album album = settings.arguments as Album;
         return MaterialPageRoute(
             builder: (_) => SelectedAlbumPage(album: album));
       case 'imageView':
-        List args = settings.arguments;
+        List args = settings.arguments as List;
         Photo photo = args[0];
         int albumId = args[1];
         List<Photo> photos = args[2];
@@ -48,7 +48,7 @@ class Router {
       case 'joinedAlbumsView':
         return MaterialPageRoute(builder: (_) => JoinedAlbumsPage());
       case 'myAccountView':
-        var data = settings.arguments;
+        UserAccount data = settings.arguments as UserAccount;
         return MaterialPageRoute(
             builder: (_) => MyAccountPage(
                   userData: data,
@@ -56,13 +56,13 @@ class Router {
       case 'settingsPage':
         return MaterialPageRoute(builder: (_) => SettingsPage());
       case 'loadingPage':
-        var albumId = settings.arguments;
+        String albumId = settings.arguments as String;
         return MaterialPageRoute(
             builder: (_) => LoadingPage(
                   albumId: albumId,
                 ));
       case 'slideshow':
-        var album = settings.arguments;
+        Album album = settings.arguments as Album;
         return MaterialPageRoute(builder: (_) => SlideshowPage(album));
       default:
         return MaterialPageRoute(

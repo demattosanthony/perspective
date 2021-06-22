@@ -14,7 +14,7 @@ import 'package:http/http.dart' as http;
 
 abstract class AlbumService {
   Future<List<Album>> getAlbums();
-
+  Future<String> getFirstAlbumImage(String albumId);
   Future<List<Photo>> getPhotos(int albumId);
   Future<int> joinAlbum(int albumId);
   Future<void> createAlbum(String albumTitle);
@@ -25,13 +25,15 @@ abstract class AlbumService {
 }
 
 class AlbumServiceImplementation implements AlbumService {
+  /*
+  Function to return a list of all albums User either created or has joined
+  */
   @override
   Future<List<Album>> getAlbums() async {
-    // int userId = await locator<UserService>().getUserIdFromSharedPrefs();
-    String userId = FirebaseAuth.instance.currentUser.uid;
+    String userId = FirebaseAuth.instance.currentUser!.uid;
     var url = host + 'getUserAlbums/$userId';
 
-    var response = await http.get(url);
+    var response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       List jsonResponse = jsonDecode(response.body);
       List<Album> myAlbums =
@@ -43,14 +45,27 @@ class AlbumServiceImplementation implements AlbumService {
   }
 
   @override
+  Future<String> getFirstAlbumImage(String albumId) async {
+    var url = host + 'getFirstAlbumImage/$albumId';
+
+    var res = await http.get(Uri.parse(url));
+    if (res.statusCode == 200) {
+      var jsonResponse = jsonDecode(res.body);
+      String imgUrl = jsonResponse['photo_url'];
+      return imgUrl;
+    } else {
+      throw Exception('Could not get first album Image');
+    }
+  }
+
+  @override
   Future<void> createAlbum(String albumTitle) async {
     var url = host + 'createAlbum';
 
-    // int userId = await locator<UserService>().getUserIdFromSharedPrefs();
-    String userId = FirebaseAuth.instance.currentUser.uid;
+    String userId = FirebaseAuth.instance.currentUser!.uid;
 
     var response = await http
-        .post(url, body: {'title': albumTitle, 'userid': userId.toString()});
+        .post(Uri.parse(url), body: {'title': albumTitle, 'userid': userId.toString()});
     if (response.statusCode == 200) {
     } else {
       throw Exception('Could not create album');
@@ -67,10 +82,9 @@ class AlbumServiceImplementation implements AlbumService {
       String downloadUrl = await result.ref.getDownloadURL();
 
       var url = host + 'uploadImageUrl';
-      // int userId = await locator<UserService>().getUserIdFromSharedPrefs();
-      String userId = FirebaseAuth.instance.currentUser.uid;
+      String userId = FirebaseAuth.instance.currentUser!.uid;
 
-      var response = await http.post(url, body: {
+      var response = await http.post(Uri.parse(url), body: {
         'photourl': downloadUrl,
         'albumid': albumId.toString(),
         'userId': userId
@@ -86,7 +100,7 @@ class AlbumServiceImplementation implements AlbumService {
   Future<List<Photo>> getPhotos(int albumId) async {
     var url = host + 'getImages/$albumId';
 
-    var response = await http.get(url);
+    var response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
       List jsonResponse = jsonDecode(response.body);
@@ -104,9 +118,9 @@ class AlbumServiceImplementation implements AlbumService {
     Map body = {
       "albumId": albumId.toString(),
       "isOwner": isOwner.toString(),
-      "userId": FirebaseAuth.instance.currentUser.uid
+      "userId": FirebaseAuth.instance.currentUser!.uid
     };
-    var response = await http.post(url, body: body);
+    var response = await http.post(Uri.parse(url), body: body);
     if (response.statusCode == 200) {
     } else {
       throw Exception('Failed to delete album');
@@ -115,11 +129,10 @@ class AlbumServiceImplementation implements AlbumService {
 
   @override
   Future<int> joinAlbum(int albumId) async {
-    // int userId = await locator<UserService>().getUserIdFromSharedPrefs();
-    String userId = FirebaseAuth.instance.currentUser.uid;
+    String userId = FirebaseAuth.instance.currentUser!.uid;
     var url = host + 'joinAlbum';
     var response = await http
-        .post(url, body: {'albumId': albumId.toString(), 'userId': userId});
+        .post(Uri.parse(url), body: {'albumId': albumId.toString(), 'userId': userId});
     if (response.statusCode == 200)
       return 200;
     else if (response.statusCode == 450)
@@ -130,13 +143,13 @@ class AlbumServiceImplementation implements AlbumService {
 
   Future<void> deleteImage(int albumId, int imageId) async {
     var url = host + 'deleteImage/$imageId';
-    var response = await http.delete(url);
+    var response = await http.delete(Uri.parse(url));
     if (response.statusCode != 200) throw Exception('Could not delete image');
   }
 
   Future<List<UserAccount>> getAttendees(int albumId) async {
     var url = host + 'getAttendees/${albumId.toString()}';
-    var response = await http.get(url);
+    var response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       List jsonResponse = jsonDecode(response.body);
       List<UserAccount> attendees =

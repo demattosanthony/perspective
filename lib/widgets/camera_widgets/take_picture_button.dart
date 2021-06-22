@@ -12,11 +12,11 @@ import 'package:flutter_image_compress/flutter_image_compress.dart';
 
 class TakePictureButton extends StatefulWidget {
   TakePictureButton({
-    Key key,
+    Key? key,
     @required this.controller,
   }) : super(key: key);
 
-  final CameraController controller;
+  final CameraController? controller;
 
   @override
   _TakePictureButtonState createState() => _TakePictureButtonState();
@@ -46,7 +46,7 @@ class _TakePictureButtonState extends State<TakePictureButton> {
             await Directory(dirPath).create(recursive: true);
             final filePath = '$dirPath/${timestamp()}.jpg';
 
-            await widget.controller.takePicture(filePath);
+            await widget.controller!.takePicture(filePath);
             Uri myUri = Uri.parse(filePath);
             File imgFile = File.fromUri(myUri);
             final lastIndex = filePath.lastIndexOf(new RegExp(r'.jp'));
@@ -58,8 +58,8 @@ class _TakePictureButtonState extends State<TakePictureButton> {
               quality: 25,
             );
 
-            locator<AlbumService>().uploadImage(result,
-                locator<CameraManager>().selectedAlbum.lastResult.albumId);
+            locator<AlbumService>().uploadImage(result!,
+                locator<CameraManager>().selectedAlbum.lastResult!.albumId);
             setState(() {
               isUploading = false;
             });

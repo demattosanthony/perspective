@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:optimized_cached_image/widgets.dart';
+// import 'package:optimized_cached_image/widgets.dart';
 import 'package:point_of_view/managers/album_manager.dart';
 import 'package:point_of_view/models/Album.dart';
 import 'package:point_of_view/models/Photo.dart';
@@ -17,8 +17,8 @@ class SlideshowPage extends StatefulWidget {
 }
 
 class _SlideshowPageState extends State<SlideshowPage> {
-  Photo selectedPhoto;
-  List<Photo> photos;
+  Photo? selectedPhoto;
+  List<Photo>? photos;
   bool endSlideshow = false;
   bool showBackButton = true;
 
@@ -39,7 +39,7 @@ class _SlideshowPageState extends State<SlideshowPage> {
   }
 
   void startSlideshow() async {
-    for (var photo in photos) {
+    for (var photo in photos!) {
       if (this.mounted)
         setState(() {
           selectedPhoto = photo;
@@ -54,20 +54,20 @@ class _SlideshowPageState extends State<SlideshowPage> {
         backgroundColor: Colors.transparent,
         body: Stack(
           children: [
-            GestureDetector(
-              onTap: () {
-                setState(() {
-                  showBackButton = !showBackButton;
-                });
-              },
-              child: Container(
-                  alignment: Alignment.center,
-                  child: OptimizedCacheImage(
-                    imageUrl: selectedPhoto.imageUrl,
-                    fadeInDuration: Duration(seconds: 4),
-                    fadeOutDuration: Duration(seconds: 3),
-                  )),
-            ),
+            // GestureDetector(
+            //   onTap: () {
+            //     setState(() {
+            //       showBackButton = !showBackButton;
+            //     });
+            //   },
+            //   child: Container(
+            //       alignment: Alignment.center,
+            //       child: OptimizedCacheImage(
+            //         imageUrl: selectedPhoto!.imageUrl,
+            //         fadeInDuration: Duration(seconds: 4),
+            //         fadeOutDuration: Duration(seconds: 3),
+            //       )),
+            // ),
             Visibility(
               visible: showBackButton,
               child: Positioned(

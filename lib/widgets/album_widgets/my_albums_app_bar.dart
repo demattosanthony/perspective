@@ -3,7 +3,7 @@ import 'package:point_of_view/app/album_pages/create_album_view.dart';
 
 class MyAlbumsAppBar extends StatelessWidget {
   const MyAlbumsAppBar({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

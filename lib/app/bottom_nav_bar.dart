@@ -11,10 +11,8 @@ class BottomNavBar extends StatefulWidget {
 }
 
 class _BottomNavBarState extends State<BottomNavBar> {
-  List<Widget> _pages;
-
+  List<Widget>? _pages;
   int _currentIndex = 0;
-
 
   final PageStorageBucket _bucket = PageStorageBucket();
   final _pageController = PageController();
@@ -55,7 +53,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
           body: PageView(
             
             controller: _pageController,
-            children: _pages,
+            children: _pages!,
             onPageChanged: (index) {
               setState(() {
                 changeTab(index);

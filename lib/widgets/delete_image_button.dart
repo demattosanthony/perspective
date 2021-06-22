@@ -9,11 +9,11 @@ import 'ImageView.dart';
 
 class DeleteImageButton extends StatelessWidget {
   const DeleteImageButton(
-      {Key key, @required this.widget, @required this.photo})
+      {Key? key, @required this.widget, @required this.photo})
       : super(key: key);
 
-  final ImageView widget;
-  final Photo photo;
+  final ImageView? widget;
+  final Photo? photo;
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +35,9 @@ class DeleteImageButton extends StatelessWidget {
                       ),
                       onPressed: () async {
                         await locator<AlbumService>()
-                            .deleteImage(widget.albumId, photo.imageId);
-                        await locator<AlbumManager>()
-                            .getAlbumImages(widget.albumId);
+                            .deleteImage(widget!.albumId!, photo!.imageId);
+                         locator<AlbumManager>()
+                            .getAlbumImages(widget!.albumId);
                         Navigator.of(context).pop();
                         Navigator.of(context).pop();
                       },

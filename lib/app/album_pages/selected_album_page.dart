@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:optimized_cached_image/widgets.dart';
+// import 'package:optimized_cached_image/widgets.dart';
 import 'package:point_of_view/managers/album_manager.dart';
 import 'package:point_of_view/models/Album.dart';
 import 'package:point_of_view/locator.dart';
@@ -14,7 +14,7 @@ import 'package:point_of_view/widgets/selected_album_bottom_nav_bar.dart';
 class SelectedAlbumPage extends StatefulWidget {
   const SelectedAlbumPage({this.album});
 
-  final Album album;
+  final Album? album;
 
   @override
   _SelectedAlbumPageState createState() => _SelectedAlbumPageState();
@@ -22,7 +22,7 @@ class SelectedAlbumPage extends StatefulWidget {
 
 class _SelectedAlbumPageState extends State<SelectedAlbumPage> {
   bool isSelectingImages = false;
-  List<Photo> _photos;
+  List<Photo> _photos = [];
 
   void setSelectingImages() {
     setState(() {
@@ -32,12 +32,10 @@ class _SelectedAlbumPageState extends State<SelectedAlbumPage> {
 
   @override
   void initState() {
-    locator<AlbumManager>().getAlbumImages(widget.album.albumId);
-    locator<AlbumManager>().getAttendees(widget.album.albumId);
+    locator<AlbumManager>().getAlbumImages(widget.album?.albumId);
+    locator<AlbumManager>().getAttendees(widget.album?.albumId);
     super.initState();
   }
-
- 
 
   @override
   Widget build(BuildContext context) {
@@ -59,14 +57,14 @@ class _SelectedAlbumPageState extends State<SelectedAlbumPage> {
             final orientation = MediaQuery.of(context).orientation;
             return GridView.builder(
                 addAutomaticKeepAlives: false,
-                itemCount: snapshot.data.length,
+                itemCount: snapshot.data?.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     mainAxisSpacing: 1,
                     crossAxisSpacing: 1,
                     crossAxisCount:
                         (orientation == Orientation.portrait) ? 4 : 6),
                 itemBuilder: (context, index) {
-                  Photo photo = snapshot.data[index];
+                  Photo photo = snapshot.data![index];
                   String imageUrl = photo.imageUrl;
                   bool isSelected = photo.isSelected;
                   return ImageGridItem(
@@ -75,7 +73,7 @@ class _SelectedAlbumPageState extends State<SelectedAlbumPage> {
                     isSelected: isSelected,
                     photos: snapshot.data,
                     index: index,
-                    albumId: widget.album.albumId,
+                    albumId: widget.album?.albumId,
                   );
                 });
           } else if (snapshot.hasError) {
@@ -95,9 +93,9 @@ class _SelectedAlbumPageState extends State<SelectedAlbumPage> {
               height: 70,
               child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: snapshot.data.length,
+                  itemCount: snapshot.data?.length,
                   itemBuilder: (context, index) {
-                    UserAccount user = snapshot.data[index];
+                    UserAccount user = snapshot.data![index];
                     return Container(
                       padding: const EdgeInsets.all(3.0),
                       child: FloatingActionButton(
@@ -118,23 +116,24 @@ class _SelectedAlbumPageState extends State<SelectedAlbumPage> {
                         child: Container(
                             height: 52,
                             width: 52,
-                            child: user.profileImageUrl == ''
-                                ? Image.asset('assets/images/profile_icon.png')
-                                : OptimizedCacheImage(
-                                    imageUrl: user.profileImageUrl,
-                                    imageBuilder: (context, imageProvider) =>
-                                        Container(
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          image: DecorationImage(
-                                              image: imageProvider)),
-                                    ),
-                                    placeholder: (context, url) => Center(
-                                        child:
-                                            PlatformCircularProgressIndicator()),
-                                    height: 100,
-                                    width: 100,
-                                  )),
+                            child: 
+                            // user.profileImageUrl == ''
+                                 Image.asset('assets/images/profile_icon.png')
+                                // : OptimizedCacheImage(
+                                //     imageUrl: user.profileImageUrl,
+                                //     imageBuilder: (context, imageProvider) =>
+                                //         Container(
+                                //       decoration: BoxDecoration(
+                                //           shape: BoxShape.circle,
+                                //           image: DecorationImage(
+                                //               image: imageProvider)),
+                                //     ),
+                                //     placeholder: (context, url) => Center(
+                                //         child: CupertinoActivityIndicator()),
+                                //     height: 100,
+                                //     width: 100,
+                                //   )
+                                  ),
                         backgroundColor: Colors.white,
                       ),
                     );

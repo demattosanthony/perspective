@@ -4,17 +4,17 @@ import 'package:point_of_view/models/Photo.dart';
 
 class SelectedAlbumAppBar extends StatefulWidget {
   SelectedAlbumAppBar(
-      {Key key,
+      {Key? key,
       @required this.album,
       this.isSelecting,
       this.setSelectingImages,
       this.photos})
       : super(key: key);
 
-  final Album album;
+  final Album? album;
   final isSelecting;
-  final SetSelctingImagesCallBack setSelectingImages;
-  final List<Photo> photos;
+  final SetSelctingImagesCallBack? setSelectingImages;
+  final List<Photo>? photos;
 
   @override
   _SelectedAlbumAppBarState createState() => _SelectedAlbumAppBarState();
@@ -25,7 +25,7 @@ class _SelectedAlbumAppBarState extends State<SelectedAlbumAppBar> {
   Widget build(BuildContext context) {
     return AppBar(
       title: Text(
-        widget.album.title.toUpperCase(),
+        widget.album!.title.toUpperCase(),
         style: TextStyle(color: Colors.black),
       ),
       elevation: 0,
@@ -48,7 +48,7 @@ class _SelectedAlbumAppBarState extends State<SelectedAlbumAppBar> {
           child: FittedBox(
             child: GestureDetector(
               onTap: () {
-                widget.setSelectingImages();
+                widget.setSelectingImages!();
               },
               child: Container(
                 alignment: Alignment.center,

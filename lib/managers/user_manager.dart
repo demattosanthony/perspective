@@ -7,9 +7,9 @@ import 'package:point_of_view/services/user_service.dart';
 import 'package:rx_command/rx_command.dart';
 
 abstract class UserManager {
-  RxCommand<void, UserAccount> getUserInfo;
+  late RxCommand<void, UserAccount> getUserInfo;
   Future<String> selectImage();
-  RxCommand<File, void> updateProfileImg;
+  late RxCommand<File, void> updateProfileImg;
 }
 
 class UserManagerImplementation implements UserManager {
@@ -17,7 +17,7 @@ class UserManagerImplementation implements UserManager {
     final picker = ImagePicker();
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
 
-    return pickedFile.path;
+    return pickedFile!.path;
   }
 
   UserManagerImplementation() {
@@ -29,8 +29,8 @@ class UserManagerImplementation implements UserManager {
   }
 
   @override
-  RxCommand<File, void> updateProfileImg;
+  late RxCommand<File, void> updateProfileImg;
 
   @override
-  RxCommand<void, UserAccount> getUserInfo;
+  late RxCommand<void, UserAccount> getUserInfo;
 }

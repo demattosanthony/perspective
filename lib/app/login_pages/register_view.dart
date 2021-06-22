@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:page_transition/page_transition.dart';
@@ -57,14 +59,14 @@ class RegisterView extends StatelessWidget {
                             children: [
                               Container(
                                 alignment: Alignment.center,
-                                child: StreamBuilder(
+                                child: StreamBuilder<File>(
                                     stream: locator<AuthManager>().getImage,
                                     builder: (context, snapshot) {
                                       if (snapshot.hasData) {
                                         return CircleAvatar(
                                             radius: 60,
                                             backgroundImage: FileImage(
-                                              snapshot.data,
+                                              snapshot.data!,
                                             ));
                                       } else {
                                         return CircleAvatar(
@@ -113,7 +115,7 @@ class RegisterView extends StatelessWidget {
                                   _passwordcontroller.text,
                                   _emailController.text,
                                   _nameController.text,
-                                  locator<AuthManager>().getImage.lastResult);
+                                  locator<AuthManager>().getImage.lastResult!);
 
                           if (responseCode == 'email-already-in-use') {
                             showPlatformDialog(

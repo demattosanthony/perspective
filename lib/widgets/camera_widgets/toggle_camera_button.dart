@@ -4,11 +4,11 @@ import 'package:point_of_view/widgets/camera_widgets/camera_buttons_stack.dart';
 
 class ToggleCameraButton extends StatelessWidget {
   const ToggleCameraButton(
-      {Key key, @required this.controller, this.toggleCameraDirection})
+      {Key? key, @required this.controller, this.toggleCameraDirection})
       : super(key: key);
 
-  final CameraController controller;
-  final ToggleCameraDirectionCallBack toggleCameraDirection;
+  final CameraController? controller;
+  final ToggleCameraDirectionCallBack? toggleCameraDirection;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class ToggleCameraButton extends StatelessWidget {
       child: GestureDetector(
         onTap: () async {
           // await controller.switchCamera();
-          toggleCameraDirection();
+          toggleCameraDirection!();
         },
         child: Icon(
           Icons.flip_camera_ios,

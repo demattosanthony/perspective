@@ -2,15 +2,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:optimized_cached_image/widgets.dart';
+// import 'package:optimized_cached_image/widgets.dart';
 import 'package:point_of_view/models/Photo.dart';
 import 'delete_image_button.dart';
 
 class ImageView extends StatefulWidget {
-  final List<Photo> photos;
-  final Photo photo;
-  final int albumId;
-  final int currentIndex;
+  final List<Photo> ?photos;
+  final Photo? photo;
+  final int? albumId;
+  final int? currentIndex;
 
   ImageView(
       {@required this.photo,
@@ -31,10 +31,10 @@ class _ImageViewState extends State<ImageView> {
     return Scaffold(
       backgroundColor: Colors.black,
       body: PageView.builder(
-          itemCount: widget.photos.length,
-          controller: PageController(initialPage: widget.currentIndex),
+          itemCount: widget.photos!.length,
+          controller: PageController(initialPage: widget.currentIndex!),
           itemBuilder: (context, index) {
-            Photo _photo = widget.photos[index];
+            Photo _photo = widget.photos![index];
             return Stack(
               children: [
                 GestureDetector(
@@ -43,17 +43,18 @@ class _ImageViewState extends State<ImageView> {
                       showAppBarAndBottomNavBar = !showAppBarAndBottomNavBar;
                     });
                   },
-                  child: _photo.imageUrl.isNotEmpty
-                      ? Center(
-                          child: Container(
-                          child: OptimizedCacheImage(
-                            imageUrl: _photo.imageUrl,
-                            placeholder: (context, url) => Center(
-                                child: PlatformCircularProgressIndicator()),
-                            fadeInDuration: Duration(seconds: 0),
-                          ),
-                        ))
-                      : Container(),
+                  child: 
+                  // _photo.imageUrl.isNotEmpty
+                      // ? Center(
+                      //     child: Container(
+                      //     child: OptimizedCacheImage(
+                      //       imageUrl: _photo.imageUrl,
+                      //       placeholder: (context, url) => Center(
+                      //           child: PlatformCircularProgressIndicator()),
+                      //       fadeInDuration: Duration(seconds: 0),
+                      //     ),
+                      //   ))
+                      Container(),
                 ),
                 Positioned(
                     top: 45,
@@ -74,32 +75,32 @@ class _ImageViewState extends State<ImageView> {
                         ),
                       ),
                     )),
-                Positioned(
-                    top: 45,
-                    right: 20,
-                    child: Visibility(
-                      visible: showAppBarAndBottomNavBar,
-                      child: Container(
-                          height: 52,
-                          width: 52,
-                          child: OptimizedCacheImage(
-                            imageUrl: _photo.userProfImg,
-                            imageBuilder: (context, imageProvider) => Container(
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(image: imageProvider)),
-                            ),
-                            placeholder: (context, url) => Center(
-                                child: PlatformCircularProgressIndicator()),
-                          )),
-                    )),
+                // Positioned(
+                //     top: 45,
+                //     right: 20,
+                //     child: Visibility(
+                //       visible: showAppBarAndBottomNavBar,
+                //       child: Container(
+                //           height: 52,
+                //           width: 52,
+                //           child: OptimizedCacheImage(
+                //             imageUrl: _photo.userProfImg,
+                //             imageBuilder: (context, imageProvider) => Container(
+                //               decoration: BoxDecoration(
+                //                   shape: BoxShape.circle,
+                //                   image: DecorationImage(image: imageProvider)),
+                //             ),
+                //             placeholder: (context, url) => Center(
+                //                 child: PlatformCircularProgressIndicator()),
+                //           )),
+                //     )),
                 Positioned(
                   bottom: 25,
                   left: 0,
                   right: 0,
                   child: Visibility(
                       visible: _photo.userId ==
-                          FirebaseAuth.instance.currentUser.uid,
+                          FirebaseAuth.instance.currentUser!.uid,
                       child: DeleteImageButton(
                         widget: widget,
                         photo: _photo,

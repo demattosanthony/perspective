@@ -30,61 +30,41 @@ class DynamicLinksServiceImplemenation implements DynamicLinkService {
   Future<void> retreieveDynamicLink(BuildContext context) async {
     try {
       FirebaseDynamicLinks.instance.onLink(
-          onSuccess: (PendingDynamicLinkData dynamicLink) async {
-        final Uri deepLink = dynamicLink?.link;
+          onSuccess: (PendingDynamicLinkData? dynamicLink) async {
+        final Uri deepLink = dynamicLink!.link;
 
         if (deepLink != null) {
           if (deepLink.queryParameters.containsKey('albumId')) {
-            String albumId = deepLink.queryParameters['albumId'];
-            String ownerId = deepLink.queryParameters['ownerId'];
-            //locator<AlbumManager>().joinAlbum(int.parse(albumId));
-
-            // int userId =
-            //     await locator<UserService>().getUserIdFromSharedPrefs();
-            String userId = FirebaseAuth.instance.currentUser.uid;
+            String albumId = deepLink.queryParameters['albumId']!;
+            String ownerId = deepLink.queryParameters['ownerId']!;
+            String userId = FirebaseAuth.instance.currentUser!.uid;
             if (userId != ownerId) {
               Navigator.of(context)
                   .pushReplacementNamed('loadingPage', arguments: albumId);
               locator<AlbumManager>().joinAlbum(int.parse(albumId));
-              // locator<AlbumManager>().joinAlbum(int.parse(albumId));
-              // locator<AlbumService>().getAlbums();
-
-              // Navigator.pushReplacement(
-              //     context,
-              //     PageTransition(
-              //         child: BottomNavBar(), type: PageTransitionType.fade));
             }
-            // Navigator.of(context)
-            //     .pushReplacementNamed('loadingPage', arguments: albumId);
           }
         }
       }, onError: (OnLinkErrorException e) async {
         print('onLinkError');
         print(e.message);
       });
-      final PendingDynamicLinkData data =
+      final PendingDynamicLinkData? data =
           await FirebaseDynamicLinks.instance.getInitialLink();
-      final Uri deepLink = data?.link;
+      final Uri deepLink = data!.link;
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      String linkHasBeenOpened = prefs.getString('dynamicLinkUrl');
+      String? linkHasBeenOpened = prefs.getString('dynamicLinkUrl');
       if (linkHasBeenOpened != deepLink.toString()) {
         if (deepLink != null) {
           if (deepLink.queryParameters.containsKey('albumId')) {
             prefs.setString('dynamicLinkUrl', deepLink.toString());
-            String albumId = deepLink.queryParameters['albumId'];
-            String ownerId = deepLink.queryParameters['ownerId'];
-            String userId = FirebaseAuth.instance.currentUser.uid;
+            String albumId = deepLink.queryParameters['albumId']!;
+            String ownerId = deepLink.queryParameters['ownerId']!;
+            String userId = FirebaseAuth.instance.currentUser!.uid;
             if (userId != ownerId) {
               Navigator.of(context)
                   .pushReplacementNamed('loadingPage', arguments: albumId);
               locator<AlbumManager>().joinAlbum(int.parse(albumId));
-              // await locator<AlbumManager>().joinAlbum(int.parse(albumId));
-              // await locator<AlbumService>().getAlbums();
-
-              // Navigator.pushReplacement(
-              //     context,
-              //     PageTransition(
-              //         child: BottomNavBar(), type: PageTransitionType.fade));
             }
           }
         }

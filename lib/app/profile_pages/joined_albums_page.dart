@@ -23,14 +23,14 @@ class _JoinedAlbumsPageState extends State<JoinedAlbumsPage> {
       appBar: AppBar(
         title: Text('Joined Albums'),
       ),
-      body: StreamBuilder(
+      body: StreamBuilder<List<Album>>(
           stream: locator<AlbumManager>().getAlbums,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              List<Album> albums = snapshot.data;
+              List<Album> albums = snapshot.data!;
               List<Album> joinedAlbums = albums
                   .where((element) =>
-                      element.ownerId != FirebaseAuth.instance.currentUser.uid)
+                      element.ownerId != FirebaseAuth.instance.currentUser!.uid)
                   .toList();
               return AlbumList(
                 myAlbums: joinedAlbums,

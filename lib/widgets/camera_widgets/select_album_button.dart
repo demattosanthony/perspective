@@ -6,7 +6,7 @@ import 'package:point_of_view/locator.dart';
 
 class SelectAlbumButton extends StatefulWidget {
   const SelectAlbumButton({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -14,7 +14,7 @@ class SelectAlbumButton extends StatefulWidget {
 }
 
 class _SelectAlbumButtonState extends State<SelectAlbumButton> {
-  List<Album> _myAblums;
+  List<Album>? _myAblums;
   @override
   void initState() {
     super.initState();
@@ -51,12 +51,12 @@ class _SelectAlbumButtonState extends State<SelectAlbumButton> {
                         ),
                         ListView.builder(
                             shrinkWrap: true,
-                            itemCount: _myAblums.length,
+                            itemCount: _myAblums!.length,
                             itemBuilder: (context, index) {
                               return GestureDetector(
                                 onTap: () {
                                   locator<CameraManager>()
-                                      .selectedAlbum(_myAblums[index]);
+                                      .selectedAlbum(_myAblums![index]);
                                   Navigator.of(context).pop();
                                 },
                                 child: Column(
@@ -64,7 +64,7 @@ class _SelectAlbumButtonState extends State<SelectAlbumButton> {
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Text(
-                                          _myAblums[index].title.toUpperCase(),
+                                          _myAblums![index].title.toUpperCase(),
                                           style: TextStyle(fontSize: 18)),
                                     ),
                                     Divider()
@@ -81,7 +81,7 @@ class _SelectAlbumButtonState extends State<SelectAlbumButton> {
             stream: locator<CameraManager>().selectedAlbum,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                return Text(snapshot.data.title.toUpperCase(),
+                return Text(snapshot.data!.title.toUpperCase(),
                     style: TextStyle(color: Colors.white, fontSize: 18));
               } else {
                 return Text('Select Album',

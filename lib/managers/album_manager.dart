@@ -6,13 +6,13 @@ import 'package:point_of_view/services/album_service.dart';
 import 'package:rx_command/rx_command.dart';
 
 abstract class AlbumManager {
-  RxCommand<void, List<Album>> getAlbums;
-  RxCommand<int, List<Photo>> getAlbumImages;
-  RxCommand<int, List<UserAccount>> getAttendees;
+  late RxCommand<void, List<Album>> getAlbums;
+  late RxCommand<int, List<Photo>> getAlbumImages;
+  late RxCommand<int, List<UserAccount>> getAttendees;
   void addToSelectedPhotos(Photo photo);
   void deleteFromSelectedPhotos(Photo photo);
   List<Photo> getSelectedImages();
-  RxCommand<int, void> joinAlbum;
+  late RxCommand<int, void> joinAlbum;
 }
 
 class AlbumManagerImplmenetation implements AlbumManager {
@@ -52,14 +52,14 @@ class AlbumManagerImplmenetation implements AlbumManager {
   }
 
   @override
-  RxCommand<int, void> joinAlbum;
+  late RxCommand<int, void> joinAlbum;
 
   @override
-  RxCommand<void, List<Album>> getAlbums;
+  late RxCommand<void, List<Album>> getAlbums;
 
   @override
-  RxCommand<int, List<Photo>> getAlbumImages;
+  late RxCommand<int, List<Photo>> getAlbumImages;
 
   @override
-  RxCommand<int, List<UserAccount>> getAttendees;
+  late RxCommand<int, List<UserAccount>> getAttendees;
 }

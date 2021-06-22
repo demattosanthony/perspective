@@ -7,7 +7,7 @@ import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
-import 'package:optimized_cached_image/widgets.dart';
+// import 'package:optimized_cached_image/widgets.dart';
 import 'package:point_of_view/app/album_pages/selected_album_page.dart';
 import 'package:point_of_view/managers/album_manager.dart';
 import 'package:point_of_view/models/Album.dart';
@@ -23,15 +23,15 @@ import '../locator.dart';
 
 class SelectedAlbumBottomNavBar extends StatefulWidget {
   SelectedAlbumBottomNavBar({
-    Key key,
+    Key? key,
     @required this.widget,
     @required this.isSelectingImages,
     @required this.album,
   }) : super(key: key);
 
-  final SelectedAlbumPage widget;
-  final bool isSelectingImages;
-  final Album album;
+  final SelectedAlbumPage? widget;
+  final bool? isSelectingImages;
+  final Album? album;
 
   @override
   _SelectedAlbumBottomNavBarState createState() =>
@@ -40,11 +40,11 @@ class SelectedAlbumBottomNavBar extends StatefulWidget {
 
 class _SelectedAlbumBottomNavBarState extends State<SelectedAlbumBottomNavBar> {
   var currentIndex = 0;
-  int userId;
+  int? userId;
   bool showDelete = false;
 
   void getUserId() async {
-    if (FirebaseAuth.instance.currentUser.uid == widget.album.ownerId) {
+    if (FirebaseAuth.instance.currentUser!.uid == widget.album!.ownerId) {
       setState(() {
         showDelete = true;
       });
@@ -59,7 +59,7 @@ class _SelectedAlbumBottomNavBarState extends State<SelectedAlbumBottomNavBar> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.isSelectingImages) {
+    if (widget.isSelectingImages!) {
       return Container(
         height: 85,
         padding: EdgeInsets.only(bottom: 15),
@@ -75,7 +75,7 @@ class _SelectedAlbumBottomNavBarState extends State<SelectedAlbumBottomNavBar> {
                     locator<AlbumManager>().getSelectedImages();
                 try {
                   for (var photo in _photos) {
-                    var response = await http.get(photo.imageUrl);
+                    var response = await http.get(Uri.parse(photo.imageUrl));
                     await ImageGallerySaver.saveImage(
                         Uint8List.fromList(response.bodyBytes),
                         quality: 60,
@@ -105,9 +105,9 @@ class _SelectedAlbumBottomNavBarState extends State<SelectedAlbumBottomNavBar> {
                   try {
                     for (var photo in _photos) {
                       await locator<AlbumService>()
-                          .deleteImage(widget.album.albumId, photo.imageId);
-                      await locator<AlbumManager>()
-                          .getAlbumImages(widget.album.albumId);
+                          .deleteImage(widget.album!.albumId, photo.imageId);
+                       locator<AlbumManager>()
+                          .getAlbumImages(widget.album!.albumId);
                     }
                   } catch (e) {
                     throw Exception('Could not delete images');
@@ -136,8 +136,8 @@ class _SelectedAlbumBottomNavBarState extends State<SelectedAlbumBottomNavBar> {
             // Download entire album
             var photos = locator<AlbumManager>().getAlbumImages.lastResult;
             try {
-              for (var photo in photos) {
-                var response = await http.get(photo.imageUrl);
+              for (var photo in photos!) {
+                var response = await http.get(Uri.parse(photo.imageUrl));
                 final _ = await ImageGallerySaver.saveImage(
                     Uint8List.fromList(response.bodyBytes),
                     quality: 25,
@@ -152,15 +152,15 @@ class _SelectedAlbumBottomNavBarState extends State<SelectedAlbumBottomNavBar> {
             }
           } else if (index == 0) {
             Uri shareUrl = await locator<DynamicLinkService>()
-                .createDynamicLink(widget.album.albumId.toString(),
-                    widget.album.title, widget.album.ownerId);
-            Share.share(shareUrl.toString(), subject: widget.album.title);
+                .createDynamicLink(widget.album!.albumId.toString(),
+                    widget.album!.title, widget.album!.ownerId);
+            Share.share(shareUrl.toString(), subject: widget.album!.title);
           } else if (index == 1) {
             try {
               List<Asset> resultList =
                   await MultiImagePicker.pickImages(maxImages: 100);
 
-              BuildContext dialogcontext;
+              BuildContext? dialogcontext;
               showDialog(
                   context: context,
                   builder: (context) {
@@ -201,12 +201,12 @@ class _SelectedAlbumBottomNavBarState extends State<SelectedAlbumBottomNavBar> {
                 print('here');
 
                 await locator<AlbumService>()
-                    .uploadImage(result, widget.album.albumId);
-                await locator<AlbumManager>()
-                    .getAlbumImages(widget.album.albumId);
+                    .uploadImage(result!, widget.album!.albumId);
+                 locator<AlbumManager>()
+                    .getAlbumImages(widget.album!.albumId);
               }
 
-              Navigator.pop(dialogcontext);
+              Navigator.pop(dialogcontext!);
             } on Exception catch (e) {
               print(e.toString());
             }
@@ -218,7 +218,7 @@ class _SelectedAlbumBottomNavBarState extends State<SelectedAlbumBottomNavBar> {
               icon: Icon(Icons.add_a_photo_rounded), label: 'Upload Images'),
           BottomNavigationBarItem(
               icon: Icon(Icons.download_rounded),
-              label: widget.isSelectingImages
+              label: widget.isSelectingImages!
                   ? 'Download Images'
                   : 'Download Album'),
         ],

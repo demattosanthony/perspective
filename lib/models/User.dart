@@ -7,11 +7,11 @@ class UserAccount {
   String profileImageUrl;
 
   UserAccount(
-      {this.userId,
-      this.username,
-      this.name,
-      this.email,
-      this.profileImageUrl});
+      {required this.userId,
+      required this.username,
+      required this.name,
+      required this.email,
+      required this.profileImageUrl});
 
   // User.fromJson(Map<String, dynamic> parsedJSON)
   //     : userId = parsedJSON['user_id'],

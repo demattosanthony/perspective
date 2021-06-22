@@ -2,13 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-
 class ZoomableWidget extends StatefulWidget {
-  final Widget child;
-  final Function onZoom;
-  final Function onTapUp;
+  final Widget? child;
+  final Function? onZoom;
+  final Function? onTapUp;
 
-  const ZoomableWidget({Key key, this.child, this.onZoom, this.onTapUp})
+  const ZoomableWidget({Key? key, this.child, this.onZoom, this.onTapUp})
       : super(key: key);
 
   @override
@@ -20,7 +19,7 @@ class _ZoomableWidgetState extends State<ZoomableWidget> {
   double zoom = 1;
   double prevZoom = 1;
   bool showZoom = false;
-  Timer t1;
+  Timer? t1;
 
   bool handleZoom(newZoom) {
     if (newZoom >= 1) {
@@ -33,7 +32,7 @@ class _ZoomableWidgetState extends State<ZoomableWidget> {
       });
 
       if (t1 != null) {
-        t1.cancel();
+        t1!.cancel();
       }
 
       t1 = Timer(Duration(milliseconds: 2000), () {
@@ -42,7 +41,7 @@ class _ZoomableWidgetState extends State<ZoomableWidget> {
         });
       });
     }
-    widget.onZoom(zoom);
+    widget.onZoom!(zoom);
     return true;
   }
 
@@ -55,17 +54,16 @@ class _ZoomableWidgetState extends State<ZoomableWidget> {
         },
         onScaleUpdate: (ScaleUpdateDetails scaleDetails) {
           var newZoom = (prevZoom * scaleDetails.scale);
-;
+          ;
 
           handleZoom(newZoom);
         },
-        onScaleEnd: (scaleDetails) {
-        },
+        onScaleEnd: (scaleDetails) {},
         onTapUp: (TapUpDetails det) {
-          final RenderBox box = context.findRenderObject();
-          final Offset localPoint = box.globalToLocal(det.globalPosition);
-          final Offset scaledPoint =
-              localPoint.scale(1 / box.size.width, 1 / box.size.height);
+          // final RenderObject box = context.findRenderObject();
+          // final Offset localPoint = box.globalToLocal(det.globalPosition);
+          // final Offset scaledPoint =
+          //     localPoint.scale(1 / box.size.width, 1 / box.size.height);
           // TODO IMPLIMENT
           // widget.onTapUp(scaledPoint);
         },
@@ -74,7 +72,7 @@ class _ZoomableWidgetState extends State<ZoomableWidget> {
             children: <Widget>[
               Container(
                 child: Expanded(
-                  child: widget.child,
+                  child: widget.child!,
                 ),
               ),
             ],
@@ -132,4 +130,3 @@ class _ZoomableWidgetState extends State<ZoomableWidget> {
         ]));
   }
 }
-

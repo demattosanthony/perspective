@@ -3,7 +3,7 @@ import 'package:point_of_view/locator.dart';
 import 'package:point_of_view/managers/album_manager.dart';
 
 class LoadingPage extends StatefulWidget {
-  final String albumId;
+  final String? albumId;
 
   LoadingPage({this.albumId});
 
@@ -26,7 +26,7 @@ class _LoadingPageState extends State<LoadingPage> {
   @override
   void initState() {
     super.initState();
-    locator<AlbumManager>().joinAlbum(int.parse(widget.albumId));
+    locator<AlbumManager>().joinAlbum(int.parse(widget.albumId!));
     checkIfExecuting();
   }
 

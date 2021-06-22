@@ -19,7 +19,6 @@ abstract class AuthService {
       String username, String password, String email, String name, File image);
   Future<void> signOut();
   Future<void> login(String email, String password, BuildContext ctx);
-
   Future<void> signInWithApple();
 }
 
@@ -31,7 +30,7 @@ class AuthServiceImplementation implements AuthService {
   Future<bool> validateUsername(String username) async {
     bool isTaken = false;
     var url = host + 'getUsernames';
-    var response = await http.get(url);
+    var response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       var json = jsonDecode(response.body);
       for (var user in json) {
@@ -48,7 +47,7 @@ class AuthServiceImplementation implements AuthService {
   Future<int> getUserId(String username) async {
     var url = host + 'getUserId/${username.toLowerCase()}';
     var response = await http.get(
-      url,
+      Uri.parse(url),
     );
     if (response.statusCode == 200) {
       var jsonResponse = jsonDecode(response.body);
@@ -72,10 +71,10 @@ class AuthServiceImplementation implements AuthService {
             email: email, password: password);
         if (image != null)
           profileImgUrl = await locator<UserService>()
-              .uploadProfileImg(locator<AuthManager>().getImage.lastResult);
+              .uploadProfileImg(locator<AuthManager>().getImage.lastResult!);
 
-        var response = await http.post(url, body: {
-          'userId': user.user.uid,
+        var response = await http.post(Uri.parse(url), body: {
+          'userId': user.user!.uid,
           'username': username.toLowerCase(),
           'name': name,
           'email': email,
@@ -97,11 +96,14 @@ class AuthServiceImplementation implements AuthService {
         }
       } catch (e) {
         print(e);
-        return e.code;
+        // return e.code;
+        return 'error';
       }
     } else {
       return 'username-taken';
     }
+
+    throw Exception('not supposed to make it here - register ');
   }
 
   Future<void> signOut() async {
@@ -116,7 +118,7 @@ class AuthServiceImplementation implements AuthService {
           context: ctx,
           builder: (_) =>
               ShowAlert('Invalid Username or Password!', 'Try again.'));
-      throw Exception(e.code);
+      throw Exception(e);
     }
   }
 
@@ -136,10 +138,10 @@ class AuthServiceImplementation implements AuthService {
 
       var user = await auth.signInWithCredential(authCredential);
       if (credential.email != null) {
-        var response = await http.post(url, body: {
-          'userId': user.user.uid,
-          'username': user.user.uid.toString(),
-          'name': credential.givenName + credential.familyName,
+        var response = await http.post(Uri.parse(url), body: {
+          'userId': user.user!.uid,
+          'username': user.user!.uid.toString(),
+          'name': credential.givenName! + credential.familyName!,
           'email': credential.email,
           'profileImgUrl': ''
         });

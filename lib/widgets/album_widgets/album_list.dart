@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:optimized_cached_image/widgets.dart';
+// import 'package:optimized_cached_image/widgets.dart';
 import 'package:point_of_view/managers/album_manager.dart';
 import 'package:point_of_view/models/Album.dart';
 import 'package:point_of_view/locator.dart';
@@ -9,19 +10,19 @@ import 'package:point_of_view/services/album_service.dart';
 
 class AlbumList extends StatelessWidget {
   AlbumList({this.myAlbums});
-  final List<Album> myAlbums;
+  final List<Album>? myAlbums;
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: myAlbums.length,
+      itemCount: myAlbums!.length,
       itemBuilder: (context, index) {
-        var album = myAlbums[index];
+        var album = myAlbums![index];
         return Dismissible(
           key: ObjectKey(album),
           confirmDismiss: (DismissDirection direction) async {
             print(album.ownerId);
-            String userId = FirebaseAuth.instance.currentUser.uid;
+            String userId = FirebaseAuth.instance.currentUser!.uid;
             bool isOwner = userId == album.ownerId ? true : false;
             return showPlatformDialog(
                 context: context,
@@ -44,9 +45,9 @@ class AlbumList extends StatelessWidget {
                                 : Text('Leave',
                                     style: TextStyle(color: Colors.red)),
                             onPressed: () async {
-                              await locator<AlbumService>()
+                               locator<AlbumService>()
                                   .deleteAlbum(album.albumId, isOwner);
-                              await locator<AlbumManager>().getAlbums();
+                              locator<AlbumManager>().getAlbums();
                               Navigator.of(context).pop();
                             })
                       ],
@@ -74,21 +75,21 @@ class AlbumList extends StatelessWidget {
                       leading: Container(
                         height: 45,
                         width: 50,
-                        child: album.profileImgUrl == ''
-                            ? Image.asset('assets/images/profile_icon.png')
-                            : OptimizedCacheImage(
-                                imageUrl: album.profileImgUrl,
-                                imageBuilder: (context, imageProvider) =>
-                                    Container(
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      image: DecorationImage(
-                                          image: imageProvider)),
-                                ),
-                                placeholder: (context, url) => Center(
-                                    child: PlatformCircularProgressIndicator()),
-                               
-                              ),
+                        child: 
+                        // album.profileImgUrl == ''
+                             Image.asset('assets/images/profile_icon.png')
+                            // : OptimizedCacheImage(
+                            //     imageUrl: album.profileImgUrl,
+                            //     imageBuilder: (context, imageProvider) =>
+                            //         Container(
+                            //       decoration: BoxDecoration(
+                            //           shape: BoxShape.circle,
+                            //           image: DecorationImage(
+                            //               image: imageProvider)),
+                            //     ),
+                            //     placeholder: (context, url) =>
+                            //         Center(child: CupertinoActivityIndicator()),
+                            //   ),
                       ),
                       title: Padding(
                         padding: const EdgeInsets.all(8.0),

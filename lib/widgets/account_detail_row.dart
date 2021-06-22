@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 class AccountDetailRow extends StatelessWidget {
   AccountDetailRow(
-      {Key key, this.title, @required this.userData, @required this.controller})
+      {Key? key, this.title, @required this.userData, @required this.controller})
       : super(key: key);
 
   final userData;
-  final String title;
-  final TextEditingController controller;
+  final String? title;
+  final TextEditingController? controller;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class AccountDetailRow extends StatelessWidget {
             width: 115,
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              title,
+              title!,
               style: TextStyle(fontSize: 20),
             ),
           ),

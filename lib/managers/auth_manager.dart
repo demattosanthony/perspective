@@ -6,22 +6,22 @@ import 'package:image_picker/image_picker.dart';
 import 'package:rx_command/rx_command.dart';
 
 abstract class AuthManager {
-  RxCommand<void, File> getImage;
+  late RxCommand<void, File> getImage;
 }
 
 class AuthManagerImplementation implements AuthManager {
   @override
-  RxCommand<void, File> getImage;
+  late RxCommand<void, File> getImage;
 
   final picker = ImagePicker();
 
-  PickedFile file;
+  PickedFile file = PickedFile('');
 
   AuthManagerImplementation() {
     getImage = RxCommand.createAsyncNoParam(() async {
-      PickedFile file = await picker.getImage(source: ImageSource.gallery);
-      File croppedImage = await ImageCropper.cropImage(
-          sourcePath: file.path,
+      PickedFile? file = await picker.getImage(source: ImageSource.gallery);
+      File? croppedImage = await ImageCropper.cropImage(
+          sourcePath: file!.path,
           aspectRatioPresets: Platform.isAndroid
               ? [
                   CropAspectRatioPreset.square,
@@ -50,7 +50,7 @@ class AuthManagerImplementation implements AuthManager {
           iosUiSettings: IOSUiSettings(
             title: 'Cropper',
           ));
-      return croppedImage;
+      return croppedImage!;
     });
   }
 }

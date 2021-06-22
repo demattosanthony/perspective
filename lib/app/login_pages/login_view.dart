@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:point_of_view/services/auth_service.dart';
 
@@ -22,17 +23,6 @@ class _LoginViewState extends State<LoginView> {
   final _emailController = TextEditingController();
   final _passwordcontroller = TextEditingController();
   bool supportsAppleSignIn = false;
-
-  void checkAppleSignIn() async {
-    if (Platform.isIOS)
-      supportsAppleSignIn = await SignInWithApple.isAvailable();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    checkAppleSignIn();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -92,26 +82,29 @@ class _LoginViewState extends State<LoginView> {
                         color: Colors.blueAccent,
                       ),
                       Padding(padding: EdgeInsets.all(10)),
-                      Container(
-                        height: 35,
-                        width: MediaQuery.of(context).size.width / 1.5,
-                        child: SignInWithAppleButton(
-                          onPressed: () {
-                            locator<AuthService>().signInWithApple();
+                      Visibility(
+                        visible: !kIsWeb,
+                        child: Container(
+                          height: 35,
+                          width: MediaQuery.of(context).size.width / 1.5,
+                          child: SignInWithAppleButton(
+                            onPressed: () {
+                              locator<AuthService>().signInWithApple();
 
-                            FirebaseAuth.instance
-                                .authStateChanges()
-                                .listen((user) {
-                              print(user);
-                              if (user != null) {
-                                Navigator.pushReplacement(
-                                    context,
-                                    PageTransition(
-                                        child: BottomNavBar(),
-                                        type: PageTransitionType.fade));
-                              }
-                            });
-                          },
+                              FirebaseAuth.instance
+                                  .authStateChanges()
+                                  .listen((user) {
+                                print(user);
+                                if (user != null) {
+                                  Navigator.pushReplacement(
+                                      context,
+                                      PageTransition(
+                                          child: BottomNavBar(),
+                                          type: PageTransitionType.fade));
+                                }
+                              });
+                            },
+                          ),
                         ),
                       ),
                     ],
@@ -126,7 +119,7 @@ class _LoginViewState extends State<LoginView> {
 
 class LoginDivider extends StatelessWidget {
   const LoginDivider({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

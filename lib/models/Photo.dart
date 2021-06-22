@@ -7,11 +7,12 @@ class Photo {
   final String userProfImg;
 
   Photo(
-      {this.imageId,
-      this.imageUrl,
-      this.albumId,
+      {required this.imageId,
+      required this.imageUrl,
+      required this.albumId,
       this.isSelected = false,
-      this.userId, this.userProfImg});
+      required this.userId,
+      required this.userProfImg});
 
   factory Photo.fromJson(Map<String, dynamic> json) {
     return Photo(
